@@ -1,0 +1,147 @@
+% !TeX program = lualatex
+
+\documentclass[12pt]{report}
+\usepackage[Glenn]{fncychap}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{fontspec}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{soul}
+\usepackage[colorlinks=true, linkcolor=black, urlcolor=black, citecolor=black]{hyperref}
+% \usepackage[hyphens, spaces, obeyspaces]{url}
+\usepackage[a4paper, width=175mm, top=25mm, bottom=25mm]{geometry}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{float}
+\usepackage[final]{pdfpages}
+\usepackage{xcolor}
+\usepackage{tocbibind}
+\usepackage{tocloft}
+\usepackage{xpatch}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{graphics}
+\usepackage{color}
+% \usepackage[grey,utopia]{quotchap}
+\usepackage{moreverb}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage{arabluatex}
+%\usepackage[algo2e, french, onelanguage, ruled]{algorithm2e}
+\setlist[itemize]{label=\textbullet}
+\usepackage{fancyhdr}
+\pagestyle{fancy}   
+\fancyhead{}
+\fancyhead[C]{\leftmark}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.90}
+\usepackage{multirow}
+\usepackage{soul}
+\usepackage{graphicx}
+\usepackage[utf8x]{inputenc}
+\setcounter{secnumdepth}{3} 
+\usepackage{dirtytalk}
+\usepackage{csquotes}
+
+\begin{document}
+
+%\title{Réalisation d'un assistant virtuel intelligent pour ordinateurs}
+%\author{W.Benhaddad, Y.Bourahla}
+\date{2018}
+
+\tableofcontents
+
+\input{chap1.tex}
+
+\bibliographystyle{ieeetr}
+\bibliography{ref}
+\end{document}}
+
+%
+%\section{Reconnaissance automatique de la parole}
+%
+%\subsection{Définition}
+%\begin{itemize}
+%	\item Définir aussi simplement que possible le processus de RAP(reconnaissance automatique de la parole).
+%\end{itemize}
+%
+%\subsection{Exemples}
+%\begin{itemize}
+%	\item Donner quelques exemples de système de RAP.
+%\end{itemize}
+%
+%
+%\section{Traitement automatique du langage(TAL)}
+%
+%\subsection{Définition}
+%\begin{itemize}
+%	\item Petite définition informelle
+%\end{itemize}
+%
+%\subsection{Domaines d'application}
+%\begin{itemize}
+%	\item Domaines d'applications
+%	\item Récentes avancées et découvertes(À VOIR)
+%\end{itemize}
+%
+%\subsection{État de l'art }
+%\begin{itemize}
+%	\item Récentes avancées et découvertes(À VOIR)
+%\end{itemize}
+%
+%
+%\section{Compréhension automatique du langage(CAL)}
+%
+%\subsection{Définition}
+%\begin{itemize}
+%	\item Définition aussi formelle que possible en restant bref 
+%\end{itemize}
+%
+%\subsection{Domaines d'application}
+%\begin{itemize}
+%	\item Domaines d'applications
+%\end{itemize}
+%
+%\subsection{État de l'art }
+%\begin{itemize}
+%	\item Récentes découvertes et avancées dans le domaine.
+%\end{itemize}
+%
+%
+%
+%\section{Apprentissage automatique}
+%
+%\subsection{Définition}
+%\begin{itemize}
+%	\item  Définir l'apprentissage automatique de manière générale.
+%\end{itemize}
+%
+%\subsection{Domaines d'application}
+%\begin{itemize}
+%	\item  Définir l'apprentissage automatique de manière générale.
+%	\item Paradigmes de l'AA :
+%	\begin{itemize}
+%		\item Apprentissage génératif
+%		\item Apprentissage discriminatif
+%		\item Apprentissage profond
+%		\item Apprentissage par renforcement
+%		...
+%	\end{itemize}
+%\end{itemize}
+%
+%
+%\subsection{Paradigmes de l'AA}
+%\begin{itemize}
+%	\item Apprentissage génératif
+%	\item Apprentissage discriminatif
+%	\item Apprentissage profond
+%	\item Apprentissage par renforcement
+%	\item Apprentissage interactif
+%	...
+%\end{itemize}
