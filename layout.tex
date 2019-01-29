@@ -1,9 +1,8 @@
 % !TeX program = lualatex
-
 \documentclass[12pt]{report}
 \usepackage[Glenn]{fncychap}
 \usepackage[T1]{fontenc}
-\usepackage[francais]{babel}
+\usepackage[french]{babel}
 \usepackage{fontspec}
 \usepackage{wrapfig}
 \usepackage{graphicx}
@@ -18,8 +17,6 @@
 \usepackage{float}
 \usepackage[final]{pdfpages}
 \usepackage{xcolor}
-\usepackage{tocbibind}
-\usepackage{tocloft}
 \usepackage{xpatch}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -30,21 +27,19 @@
 \usepackage{moreverb}
 \usepackage{xcolor}
 \usepackage{framed}
-\usepackage{arabluatex}
 %\usepackage[algo2e, french, onelanguage, ruled]{algorithm2e}
 \setlist[itemize]{label=\textbullet}
-\usepackage{fancyhdr}
-\pagestyle{fancy}   
-\fancyhead{}
-\fancyhead[C]{\leftmark}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
+% \usepackage{fancyhdr}
+% \pagestyle{fancy}   
+% \fancyhead{}
+% \fancyhead[C]{\leftmark}
+% \renewcommand{\headrulewidth}{0.4pt}
+% \renewcommand{\footrulewidth}{0.4pt}
 \usepackage{xcolor}
 \definecolor{light-gray}{gray}{0.90}
 \usepackage{multirow}
 \usepackage{soul}
 \usepackage{graphicx}
-\usepackage[utf8x]{inputenc}
 \setcounter{secnumdepth}{3} 
 \usepackage{dirtytalk}
 \usepackage{csquotes}
@@ -56,8 +51,13 @@
 \date{2018}
 
 \tableofcontents
+\textcolor{red}{To correct} \\
+\textcolor{blue}{To explain more deeply}
 
 \input{chap1.tex}
+
+\newpage
+\listoffigures
 
 \bibliographystyle{ieeetr}
 \bibliography{ref}
