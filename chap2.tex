@@ -91,7 +91,7 @@ Le suivi dans ce cas se fait en gardant une distribution de probabilités sur l�
 	\caption{Schéma représentant la mise-à-jour de l'état par un système basé statistiques} 
 \end{figure}
 
-\subsubsection{Processus de décision markovien partiellement observé (POMDP)}
+\subsubsection{Processus de décision markovien partiellement observable (POMDP)}
 \paragraph{}
 Comme dans les processus de décision markovien, un POMDP\cite{Astrom1965} passe d’un état à un autre en prenant une des actions possibles. Cependant, ce dernier ne connait pas l’état exacte dans lequel il se trouve à un instant t. Il reçoit par contre une observation, dans notre cas c’est l’action de l’utilisateur, à partir de laquelle il peut estimer une distribution de probabilités sur l’état actuel. Pour résumer cela, un POMDP est un 6-tuple (S,A,P,R,M,O):
 \begin{itemize}
@@ -127,7 +127,34 @@ Récemment, des approches utilisant les réseaux de neurones profonds(refpart2) 
 	\caption{Schéma de gestion de dialogue de bout en bout avec architecture Seq2Seq} 
 \end{figure}
 \subsection{Apprentissage par renforcement}
+\paragraph{}
+L’apprentissage par renforcement est une approche qui a pour but d’estimer une politique d’actions à prendre dans un environnement pour maximiser une mesure d’évaluation qui est sous forme de récompenses obtenues après chaque action\cite{Weisz2018}. L’environnement est souvent modéliser comme un MDP, ou éventuellement POMDP. L’agent d’apprentissage passe donc d’un état à un autre en prenant des actions dans cet environnement. L’apprentissage se fait dans ce cas en apprenant par l’expérience de l’agent, à savoir les récompenses obtenues par les actions prises et de quels états elles étaient prises. Il peut ainsi estimer la fonction de récompense pour pouvoir faire le choix d’actions optimales. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.5\linewidth]{images/DM/RLSchema.png} 
+	\caption{Schéma d'interaction agent-environnement dans l'apprentissage par renforcement} 
+\end{figure}
+Il existe plusieurs méthodes que l’agent peut prendre afin qu’il estime la fonction de récompense \cite{Dimitri2012}, notamment Deep Q Learning (DQN) \cite{Mnih2015} qui utilise les réseaux de neurones profonds pour trouver une approximation à cette fonction. Dans cette approche, à chaque fois que l'agent prenne une action, il compare la récompense reçue avec celle estimée par le réseau de neurones, il applique ensuite l'algorithme de rétro-propagation pour corriger les erreurs du réseau. 
+
+\paragraph{}
+Le système de dialogue est modélisé par un MDP. Seulement, ce dernier inclut l’utilisateur comme partie de l’environnement. En conséquence, pour appliquer l’apprentissage par renforcement, il est nécessaire qu’un utilisateur communique avec le système pour qu’il apprenne. D’où, la nécessité d’utiliser les simulateurs d’utilisateur.
+
 \subsection{Simulateur d'utilisateur}
+Un simulateur d’utilisateur est un programme qui se comporte comme un humain interagissant avec un système de dialogue. Celui-là doit pouvoir estimer sa satisfaction après une interaction. en d’autres termes, il doit comporter d'une fonction de récompense. Il existe plusieurs méthodes pour créer un simulateur d’utilisateur:
+\begin{itemize}
+	\item Les simulateurs d’utilisateur basé règles: dans ce cas une liste de règles est écrite manuellement que le simulateur doit suivre pour communiquer avec le système\cite{Schatzmann2007}.
+	\item Les simulateurs d’utilisateur basé n-grammes: ils traitent un dialogue comme une séquence d’actions. Ils prennent les n-1 actions pour estimer l’action la plus probable que peut prendre le simulateur à partir des statistiques tirées d'un	 corpus de dialogues\cite{Georgila2005}.
+	\item Les simulateurs d’utilisateur basé HMM: les états du modèle sont les états du système, les observations sont ses actions. Ainsi un HMM peut estimer l’état le plus probable du système pour prendre une action. Il existe d’autres variantes, IHMM et IOHMM, qui incluent les probabilités conditionnelles des actions utilisateur avec l’état système et l’action système directement dans le modèle HMM\cite{Cuayhuitl2005}.
+	\item Les simulateurs d’utilisateur avec apprentissage par renforcement: Comme le gestionnaire de dialogue, le simulateur apprend par renforcement au même temps. Dans ce cas la fonction de récompense pour les deux agents peut être apprise à partir des dialogues humain-humain\cite{Chandramohan2011}.
+\end{itemize}
+
+
+
+
+
+
+
 \section{Génération du langage naturel (NLG)}\label{NLG}
 	\paragraph{}
 	Le domaine de la génération automatique du langage naturel est l’un des domaines dont les bordures sont difficiles à définir (Evans et al., 2002). il est vrai que la sortie d’un tel système est clairement du texte. Cependant, l’ambiguïté se trouve dans ses l’entrées, c’est à dire, sur quoi se basera le système pour générer le texte. D’après (Reiter \& Dale, 1997)\cite{Reiter:1997} la génération du langage naturel est décrite comme étant le sous domaine de l’intelligence artificielle qui traite la construction des systèmes de génération de texte à partir d’une représentation non-linguistique de l’information, celle-ci peut être une représentation sémantique, des données numériques, une base de connaissances ou même des données visuelles (images ou vidéos). Ceci dit, d’autres travaux ,comme Labbé \& Portet (2012)\cite{Labbé2012}, utilisent les même techniques pour des entrées linguistique. Enfin la génération du langage naturel peut être très proche de la gestion de dialogue\cite{Dethlefs2014}, en effet, le texte généré doit prendre en compte l’historique de la conversation et le contexte de l’utilisateur.\newline
