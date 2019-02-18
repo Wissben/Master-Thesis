@@ -28,7 +28,7 @@
 
 \section{Gestion du dialogue}
 	\paragraph{}
-	La compréhension du langage naturel permet de transformer un texte en une représentation sémantique. Afin qu’un système puissent réaliser un dialogue aussi anthropomorphe que possible, il doit décider, à partir des représentations sémantiques reçues au cours du dialogue, quelle action à prendre à chaque étape de la conversation afin de la transmettre au générateur du langage naturel\ref{NLG} pour afficher le résultat à l’utilisateur. On distingue deux principaux modules généralement présent dans les systèmes de gestion de dialogue:
+	La compréhension du langage naturel permet de transformer un texte en une représentation sémantique. Afin qu’un système puissent réaliser un dialogue aussi anthropomorphe que possible, il doit décider, à partir des représentations sémantiques reçues au cours du dialogue, quelle action à prendre à chaque étape de la conversation afin de la transmettre au générateur du langage naturel \ref{NLG} pour afficher le résultat à l’utilisateur. On distingue deux principaux modules généralement présent dans les systèmes de gestion de dialogue:
 \begin{itemize}
 	\item Un module qui met à jour l’état du gestionnaire de dialogue.
 	\item Un module qui détermine la politique d’action du gestionnaire de dialogue.
@@ -41,7 +41,7 @@
 \end{figure}
 
 
-	\subsection{Processus de décision Markovien (MDP)}
+	\subsection{Processus de décision Markovien (MDP)}\label{MDP}
 	\paragraph{}Un gestionnaire de dialogue peut être modélisé par un processus de décision Markovien\cite{Bel1957}. Ce dernier est modélisé par un 4-tuple (S,A,P,R)(*):
 	\begin{itemize}
 		\item S: ensemble d’états du système.
@@ -60,7 +60,7 @@
 	
 	\subsection{État du gestionnaire de dialogue}
 		\paragraph{}
-		L’état d’un système de dialogue est une représentation sémantique qui contient des informations sur le but final de l’utilisateur ainsi que l’historique de la conversation. La représentation souvent utilisée dans les systèmes de dialogue est celle du cadre sémantique \cite{Chen2017}. Cette structure contient des emplacements à remplir sur un domaine donné, la figure\ref{SFrame} illustre un exemple de cadre sémantique.\newline
+		L’état d’un système de dialogue est une représentation sémantique qui contient des informations sur le but final de l’utilisateur ainsi que l’historique de la conversation. La représentation souvent utilisée dans les systèmes de dialogue est celle du cadre sémantique \cite{Chen2017}. Cette structure contient des emplacements à remplir sur un domaine donné, la figure \ref{SFrame} illustre un exemple de cadre sémantique.\newline
 		
 		\begin{figure}[H]
 			\centering
@@ -93,9 +93,9 @@ Le suivi dans ce cas se fait en gardant une distribution de probabilités sur l�
 
 \subsubsection{Processus de décision markovien partiellement observé (POMDP)}
 \paragraph{}
-Comme dans les processus de décision markovien, un POMDP\cite{Astrom1965} passe d’un état à un autre en prenons une des actions possibles. Cependant, ce dernier ne connait pas l’état exacte dans lequel il se trouve à un instant t. Il reçoit par contre une observation, dans notre cas c’est l’action de l’utilisateur, à partir de laquelle il peut estimer une distribution de probabilités sur l’état dans lequel il se trouve. Pour résumer cela, un POMDP est un 6-tuple (S,A,P,R,M,O)
+Comme dans les processus de décision markovien, un POMDP\cite{Astrom1965} passe d’un état à un autre en prenant une des actions possibles. Cependant, ce dernier ne connait pas l’état exacte dans lequel il se trouve à un instant t. Il reçoit par contre une observation, dans notre cas c’est l’action de l’utilisateur, à partir de laquelle il peut estimer une distribution de probabilités sur l’état actuel. Pour résumer cela, un POMDP est un 6-tuple (S,A,P,R,M,O):
 \begin{itemize}
-\item Les 4 premiers composants sont les même que celui d’un MDP(refer).
+\item Les 4 premiers composants sont les même que celui d’un MDP \ref{MDP}.
 \item M: l’ensemble des observation.
 \item O: distribution de probabilités sur les observations o sachant en connaissant l’état et l’action prise pour y arriver. O(o|s,a) est la probabilité d’observer o sachant qu’on se trouve à l’état s et qu’on a pris l’action a pour y arriver.
 \end{itemize}
@@ -108,10 +108,8 @@ Comme dans les processus de décision markovien, un POMDP\cite{Astrom1965} passe
 
 \subsubsection{Suivi de l’état avec réseaux de neurones profonds}
 \paragraph{}
-Récemment, des approches utilisant les réseaux de neurones profonds(refpart2). Le réseaux de neurones estime les probabilités de toutes les valeurs possibles d’un emplacement du cadre sémantique\cite{Henderson2013}.
+Récemment, des approches utilisant les réseaux de neurones profonds(refpart2) ont fait leurs apparitions. En effet, l'utilisation des architectures profondes permet de capter des relations complexes entre les caractéristiques d'un dialogue et ainsi mieux estimer l'état du système. Le réseau de neurones estime les probabilités de toutes les valeurs possibles d’un emplacement du cadre sémantique\cite{Henderson2013}. En conséquence, il peut être utilisé comme modèle de suivi d'état pour un processus partiellement observable.
 
-
-Schéma DNN
 	\subsection{Politique de gestion de dialogue}
 		\paragraph{}
 		La première partie était dédié au module qui suit l’état du système de dialogue. Dans cette partie, Nous allons présenter des approches proposés afin d’arriver au but d’un MDP, c’est à dire quelles actions prendre pour maximiser la somme des récompenses obtenus.
