@@ -28,16 +28,109 @@
 
 \section{Gestion du dialogue}
 	\paragraph{}
-	\subsection{Définition}
-		\paragraph{}
-	\subsection{Agent de dialogue}
-		\paragraph{}
-	\subsection{Apprentissage par renforcement}
-		\paragraph{}
-	\subsection{Simulateur d’utilisateur}
-		\paragraph{}
+	La compréhension du langage naturel permet de transformer un texte en une représentation sémantique. Afin qu’un système puissent réaliser un dialogue aussi anthropomorphe que possible, il doit décider, à partir des représentations sémantiques reçues au cours du dialogue, quelle action à prendre à chaque étape de la conversation afin de la transmettre au générateur du langage naturel\ref{NLG} pour afficher le résultat à l’utilisateur. On distingue deux principaux modules généralement présent dans les systèmes de gestion de dialogue:
+\begin{itemize}
+	\item Un module qui met à jour l’état du gestionnaire de dialogue.
+	\item Un module qui détermine la politique d’action du gestionnaire de dialogue.
+\end{itemize}
 
-\section{Génération du langage naturel (NLG)}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\linewidth]{images/DM/DMGeneral.png} 
+	\caption{Schéma général d'un gestionnaire de dialogue} 
+\end{figure}
+
+
+	\subsection{Processus de décision Markovien (MDP)}
+	\paragraph{}Un gestionnaire de dialogue peut être modélisé par un processus de décision Markovien\cite{Bel1957}. Ce dernier est modélisé par un 4-tuple (S,A,P,R)(*):
+	\begin{itemize}
+		\item S: ensemble d’états du système.
+		\item A: ensemble d’actions du système.
+		\item P: distribution de probabilités de transitions entre états sachant l’action prise. P(s’/s,a) est la probabilité de passer à l’état s’ sachant qu’on était à l’état s après avoir pris l’action a.
+		\item R: est la récompense reçue immédiatement après avoir changer d’état avec une action donnée. R(s’/s,a) est la récompense reçu après avoir passer à l’état s’ sachant qu’on était à l’état s après avoir pris l’action a.
+	\end{itemize}
+	D’après (*) un MDP, à tout instant t, est dans un état s, dans notre cas c’est l’état du gestionnaire de dialogue. Il peut prendre une action a afin de passer à un nouvel état s’, et sur ce fait, il reçoit une récompense, qui ,dans notre cas, est une mesure sur les performance du système de dialogue. Le but est de maximiser les récompense reçu.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.95\linewidth]{images/DM/MDP.png} 
+		\caption{Schéma représentant les transitions entre états dans un MDP} 
+	\end{figure}
+	
+	
+	\subsection{État du gestionnaire de dialogue}
+		\paragraph{}
+		L’état d’un système de dialogue est une représentation sémantique qui contient des informations sur le but final de l’utilisateur ainsi que l’historique de la conversation. La représentation souvent utilisée dans les systèmes de dialogue est celle du cadre sémantique \cite{Chen2017}. Cette structure contient des emplacements à remplir sur un domaine donné, la figure\ref{SFrame} illustre un exemple de cadre sémantique.\newline
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=.7\linewidth]{images/DM/SFrame.png} 
+			\caption{Schéma représentant un cadre sémantique avec comme domaine: création de fichier} 
+			\label{SFrame}
+		\end{figure}
+
+
+À l’arriver d’une nouvelle information, un module dédié met à jour l’état du gestionnaire du dialogue. Comme l’action du système de dialogue est décidée à partir de son état, cette tâche est donc essentiel au bon fonctionnement du système. Plusieurs méthodes ont été donc proposé pour gérer le suivi de l’état du gestionnaire de dialogue.
+\subsubsection{Suivi de l’état avec une base de règles}
+\paragraph{}
+La méthode traditionnelle utilisée est d’écrire manuellement les règles à suivre lors de l’arrivé d’une nouvelle information pour mettre à jour l’état\cite{Goddeau1996}. Cependant, les bases de règles sont très susceptibles à faire des erreurs\cite{Chen2017} comme ils sont moins robuste face aux incertitudes.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\linewidth]{images/DM/RuleBasedUpdate.png} 
+	\caption{Schéma représentant la mise-à-jour de l'état par un système basé règles} 
+\end{figure}
+
+\subsubsection{Suivi de l’état avec des méthodes statistiques}
+Le suivi dans ce cas se fait en gardant une distribution de probabilités sur l’état du système. D’où, l’utilisation des processus de décision markovien partiellement observé (POMDP)\cite{Young2010} qu’on introduira par la suite. Dans ce cas, le système garde une distribution de probabilités sur les valeurs possibles des différents emplacements du cadre sémantique.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\linewidth]{images/DM/StatBasedUpdate.png} 
+	\caption{Schéma représentant la mise-à-jour de l'état par un système basé statistiques} 
+\end{figure}
+
+\subsubsection{Processus de décision markovien partiellement observé (POMDP)}
+\paragraph{}
+Comme dans les processus de décision markovien, un POMDP\cite{Astrom1965} passe d’un état à un autre en prenons une des actions possibles. Cependant, ce dernier ne connait pas l’état exacte dans lequel il se trouve à un instant t. Il reçoit par contre une observation, dans notre cas c’est l’action de l’utilisateur, à partir de laquelle il peut estimer une distribution de probabilités sur l’état dans lequel il se trouve. Pour résumer cela, un POMDP est un 6-tuple (S,A,P,R,M,O)
+\begin{itemize}
+\item Les 4 premiers composants sont les même que celui d’un MDP(refer).
+\item M: l’ensemble des observation.
+\item O: distribution de probabilités sur les observations o sachant en connaissant l’état et l’action prise pour y arriver. O(o|s,a) est la probabilité d’observer o sachant qu’on se trouve à l’état s et qu’on a pris l’action a pour y arriver.
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.5\linewidth]{images/DM/POMDP.png} 
+	\caption{Diagramme d'influence dans un POMDP} 
+\end{figure}
+
+\subsubsection{Suivi de l’état avec réseaux de neurones profonds}
+\paragraph{}
+Récemment, des approches utilisant les réseaux de neurones profonds(refpart2). Le réseaux de neurones estime les probabilités de toutes les valeurs possibles d’un emplacement du cadre sémantique\cite{Henderson2013}.
+
+
+Schéma DNN
+	\subsection{Politique de gestion de dialogue}
+		\paragraph{}
+		La première partie était dédié au module qui suit l’état du système de dialogue. Dans cette partie, Nous allons présenter des approches proposés afin d’arriver au but d’un MDP, c’est à dire quelles actions prendre pour maximiser la somme des récompenses obtenus.
+		\subsubsection{Gestion de dialogue avec une base de règles}
+		\paragraph{}
+		Les premières approches utilisaient des systèmes de règles destiné à un domaine bien spécifique. Elles étaient déployés dans plusieurs domaines d’application pour sa simplicité. Cependant, le travail manuel nécessaire reste difficile à faire et, généralement, n’aboutit pas à des résultats flexibles qui peuvent suivre le flux du dialogue convenablement\cite{Lee2010}.
+	\subsection{Gestion de dialogue par apprentissage}
+		\paragraph{}
+		La résolution d’un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l’apprentissage par renforcement pour but d’estimer la récompense obtenue pour une action et un état donnés et ceci revient à la difficulté de produire des corpus de dialogues\cite{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Cependant, il existe des approches de bout en bout qui exploite des architectures avec réseaux de neurones profonds et traite le problème comme seq2seq(part2) afin de produire directement une sortie à partir des information générées par l’utilisateur\cite{Wen2017}\cite{Serban2016}.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\linewidth]{images/DM/DMSeq2Seq.png} 
+	\caption{Schéma de gestion de dialogue de bout en bout avec architecture seq2seq} 
+\end{figure}
+\subsection{Apprentissage par renforcement}
+\subsection{Simulateur d'utilisateur}
+\section{Génération du langage naturel (NLG)}\label{NLG}
 	\paragraph{}
 	Le domaine de la génération automatique du langage naturel est l’un des domaines dont les bordures sont difficiles à définir (Evans et al., 2002). il est vrai que la sortie d’un tel système est clairement du texte. Cependant, l’ambiguïté se trouve dans ses l’entrées, c’est à dire, sur quoi se basera le système pour générer le texte. D’après (Reiter \& Dale, 1997)\cite{Reiter:1997} la génération du langage naturel est décrite comme étant le sous domaine de l’intelligence artificielle qui traite la construction des systèmes de génération de texte à partir d’une représentation non-linguistique de l’information, celle-ci peut être une représentation sémantique, des données numériques, une base de connaissances ou même des données visuelles (images ou vidéos). Ceci dit, d’autres travaux ,comme Labbé \& Portet (2012)\cite{Labbé2012}, utilisent les même techniques pour des entrées linguistique. Enfin la génération du langage naturel peut être très proche de la gestion de dialogue\cite{Dethlefs2014}, en effet, le texte généré doit prendre en compte l’historique de la conversation et le contexte de l’utilisateur.\newline
 	Il existe six tâches trouvées fréquemment dans les systèmes de génération de texte \cite{Reiter:1997}.
@@ -47,7 +140,7 @@
 	Cette partie consiste à sélectionner les informations de l’entrée dont le système veut transmettre le contenu sous forme de texte naturel à l’utilisateur. En effet, les données en entrée peuvent contenir plus d’informations que ce que l’on désire communiquer\cite{Yu:2007}, de plus, cette information peut aussi dépendre de l’utilisateur et de ses connaissances\cite{Dethlefs2014}. Ce qui requiert de mettre au point un système qui détecte les informations pertinentes à l’utilisateur.
 	\subsection{Structuration de texte}
 	\paragraph{}
-	Après la détermination du contenu, le système doit ordonner les information à transmettre. Ceci dépend grandement du domaine d’application qui peut exiger des contraintes d’ordre temporelle ou de préférence par importance des idées. Les informations à transmettre en elles-mêmes sont souvent reliées par sens ce qui implique une certaine structuration de texte à respecter.
+	Après la détermination du contenu, le système doit ordonner les information à transmettre. Ceci dépend grandement du domaine d’application qui peut exiger des contraintes d’ordre temporelle ou de préférence par importance des idées. Les informations à transmettre en elles-mêmes sont souvent reliées par sens ce qui implique une certaine structuration de texte à respecter.\newpage
 	\subsection{Agrégation de phrases}
 	\paragraph{}
 	Certaines informations peuvent être transmises dans une même phrase. Cette partie introduit des notions de la linguistique afin que le texte généré soit plus lisible et éviter les répétition. Un exemple de cela peut être la description de la météo à Alger au cours de la matinée:
