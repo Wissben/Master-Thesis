@@ -112,19 +112,19 @@ Récemment, des approches utilisant les réseaux de neurones profonds(refpart2) 
 
 	\subsection{Politique de gestion de dialogue}
 		\paragraph{}
-		La première partie était dédié au module qui suit l’état du système de dialogue. Dans cette partie, Nous allons présenter des approches proposés afin d’arriver au but d’un MDP, c’est à dire quelles actions prendre pour maximiser la somme des récompenses obtenus.
+		La première partie était dédiée au module qui suit l’état du système de dialogue. Dans cette partie, Nous allons présenter des approches proposées afin d’arriver au but du MDP, c’est à dire quelles actions prendre pour maximiser la somme des récompenses obtenus.
 		\subsubsection{Gestion de dialogue avec une base de règles}
 		\paragraph{}
-		Les premières approches utilisaient des systèmes de règles destiné à un domaine bien spécifique. Elles étaient déployés dans plusieurs domaines d’application pour sa simplicité. Cependant, le travail manuel nécessaire reste difficile à faire et, généralement, n’aboutit pas à des résultats flexibles qui peuvent suivre le flux du dialogue convenablement\cite{Lee2010}.
+		Les premières approches utilisaient des systèmes de règles destiné à un domaine bien spécifique. Elles étaient déployés dans plusieurs domaines d’application pour sa simplicité. Cependant, le travail manuel nécessaire reste difficile à faire, et, généralement, n’aboutit pas à des résultats flexibles qui peuvent suivre le flux du dialogue convenablement\cite{Lee2010}.
 	\subsection{Gestion de dialogue par apprentissage}
 		\paragraph{}
-		La résolution d’un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l’apprentissage par renforcement pour but d’estimer la récompense obtenue pour une action et un état donnés et ceci revient à la difficulté de produire des corpus de dialogues\cite{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Cependant, il existe des approches de bout en bout qui exploite des architectures avec réseaux de neurones profonds et traite le problème comme seq2seq(part2) afin de produire directement une sortie à partir des information générées par l’utilisateur\cite{Wen2017}\cite{Serban2016}.
+		La résolution d’un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l’apprentissage par renforcement pour but d’estimer la récompense obtenue par une action et un état donnés. Cette préférence par rapport aux approches supervisées revient à la difficulté de produire des corpus de dialogues\cite{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Néanmoins, il existe des approches de bout en bout qui exploite des architectures avec réseaux de neurones profonds et traite le problème comme Seq2Seq(part2) afin de produire directement une sortie à partir des informations reçues par l’utilisateur\cite{Wen2017}\cite{Serban2016}.
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.7\linewidth]{images/DM/DMSeq2Seq.png} 
-	\caption{Schéma de gestion de dialogue de bout en bout avec architecture seq2seq} 
+	\caption{Schéma de gestion de dialogue de bout en bout avec architecture Seq2Seq} 
 \end{figure}
 \subsection{Apprentissage par renforcement}
 \subsection{Simulateur d'utilisateur}
