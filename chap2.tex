@@ -1,11 +1,95 @@
-\chapter{Composants de base d'un assistant personnel}
+\chapter*{Composants de base d'un assistant personnel}
 
 \section{Introduction}
+	\paragraph{}
+	Durant ce chapitre, nous allons détailler un peu plus l'aspect technique d'une architecture typique pour un SPA, nous commencerons d'abord par définir des notions de bases ainsi que des techniques d'apprentissage automatique, nous traiterons celles qui ont été les plus utilisées pour les travaux que nous avons trouvé. La suite du chapitre sera organisé en sections qui décrirons chacune le fonctionnement d'une partie du SPA, en citant les travaux et références qui relatent de cette dernière. Nous terminerons sur une conclusion qui introduira le chapitre suivant.
+\section{Notions et aspects théoriques}
+	\paragraph{}
+	Dans cette section nous essaierons de présenter différentes notions liées au domaine de l'apprentissage automatique, pour ensuite les citer dans les module qui leur font appel. 
+	\subsection{Apprentissage automatique}
+		\paragraph{}
+		Le plus souvent, un domaine scientifique peut être défini à travers le, ou les types de problèmes dont il essaye de trouver une solution, d'après \cite{mitchelllearning}, l'auteur à défini ce problème sous forme d'une question :
+		\begin{quote}
+			\say{How can we build computer systems that automatically improve with experience, and what are the fundamental laws that govern all learning processes?}\cite{mitchelllearning}
+		\end{quote}
+		que nous pouvons traduire par :
+		\begin{quote}
+			\say{Comment pourrions nous développer un système informatique qui pourrait s'améliorer à travers l'expérience, et quelles seraient les lois qui régiraient le processus d'apprentissage?}
+		\end{quote}
+		\par 
+		D'après \cite{mitchelllearning} l'apprentissage automatique est un paradigme qui stipule qu'un système informatique peut apprendre à effectuer un ensemble de tâches T, sachant qu'il dispose d'un ensemble de données E, tout en améliorant sa performance P.
+		\par
+		Il existe plusieurs sous catégories d'apprentissage automatique, elles différent principalement par la manière dont le système apprend, du type de données sur les quelles il apprend, ainsi que du but de son apprentissage (classification, régression,...). Nous pouvons citer les catégories suivantes :
+		\begin{itemize}
+			\item  \textbf{Apprentissage supervisé} : Les algorithmes de cette catégories ont besoin d'une assistance externes, les données doivent être séparées en deux parties (ensemble d'apprentissage et de test), un \textit{label} ou classe doit être associée à chaque instance pour permettre à l'algorithme de calculer un certain taux d'erreur qu'il essayera d'améliorer au fur et à mesure qu'une nouvelle instance est présentée \cite{supervised_learning}. Idéalement le système pourra apprendre une certaines fonction $\hat{f} : X \rightarrow Y$ qui liera les entrées $X$ aux sorties $Y$ en minimisant une erreur $E_Y$ 
+			
+			\item \textbf{Apprentissage non supervisé} : Ici, les algorithmes ne disposent pas d'un étiquetage des données, ils essayeront donc d'apprendre des \textit{pattern} ou motifs fréquents pour grouper les données similaires. De tels algorithmes ne se préoccupent pas de la classe, mais de la similarité entre un groupe de données \cite{unsupervised_learning}
+			
+			\item \textbf{Apprentissage par renforcement} : Cette dernière catégories d'algorithmes apprennent par un système de \textit{trial and error} \footnote{Essais et erreur ?} en interagissant avec l'environnement pour accomplir une tâche (voir \ref{reinf_learning})
+		\end{itemize}
+	\subsection{Réseaux de neurones artificiels}
+		\paragraph{}
+		Un réseau de neurones artificiels est une structure d'appariement non-linéaire inspiré de la façon dont les systèmes nerveux biologiques fonctionnent. Ils permettent de modéliser les relations sous-jacentes des données. ils sont composés d'un nombre arbitrairement large de plus petites unités de calcul interconnectées appelées neurones, qui traient l'information d'une manière parallèle dans le but de résoudre un problème bien spécifique \cite{neural_nets}. Ils ont notamment connu un très grand succès lors des dernières années dans différents domaines comme la reconnaissance d'images \cite{inception}, la reconnaissance automatique de la parole \cite{speech_reco_dnn} \cite{speech_reco_Yu2015} ou encore la classification de textes \cite{seq2seq_multitask_classification} \cite{dnn_text_classification}.
+		\par 
+		Il existe une variété d'architectures de réseaux de neurones, nous traiterons dans cette section de trois d'entre elles : 
+			\begin{itemize}
+				\item Réseaux de neurones multicouches denses
+				\item Réseaux de neurones profonds
+				\item Réseaux de neurones récurrents et leurs variantes
+			\end{itemize}
+		\subsubsection{Réseaux de neurones multicouches denses}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\linewidth]{images/notions/mlp.png}
+			\caption{Architecture basique d'un réseaux de neurones multicouches}
+			\label{mlp}
+		\end{figure}
+		\paragraph{}
+		La forme la plus basique que puisse avoir un réseaux de neurones est celle d'un réseaux multicouches comme montré dans \ref{mlp}, elle se compose de trois parties :
+		\begin{itemize}
+			\item \textbf{Une couche d'entrée : } cette couche est composé d'un ensemble de neurones ou \textit{perceptron} \cite{perceptron}, elle représente l'information en entrée codifié en un vecteur numérique $\chi$
+			
+			\item  \textbf{Une ou plusieurs couches cachées :} le coeur du réseau, c'est une succession de couche de neurones dont chaque couche $\omega_i$ reçoit un signal sous forme d'une ou plusieurs valeurs numériques depuis une couche antérieure $\omega_{i-1}$ ou bien la couche d'entrée $\chi$, puis envois en sortie  un autre signal de même nature qui est une combinaison non-linéaire du signal en entrée vers une couche suivante $\omega_{i+1}$ ou bien la couche de sortie
+			\item \textbf{Une couche de sortie :}
+			elle permet de calculer une valeur $y$ qui peut être vu comme la prédiction du modèle $\Phi$ par rapport à son entrée $\chi$ : 
+			\begin{equation}
+				y = f_\Phi(\chi)
+			\end{equation}
+		\end{itemize}
+		Le réseau calculera une erreur $e(y,\hat{y}$ en fonction de sa valeur en sortie et de la valeur exacte puis corrigera cette erreur au fur et à mesure du parcoure des données d'apprentissage \cite{mlp}
+		
+		\subsubsection{Réseaux de neurones profonds}
+		\paragraph{}
+		Les réseaux de neurones à une seule couche sont dit \textit{shallow}, ils présentaient l'avantage d'être assez rapide durant la phase d'apprentissage, cependant les limites computationnelle d'antan se sont vu vite brisé avec le développement de processeurs plus puissants, de plus avec l'explosion des données sur le web, toutes les conditions nécessaires pour la mise en place d'architectures plus complexes étaient réunies. Les réseaux de neurones profonds sont une adaptation des réseaux multi-couches classiques avec généralement plus de 3 couches cachées. \par même si le principe reste le même, l'apprentissage profond est puissant car les architectures les plus complexes permettent d'extraire automatiquement les caractéristiques qui sont importantes mais non visibles, c'est le cas des réseaux de neurones constitutionnels et récurrents \cite{dnn} 
+		
+		\subsubsection{Réseaux de neurones récurrents}
+		\paragraph{}
+		Un aspect que les réseaux de neurones (profonds ou pas) ne peuvent capturé est la notion de séquentialité, en effet beaucoup de problèmes qui sont de nature séquentielle ne peuvent être modélisé par les architectures dites classiques, comme l'analyse d'un texte, l'introduction d'une notion de séquence permet donc de capturer des dépendances entre certains états et leurs voisins, on parle ici de contexte \cite{rnn_lstms}.
+		\par 
+		Les réseaux de neurones récurrents (RNNs) sont des réseaux de neurones \textit{feedforward} dont certaines connections en sortie sont réintroduite comme entrées dans le réseau durant une étape ultérieur du processus d'apprentissage, ceci introduit la notion de temps dans l'architecture, ainsi à un instant $t$, un neurones récurrent recevra en entré la données $x^{(t)}$ ainsi que la valeur de l'état caché $h^{(t-1)}$ résultante de l'étape précédente du réseau, la valeur en sorite $\hat{y}^{(t)}$ est calculée en fonction de l'état caché $h^{(t)}$, les équations suivantes montrent les calculs effectués :
+		\begin{equation}
+			h^{(t)} = \tanh(W^{hx} \times x^{(t1)} + W^{hh} \times h^{(t-1)} + b_h)
+		\end{equation}
+		
+		\begin{equation}
+			\hat{y}^{(t)} = softmax(W^{hy} \ times h^{(t1)} + b_y)
+		\end{equation}
+		
+		Où $W^{hx}$ est la matrice de poids entre la couche d'entrée et l'état caché et $W^{hh}$ est la matrice de poids de récurrence (entre l'état $t$ et $t-1$) les deux vecteurs $b_h$ et $b_y$ sont les vecteurs de biais et $\times$ est l'opération du produit matriciel\cite{rnn_lstms}
+		
+		\begin{figure}[H]
+			\centering
+%			\includegraphics[width=0.5\linewidth]{images/notions/rnns.png}
+%			\caption{Un réseau de neurones récurrent durant les différentes étapes $t$ \cite{rnns_online}}
+			
+			\includegraphics[width=0.5\linewidth]{images/notions/rnns_unrolled_online.png}
+			\caption{Composition interne d'un réseau de neurones récurrent à un instant $t$ \cite{rnns_online}}
+		\end{figure}
 \section{Architecture d'un SPA}
 \section{Reconnaissance automatique de la parole (ASR)}
 	\paragraph{}
+	Le premier module qui compose le système est celui de la reconnaissance automatique de la parole, 
 	\subsection{Définition}
-		\paragraph{}
 	\subsection{Modèle acoustique}
 		\paragraph{}
 	\subsection{Modèle de langage}
@@ -126,7 +210,7 @@ Récemment, des approches utilisant les réseaux de neurones profonds(refpart2) 
 	\includegraphics[width=.7\linewidth]{images/DM/DMSeq2Seq.png} 
 	\caption{Schéma de gestion de dialogue de bout en bout avec architecture Seq2Seq} 
 \end{figure}
-\subsection{Apprentissage par renforcement}
+\subsection{Apprentissage par renforcement} \label{reinf_learning}
 \paragraph{}
 L’apprentissage par renforcement est une approche qui a pour but d’estimer une politique d’actions à prendre dans un environnement pour maximiser une mesure d’évaluation qui est sous forme de récompenses obtenues après chaque action\cite{Weisz2018}. L’environnement est souvent modéliser comme un MDP, ou éventuellement POMDP. L’agent d’apprentissage passe donc d’un état à un autre en prenant des actions dans cet environnement. L’apprentissage se fait dans ce cas en apprenant par l’expérience de l’agent, à savoir les récompenses obtenues par les actions prises et de quels états elles étaient prises. Il peut ainsi estimer la fonction de récompense pour pouvoir faire le choix d’actions optimales. 
 
