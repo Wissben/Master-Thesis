@@ -1,4 +1,4 @@
-\chapter*{Composants de base d'un assistant personnel}
+\chapter{Composants de base d'un assistant personnel}
 
 \section{Introduction}
 	\paragraph{}
@@ -83,8 +83,82 @@
 %			\caption{Un réseau de neurones récurrent durant les différentes étapes $t$ \cite{rnns_online}}
 			
 			\includegraphics[width=0.5\linewidth]{images/notions/rnns_unrolled_online.png}
-			\caption{Composition interne d'un réseau de neurones récurrent à un instant $t$ \cite{rnns_online}}
+			\caption{Architecture interne d'un réseau de neurones récurrent à un instant $t$ \cite{rnns_online}}
 		\end{figure}
+		\par 
+		Un des principaux problèmes que rencontrent les RNNs est celui du \textit{Vanishing gradient} traduit par la \textit{Problème de disparition du gradient} \cite{vanishing_gradient}, les relations à long termes entre dans les séquences ne sont donc pas capturées. Ainsi, pour remédier à ce problème, des architectures de réseaux de neurones dotées d'un module de mémoire ont étés introduites.
+		
+		\subsubsection{Réseaux de neurones récurrents à mémoire court et long terme (LSTM)}
+		\paragraph{}
+		Premièrement introduit en 1997 par \textit{	Sepp Hochreiter } et al. dans \cite{lstm_original_paper}, cette architecture de réseaux de neurones récurrents est doté d'un système de \textit{portes} qui filtrent l'information qui y passe ainsi que d'un état interne de la cellule mémoire d'un LSTM , ainsi nous pouvons décortiquer les composantes d'une cellule LSTM (voir \ref{lstm_architecture}) comme suit : 
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.55\linewidth]{images/notions/lstm_arch.png}
+			\caption{Architecture interne d'une cellule mémoire dans un réseau LSTM \cite{rnns_online}}
+			\label{lstm_architecture}
+		\end{figure}
+		\begin{itemize}
+			\item \textbf{Porte d'entrée (Input gate): } C'est une unité de calcul qui laisse passer certaines informations en entrée en utilisant une fonction d'activation sigmoïde pour pondéré les composantes du vecteur d'entrée à une étape $t$ et celles du vecteur d'état interne à l'étape $t-1$ (1: laisser passer, 0: ne pas laisser passer) et ainsi générer un vecteur candidat $C_t$ \cite{lstm_original_paper}.
+			\begin{equation}
+			\begin{gathered}
+			i_t = \sigma(W_i \times [h_{t-1},x_t] + b_i) \\
+			\tilde{C}_t = \tanh(W_C \times [h_{t-1},x_t] + b_C)
+			\end{gathered}
+			\end{equation}
+			
+			\item \textbf{Porte d'oubli (Forget gate): } De manière similaire, cette porte permet de spécifier au fur et à mesure de l'apprentissage les informations à oublier, qui sont donc peu importantes \cite{lstm_original_paper}\cite{rnn_lstms}.
+			
+			\begin{equation}
+			\begin{gathered}
+			f_t = \sigma(W_f \times [h_{t-1},x_t] + b_f)
+			\end{gathered}
+			\end{equation}
+			
+			\item \textbf{État interne de la cellule (Internal cell's state ): } C'est une sorte de convoyeur qui fait circuler l'information à travers la cellule, cet état est mis à jour à travers la combinaison des deux valeurs précédemment filtré par les portes $f_c$ et $i_c$\cite{lstm_original_paper}.
+			
+			\begin{equation}
+			\begin{gathered}
+			C_t = f_t * C_{t-1} + i_t*\tilde{C}_t
+			\end{gathered}
+			\end{equation}
+			 
+			\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état interne du réseau, la cellule filtre son vecteur d'état et le combine avec la donné en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \cite{rnns_online}\cite{lstm_original_paper}\cite{rnn_lstms}.
+			
+			\begin{equation}
+			\begin{gathered}
+			o_t =  \sigma(W_o \times [h_{t-1},x_t] + b_o) \\
+			h_t = o_t * \tanh(C_t)
+			\end{gathered}
+			\end{equation}
+		\end{itemize}
+	
+	\subsubsection{Modèle basé N-grammes}
+	\paragraph{}
+	Très souvent quand il est nécessaire de traiter un ensemble de mots, phrases ou bien tout entité atomique qui constitue une séquence, il serait intéressant de pouvoir assigner une probabilité de vraisemblance à une séquence (de mots par exemple) en particulier. 
+	\par Dans un contexte textuel, un N-gramme est une suite de N mots consécutifs qui forment une sous-chaîne $S\prime$ d'une chaîne de caractères $S$. Un exemple d'un ensemble de bi-grammes (2-grammes) pour la phrase "Ouvre le fichier \textit{home}" serait donc : (Ouvre,le), (le,fichier), (fichier,\textit{home}).
+	\par 
+	Ainsi, en disposant d'un corpus de texte assez large et diversifié et d'une méthode de comptage efficace, il serait possible de calculer la vraisemblance d'apparition d'un mot $w$ après une certaine séquence de mots $t$ sous forme d'une probabilité $P$ \cite{nlp_ngrams}.
+	\begin{equation}
+		P(w|t) = \frac{Comptage(t,w)}{Comptage(t)}
+	\end{equation}
+	\subsubsection{Modèle de Markov caché (Hidden Markov Models HMM)}
+	\paragraph{}
+	Informellement, un modèle de Markov caché (HMM) est un outil de de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est assumé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de sont état à l'instant $t-1$, il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \cite{hmm_intro}\cite{markov_process}.
+	\par D'un façon plus formelle, un HMM est un 5-tuple $<(S,V,\Pi,A,B>$ \cite{hmm_formal} où :
+	\begin{itemize}
+		\item $S = \lbrace s_1 ... s_N \rbrace$ est l'ensemble fini des $N$ états du processus sous-jacent.
+		\item $V = \lbrace v_1 ... v_M \rbrace$ est l'ensemble des $M$ symboles qui constituent un certain vocabulaire.
+		\item $\Pi = \lbrace \pi_i \rbrace$ est une distribution initiale des probabilité d'états tel que $\pi_i$ est la probabilité de se trouver à l'état $i$ à l'instant $t=0$, bien évidement $\sum_{i=1}^{N} \pi_i = 1$ 
+		\item $A=\lbrace a_{ij} \rbrace$ est une matrice $NxN$ dont chaque entrée $a_{ij}$ est la probabilité de transition d'un état $i$ à un état $j$ avec $\sum_{j=1}^{N} a_{ij} = 1$ pour tout $i,j = 1...N$.
+		\item $B=\lbrace b_i(v_k)\rbrace$ est l'ensemble des distribution de probabilités d'émission (ou d'observation), donc $b_i(v_k)$ est la probabilité de générer un symbole $v_k$ du vocabulaire étant donné un certain état $i$ avec $\sum_{k=1}^{M} b_{i}(v_k) = 1$ pour tout $i= 1...N$. 
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.65\linewidth]{images/notions/hmm.png}
+			\caption{Exemple d'une distribution de probabilité de transition ainsi qu'une distribution de probabilité d'observations pour un HMM à 3 états et 2 observations }
+			\label{hmm_process}
+		\end{figure}
+	\end{itemize}
 \section{Architecture d'un SPA}
 \section{Reconnaissance automatique de la parole (ASR)}
 	\paragraph{}
