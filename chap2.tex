@@ -159,21 +159,25 @@
 			\label{hmm_process}
 		\end{figure}
 	\end{itemize}
+	\par
+	Le but serait de trouver la séquence d'états $S_{1:K}$ qui maximiserait la probabilité \cite{hmm_intro} : 
+	\begin{equation}
+		P(Y_{1:K} | O_{1:K}) = P(O_1)P(O_1|S_1)\prod_{t=2}^{K}P(S_t|S_{t-1})P(O_t|S_t) 
+	\end{equation}
+	Pour y parvenir d'une manière efficace, un décodeur qui implémente l'algorithme de viterbi peut être utiliser \cite{viterbi}\cite{viterbi_hmm}
 \section{Architecture d'un SPA}
 \section{Reconnaissance automatique de la parole (ASR)}
 	\paragraph{}
-	Le premier module qui compose le système est celui de la reconnaissance automatique de la parole, 
-	\subsection{Définition}
-	\subsection{Modèle acoustique}
+	Le premier module qui compose le système est celui de la reconnaissance automatique de la parole (ASR), le but d'un tel système (ou sous-système dans notre cas) est de convertir un signal audio décrivant la locution d'un utilisateur en un texte qui peut être interprété par la machine \cite{asr_definition}. Différentes approches ont été développé au court des années, une architecture s'est ensuite dégagée, les systèmes passent par deux phases : La phase d'apprentissage et la phase de reconnaissance. La première consiste a collecter les données qui constituent le corpus d'apprentissage, un ensemble de fichiers audios avec leurs transcriptions en texte et en phonèmes, le signal est ensuite traité pour en extraire des vecteurs de caractéristiques (ou attributs), la suite de l'apprentissage consiste à initialiser le HMM, lui passer les vecteurs précédemment extraits puis de l'enregistrer pour la phase suivante qui est la reconnaissance. Dans la deuxième phase le signal audio passe par le même procédé d'extraction des attributs, en utilisant un algorithme de décodage approprié \cite{viterbi_hmm}, la séquence d'observation passe par le HMM et la meilleure séquence de mots est sélectionnée \cite{speech_reco_Yu2015}.
+	\par Une architecture assez générale s'est dégagée, quatre modules sont impliqué dans le processus de la reconnaissance, nous les citerons dans les sections qui suivent en citant les modèles utilisés dans chacun.
+	\subsection{Acquisition du signale et extraction d'attributs}
 		\paragraph{}
-	\subsection{Modèle de langage}
+		l'étape consiste à extraire une séquence de vecteurs caractéristiques à partir du signal audio, fournissant une représentation compacte de ce dernier. Le processus démarre par la segmentation du signal en \textit{trames}, une transformation de fourrier est ensuite appliquée à ces dernières pour engendrer un spectre de magnitude qui sera ensuite passé à un module de transformation en spectre de Mel (Mel-Spectrum) qui est une sorte de changement d'échelle, finalement, une transofrmation inverse de fourrier est appliqué pour engendrer le Mel-Cpestrum qui est le vecteur d'attributs que nous recherchions \cite{asr_extraction}. Un tel processus peut utiliser plusieurs techniques pour la mise à l'échelle: MFCC (Mel-frequency cepstrum) \cite{MFCC}, LPC (Linear Predictive coding) \cite{LSP} et RASTA (RelAtive SpecTrAl) \cite{RASTA}, chacune possédant ses avantages et ses inconvénients.
+	\subsection{Modélisation acoustique}
 		\paragraph{}
-	\subsection{Méthodes utilisées}
+	\subsection{Modélisation de la langage et du lexique}
 		\paragraph{}
-		\subsubsection{N-grammes}
-			\paragraph{}
-		\subsubsection{Modèle de Markov Caché}
-			\paragraph{}
+	\subsection{Décodage et reconnaissance}
 \section{Compréhension du langage naturel (NLU)}
 	\paragraph{}
 	\subsection{Définition}
