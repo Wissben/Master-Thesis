@@ -128,10 +128,12 @@
   title = {A flexible context-aware assistance system for industrial applications using camera based localization},
   booktitle = {Proceedings of the 2014 {IEEE} Emerging Technology and Factory Automation ({ETFA})}
 }
+
 @inproceedings{ENGAGINGTA,
-  title={ENGAGING THE APPROPRIATION OF TECHNOLOGY-MEDIATED LEARNING SERVICES – A THEORY-DRIVEN DESIGN APPROACH Research in Progress},
-  author={},
-  year={2015}
+	title={Engaging the Appropriation of Technology-mediated Learning Services - A Theory-driven Design Approach},
+	author={Andreas Janson and Marian Thiel de Gafenco},
+	booktitle={ECIS},
+	year={2015}
 }
 
 @article{Reiter:1997,
@@ -568,10 +570,11 @@ doi = {10.1109/ICSLP.1996.607458}
 }
 
 @inproceedings{mitchelllearning,
-	author = {Mitchell, Tom},
-	title = {The discipline of machine learning},
-	year = 2006,
-	pages = {1}
+	author = {M Mitchell, Tom},
+	year = {2006},
+	month = {01},
+	pages = {},
+	title = {The Discipline of Machine Learning}
 }
 
 @article{supervised_learning,
@@ -694,7 +697,6 @@ doi = {10.1109/ICSLP.1996.607458}
 	author = {Rosenblatt, F.},
 	year = {1959},
 	title = {Perceptron simulation experiments (Project Para)},
-	Buffalo: Cornell Aeronautical Laboratory, Inc..
 	}
 }
 
@@ -768,43 +770,6 @@ doi = {10.1109/ICSLP.1996.607458}
 	keywords = {long short-term memory, long-term dependencies, recurrent neural nets, vanishing gradient},
 } 
 
-ACM DL Logo Preview Check out a preview of the next ACM DL
-Long Short-Term Memory
-Authors:	Sepp Hochreiter	Fakultät für Informatik, Technische Universität München, 80290 München, Germany
-Jürgen Schmidhuber	IDSIA, Corso Elvezia 36, 6900 Lugano, Switzerland
-Published in:
-· Journal
-Neural Computation archive
-Volume 9 Issue 8, November 15, 1997 
-Pages 1735-1780 
-MIT Press Cambridge, MA, USA 
-table of contents doi>10.1162/neco.1997.9.8.1735
-Long Short-Term Memory	1997 Article
-Bibliometrics Data  Bibliometrics
-· Citation Count: 1,188
-· Downloads (cumulative): n/a
-· Downloads (12 Months): n/a
-· Downloads (6 Weeks): n/a
-
-
-Tools and Resources
-TOC Service: Spacer Image reserves space for checkmark when TOC Service is updated 
-Toc Alert via EmailEmail Toc Alert via EmailRSS
-Save to Binder
-Export Formats:
-BibTeX EndNote ACM Ref
-Share:
-
-|
-Contact The DL Team Contact Us | Switch to single page view (no tabs)
-Learning to store information over extended time intervals by recurrent backpropagation takes a very long time, mostly because of insufficient, decaying error backflow. We briefly review Hochreiter's (1991) analysis of this problem, then address it by introducing a novel, efficient, gradient based method called long short-term memory (LSTM). Truncating the gradient where this does not do harm, LSTM can learn to bridge minimal time lags in excess of 1000 discrete-time steps by enforcing constant error flow through constant error carousels within special units. Multiplicative gate units learn to open and close access to the constant error flow. LSTM is local in space and time; its computational complexity per time step and weight is O. 1. Our experiments with artificial data involve local, distributed, real-valued, and noisy pattern representations. In comparisons with real-time recurrent learning, back propagation through time, recurrent cascade correlation, Elman nets, and neural sequence chunking, LSTM leads to many more successful runs, and learns much faster. LSTM also solves complex, artificial long-time-lag tasks that have never been solved by previous recurrent network algorithms.
-
-Powered by The ACM Guide to Computing Literature
-
-
-The ACM Digital Library is published by the Association for Computing Machinery. Copyright © 2019 ACM, Inc.
-Terms of Usage   Privacy Policy   Code of Ethics   Contact Us
-BibTeX | EndNote | ACM Ref
 @article{lstm_original_paper,
 	author = {Hochreiter, Sepp and Schmidhuber, J\"{u}rgen},
 	title = {Long Short-Term Memory},
@@ -830,7 +795,7 @@ BibTeX | EndNote | ACM Ref
 	Publisher = {Prentice Hall},
 	Year = {2008},
 	ISBN = {9780131873216},
-	pages = {37-62}
+	pages = {37-62},
 	URL = {https://www.amazon.com/Speech-Language-Processing-Daniel-Jurafsky/dp/0131873210?SubscriptionId=AKIAIOBINVZYXZQZ2U3A&tag=chimbori05-20&linkCode=xm2&camp=2025&creative=165953&creativeASIN=0131873210}
 }
 
@@ -870,7 +835,7 @@ BibTeX | EndNote | ACM Ref
 
 @article{hmm_formal,
 	title={An introduction to hidden Markov models},
-	author={Lawrence R. Rabiner and B. H. Juang},
+	author={ R. Rabiner and B. H. Juang},
 	journal={IEEE ASSP Magazine},
 	year={1986},
 	volume={3},
@@ -950,3 +915,55 @@ BibTeX | EndNote | ACM Ref
 	journal = {International Journal of Image, Graphics and Signal Processing},
 	doi = {10.5815/ijigsp.2014.11.03}
 }
+
+
+
+@article{hmm_acoustic_model,
+	author = {Wiqas Ghai and Navdeep Singh},
+	title = {Literature Review on Automatic Speech Recognition},
+	journal = {International Journal of Computer Applications},
+	year = {2012},
+	volume = {41},
+	number = {8},
+	pages = {42-50},
+	month = {March},
+	note = {Full text available}
+}
+
+@inproceedings{dnn-hmm_acoustic_model,
+	author = {Deng, li and Hinton, Geoffrey and Kingsbury, Brian},
+	year = {2013},
+	month = {10},
+	pages = {8599-8603},
+	title = {New types of deep neural network learning for speech recognition and related applications: An overview},
+	journal = {Acoustics, Speech, and Signal Processing, 1988. ICASSP-88., 1988 International Conference on},
+	doi = {10.1109/ICASSP.2013.6639344}
+}
+
+
+@article{LM_grammar,
+	author = {Glass, R and Kyle Mccandless, Michael},
+	year = {1994},
+	month = {10},
+	pages = {},
+	title = {Automatic Acquisition of Language Models for Speech Recognition}
+}
+
+@article{LM_n-grams,
+	author = {Roark, Brian and Saraclar, Murat and Collins, Michael},
+	title = {Discriminative N-gram Language Modeling},
+	journal = {Comput. Speech Lang.},
+	issue_date = {April, 2007},
+	volume = {21},
+	number = {2},
+	month = apr,
+	year = {2007},
+	issn = {0885-2308},
+	pages = {373--392},
+	numpages = {20},
+	url = {http://dx.doi.org/10.1016/j.csl.2006.06.006},
+	doi = {10.1016/j.csl.2006.06.006},
+	acmid = {1221969},
+	publisher = {Academic Press Ltd.},
+	address = {London, UK, UK},
+} 

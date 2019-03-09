@@ -170,16 +170,28 @@
 	\paragraph{}
 	Le premier module qui compose le système est celui de la reconnaissance automatique de la parole (ASR), le but d'un tel système (ou sous-système dans notre cas) est de convertir un signal audio décrivant la locution d'un utilisateur en un texte qui peut être interprété par la machine \cite{asr_definition}. Différentes approches ont été développé au court des années, une architecture s'est ensuite dégagée, les systèmes passent par deux phases : La phase d'apprentissage et la phase de reconnaissance. La première consiste a collecter les données qui constituent le corpus d'apprentissage, un ensemble de fichiers audios avec leurs transcriptions en texte et en phonèmes, le signal est ensuite traité pour en extraire des vecteurs de caractéristiques (ou attributs), la suite de l'apprentissage consiste à initialiser le HMM, lui passer les vecteurs précédemment extraits puis de l'enregistrer pour la phase suivante qui est la reconnaissance. Dans la deuxième phase le signal audio passe par le même procédé d'extraction des attributs, en utilisant un algorithme de décodage approprié \cite{viterbi_hmm}, la séquence d'observation passe par le HMM et la meilleure séquence de mots est sélectionnée \cite{speech_reco_Yu2015}.
 	\par Une architecture assez générale s'est dégagée, quatre modules sont impliqué dans le processus de la reconnaissance, nous les citerons dans les sections qui suivent en citant les modèles utilisés dans chacun.
+	
+	\begin{figure}[H]
+		\centering
+		\label{ASR_schema}
+		\includegraphics[width=0.75\linewidth]{images/ASR/schema.png}
+		\caption{Architecture des systèmes de reconnaissance de la parole \cite{speech_reco_Yu2015}}
+	\end{figure}
+	
 	\subsection{Acquisition du signale et extraction d'attributs}
 		\paragraph{}
-		l'étape consiste à extraire une séquence de vecteurs caractéristiques à partir du signal audio, fournissant une représentation compacte de ce dernier. Le processus démarre par la segmentation du signal en \textit{trames}, une transformation de fourrier est ensuite appliquée à ces dernières pour engendrer un spectre de magnitude qui sera ensuite passé à un module de transformation en spectre de Mel (Mel-Spectrum) qui est une sorte de changement d'échelle, finalement, une transofrmation inverse de fourrier est appliqué pour engendrer le Mel-Cpestrum qui est le vecteur d'attributs que nous recherchions \cite{asr_extraction}. Un tel processus peut utiliser plusieurs techniques pour la mise à l'échelle: MFCC (Mel-frequency cepstrum) \cite{MFCC}, LPC (Linear Predictive coding) \cite{LSP} et RASTA (RelAtive SpecTrAl) \cite{RASTA}, chacune possédant ses avantages et ses inconvénients.
-	\subsection{Modélisation acoustique}
+		l'étape consiste à extraire une séquence de vecteurs caractéristiques à partir du signal audio, fournissant une représentation compacte de ce dernier. Le processus démarre par la segmentation du signal en \textit{trames}, une transformation de fourrier est ensuite appliquée à ces dernières pour engendrer un spectre de magnitude qui sera ensuite passé à un module de transformation en spectre de Mel (Mel-Spectrum) qui est une sorte de changement d'échelle, finalement, une transformation inverse de fourrier est appliqué pour engendrer le Mel-Cpestrum qui est le vecteur d'attributs que nous recherchions \cite{asr_extraction}. Un tel processus peut utiliser plusieurs techniques pour la mise à l'échelle: MFCC (Mel-frequency cepstrum) \cite{MFCC}, LPC (Linear Predictive coding) \cite{LSP} et RASTA (RelAtive SpecTrAl) \cite{RASTA}, chacune possédant ses avantages et ses inconvénients.
+	\subsection{Modélisation acoustique et du lexique}
 		\paragraph{}
-	\subsection{Modélisation de la langage et du lexique}
+		C'est le cœur du système de reconnaissance, le but est de construire un modèle permettant d'identifier une séquence de phonèmes à partir d'une séquence d'observations de vecteurs d'attributs, ceci peut être fait on utilisant un modèle HMM et en disposant d'un corpus de fichiers audio accompagnés de leurs transcriptions en phonèmes et en texte \cite{hmm_acoustic_model} \cite{hmm_formal}, ou bien un réseau de neurones profonds \cite{speech_reco_Yu2015}, ou encore une hybridation de ces derniers \cite{dnn-hmm_acoustic_model}. Le modèle acoustique procède après la reconnaissance de la séquence de phonèmes au décodage de ce derniers, ceci est fait en utilisant un dictionnaire linguistique qui transcrit chaque mots du vocabulaire en les phonèmes qui le constituent, ceci peut induire à un cas d'ambiguïté où plusieurs mots peuvent avoir la même transcription phonétique (ou bien aucun mot ne correspond à cette séquence). Pour lever cette ambiguïté un modèle de langue est nécessaire pour décider quelle est la séquence de mots la plus probable qui coïncide avec la séquence de phonèmes observée.  
+	\subsection{Modélisation de la langue}
 		\paragraph{}
-	\subsection{Décodage et reconnaissance}
+		Cette étape consiste à modéliser les aspects linguistiques de la langue que le système essaye de traiter, souvent spécifique au domaine d'application pour restreindre l'espace de recherche des mots reconnaissables par ce dernier et déterminer la séquence de mots en sortie la plus plausible. les modèles utilisés sont basé soit sur des grammaires à contexte libre dans le cas où les séquences de mots reconnaissables sont peut variées et peuvent être modélisées par le biais de règles de la langue \cite{LM_grammar}. Dans un cadre plus récent, les modèles probabilistes basé sur les N-grammes sont utilisés. Disposant d'un volume de données textuelles assez conséquent, l'utilisation de modèle basés sur les N-grammes ont prouvé leurs utilité \cite{nlp_ngrams}\cite{speech_reco_Yu2015}\cite{LM_n-grams}
+		
+		
 \section{Compréhension du langage naturel (NLU)}
 	\paragraph{}
+	
 	\subsection{Définition}
 		\paragraph{}
 	\subsection{Classification d'Intent}
