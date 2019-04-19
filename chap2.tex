@@ -29,7 +29,7 @@
 		\end{itemize}
 	\subsection{Réseaux de neurones artificiels}
 		\paragraph{}
-		Un réseau de neurones artificiels est une structure d'appariement non-linéaire inspiré de la façon dont les systèmes nerveux biologiques fonctionnent. Ils permettent de modéliser les relations sous-jacentes des données. ils sont composés d'un nombre arbitrairement large de plus petites unités de calcul interconnectées appelées neurones, qui traient l'information d'une manière parallèle dans le but de résoudre un problème bien spécifique \cite{neural_nets}. Ils ont notamment connu un très grand succès lors des dernières années dans différents domaines comme la reconnaissance d'images \cite{inception}, la reconnaissance automatique de la parole \cite{speech_reco_dnn} \cite{speech_reco_Yu2015} ou encore la classification de textes \cite{seq2seq_multitask_classification} \cite{dnn_text_classification}.
+		Un réseau de neurones artificiels est une structure d'appariement non-linéaire inspiré de la façon dont les systèmes nerveux biologiques fonctionnent. Ils permettent de modéliser les relations sous-jacentes des données. ils sont composés d'un nombre arbitrairement large de plus petites unités de calcul interconnectées appelées neurones, qui traient l'information d'une manière parallèle dans le but de résoudre un problème bien spécifique \cite{neural_nets}. Ils ont notamment connu un très grand succès lors des dernières années dans différents domaines comme la reconnaissance d'images \cite{inception}, la reconnaissance automatique de la parole \cite{speech_reco_dnn,speech_reco_Yu2015} ou encore la classification de textes \cite{seq2seq_multitask_classification,dnn_text_classification}.
 		\par 
 		Il existe une variété d'architectures de réseaux de neurones, nous traiterons dans cette section de trois d'entre elles : 
 			\begin{itemize}
@@ -106,7 +106,7 @@
 			\end{gathered}
 			\end{equation}
 			
-			\item \textbf{Porte d'oubli (Forget gate): } De manière similaire, cette porte permet de spécifier au fur et à mesure de l'apprentissage les informations à oublier, qui sont donc peu importantes \cite{lstm_original_paper}\cite{rnn_lstms}.
+			\item \textbf{Porte d'oubli (Forget gate): } De manière similaire, cette porte permet de spécifier au fur et à mesure de l'apprentissage les informations à oublier, qui sont donc peu importantes \cite{lstm_original_paper,rnn_lstms}.
 			
 			\begin{equation}
 			\begin{gathered}
@@ -122,7 +122,7 @@
 			\end{gathered}
 			\end{equation}
 			 
-			\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état interne du réseau, la cellule filtre son vecteur d'état et le combine avec la donné en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \cite{rnns_online}\cite{lstm_original_paper}\cite{rnn_lstms}.
+			\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état interne du réseau, la cellule filtre son vecteur d'état et le combine avec la donné en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \cite{rnns_online,lstm_original_paper,rnn_lstms}.
 			
 			\begin{equation}
 			\begin{gathered}
@@ -143,7 +143,7 @@
 	\end{equation}
 	\subsubsection{Modèle de Markov caché (Hidden Markov Models HMM)}
 	\paragraph{}
-	Informellement, un modèle de Markov caché (HMM) est un outil de de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est assumé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de sont état à l'instant $t-1$, il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \cite{hmm_intro}\cite{markov_process}.
+	Informellement, un modèle de Markov caché (HMM) est un outil de de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est assumé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de sont état à l'instant $t-1$, il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \cite{hmm_intro,markov_process}.
 	\par D'un façon plus formelle, un HMM est un 5-tuple $<(S,V,\Pi,A,B>$ \cite{hmm_formal} où :
 	\begin{itemize}
 		\item $S = \lbrace s_1 ... s_N \rbrace$ est l'ensemble fini des $N$ états du processus sous-jacent.
@@ -164,8 +164,29 @@
 	\begin{equation}
 		P(Y_{1:K} | O_{1:K}) = P(O_1)P(O_1|S_1)\prod_{t=2}^{K}P(S_t|S_{t-1})P(O_t|S_t) 
 	\end{equation}
-	Pour y parvenir d'une manière efficace, un décodeur qui implémente l'algorithme de viterbi peut être utiliser \cite{viterbi}\cite{viterbi_hmm}
-\section{Architecture d'un SPA}
+	\newpage
+	Pour y parvenir d'une manière efficace, un décodeur qui implémente l'algorithme de viterbi peut être utiliser \cite{viterbi,viterbi_hmm}
+\section{Schéma globale d'un SPA}
+	\paragraph{}
+	Durant nos lectures des différents travaux sur le domaine, nous pouvons dresser un schéma assez générale qui englobe les principaux modules d'un SPA : 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.75\linewidth]{images/SPA_diagram_2.png}
+		\caption{Schéma abstractif d'un SPA \cite{spa_arch}}
+		\label{spa_diagram}
+	\end{figure}
+	\paragraph{}
+	Le processus peut être résumé en des étapes cruciales (qui seront détaillées dans les section suivante) : 
+	\begin{itemize}
+		\item L'utilisateur énonce une requête en utilisant sa voix, le signal est ensuite transformé en sa version textuelle.
+		\item La requête étant sous un format textuel brut ne peut pas être interprété ou comprise par la machine, une représentation sémantique est générée qui compactera les principales informations contenues dans la requête, à savoir l'intentions de l'utilisateur et ses arguments.
+		\item Au fur et à mesure que l'utilisateur énonce des requête, le système doit pouvoir être capable d'utiliser le contexte du dialogue pour interagir avec ce dernier pour pouvoir atteindre le but final du dialogue (exécuter uen commande système, trouver des informations sur le web ou sur la machine locale ...), le gestionnaire du dialogue communique avec son environnement en utilisant la même représentation sémantique produite par l'analyse précédente.
+		\item Puisqu'il est préférable de cacher à l'utilisateur tout comportement interne au système, il sera préférable de transformer la trame sémantique (voir \ref{semantic_frame}) en texte naturelle pour l'afficher en sortie.
+	\end{itemize}
+	\paragraph{}
+	Il est à noter que chacun des modules seront indépendant pour ce qu'il est de leur fonctionnement interne, ainsi aucun n'assumera un fonctionnement arbitraire, seul le format des informations qui circulent entre eux devra être établi au préalable pour un fonctionnement durable et robuste au changement.
+	\paragraph{}
+	Pour ce qui en est de la suite du chapitre, nous allons présenter les différents modules ainsi que les techniques et architectures qui sont considérés comme étant un état de l'art du domaine. 
 \section{Reconnaissance automatique de la parole (ASR)}
 	\paragraph{}
 	Le premier module qui compose le système est celui de la reconnaissance automatique de la parole (ASR), le but d'un tel système (ou sous-système dans notre cas) est de convertir un signal audio décrivant la locution d'un utilisateur en un texte qui peut être interprété par la machine \cite{asr_definition}. Différentes approches ont été développé au court des années, une architecture s'est ensuite dégagée, les systèmes passent par deux phases : La phase d'apprentissage et la phase de reconnaissance. La première consiste a collecter les données qui constituent le corpus d'apprentissage, un ensemble de fichiers audios avec leurs transcriptions en texte et en phonèmes, le signal est ensuite traité pour en extraire des vecteurs de caractéristiques (ou attributs), la suite de l'apprentissage consiste à initialiser le HMM, lui passer les vecteurs précédemment extraits puis de l'enregistrer pour la phase suivante qui est la reconnaissance. Dans la deuxième phase le signal audio passe par le même procédé d'extraction des attributs, en utilisant un algorithme de décodage approprié \cite{viterbi_hmm}, la séquence d'observation passe par le HMM et la meilleure séquence de mots est sélectionnée \cite{speech_reco_Yu2015}.
@@ -183,23 +204,43 @@
 		l'étape consiste à extraire une séquence de vecteurs caractéristiques à partir du signal audio, fournissant une représentation compacte de ce dernier. Le processus démarre par la segmentation du signal en \textit{trames}, une transformation de fourrier est ensuite appliquée à ces dernières pour engendrer un spectre de magnitude qui sera ensuite passé à un module de transformation en spectre de Mel (Mel-Spectrum) qui est une sorte de changement d'échelle, finalement, une transformation inverse de fourrier est appliqué pour engendrer le Mel-Cpestrum qui est le vecteur d'attributs que nous recherchions \cite{asr_extraction}. Un tel processus peut utiliser plusieurs techniques pour la mise à l'échelle: MFCC (Mel-frequency cepstrum) \cite{MFCC}, LPC (Linear Predictive coding) \cite{LSP} et RASTA (RelAtive SpecTrAl) \cite{RASTA}, chacune possédant ses avantages et ses inconvénients.
 	\subsection{Modélisation acoustique et du lexique}
 		\paragraph{}
-		C'est le cœur du système de reconnaissance, le but est de construire un modèle permettant d'identifier une séquence de phonèmes à partir d'une séquence d'observations de vecteurs d'attributs, ceci peut être fait on utilisant un modèle HMM et en disposant d'un corpus de fichiers audio accompagnés de leurs transcriptions en phonèmes et en texte \cite{hmm_acoustic_model} \cite{hmm_formal}, ou bien un réseau de neurones profonds \cite{speech_reco_Yu2015}, ou encore une hybridation de ces derniers \cite{dnn-hmm_acoustic_model}. Le modèle acoustique procède après la reconnaissance de la séquence de phonèmes au décodage de ce derniers, ceci est fait en utilisant un dictionnaire linguistique qui transcrit chaque mots du vocabulaire en les phonèmes qui le constituent, ceci peut induire à un cas d'ambiguïté où plusieurs mots peuvent avoir la même transcription phonétique (ou bien aucun mot ne correspond à cette séquence). Pour lever cette ambiguïté un modèle de langue est nécessaire pour décider quelle est la séquence de mots la plus probable qui coïncide avec la séquence de phonèmes observée.  
+		C'est le cœur du système de reconnaissance, le but est de construire un modèle permettant d'identifier une séquence de phonèmes à partir d'une séquence d'observations de vecteurs d'attributs, ceci peut être fait on utilisant un modèle HMM et en disposant d'un corpus de fichiers audio accompagnés de leurs transcriptions en phonèmes et en texte \cite{hmm_acoustic_model,hmm_formal}, ou bien un réseau de neurones profonds \cite{speech_reco_Yu2015}, ou encore une hybridation de ces derniers \cite{dnn-hmm_acoustic_model}. Le modèle acoustique procède après la reconnaissance de la séquence de phonèmes au décodage de ce derniers, ceci est fait en utilisant un dictionnaire linguistique qui transcrit chaque mots du vocabulaire en les phonèmes qui le constituent, ceci peut induire à un cas d'ambiguïté où plusieurs mots peuvent avoir la même transcription phonétique (ou bien aucun mot ne correspond à cette séquence). Pour lever cette ambiguïté un modèle de langue est nécessaire pour décider quelle est la séquence de mots la plus probable qui coïncide avec la séquence de phonèmes observée.  
 	\subsection{Modélisation de la langue}
 		\paragraph{}
-		Cette étape consiste à modéliser les aspects linguistiques de la langue que le système essaye de traiter, souvent spécifique au domaine d'application pour restreindre l'espace de recherche des mots reconnaissables par ce dernier et déterminer la séquence de mots en sortie la plus plausible. les modèles utilisés sont basé soit sur des grammaires à contexte libre dans le cas où les séquences de mots reconnaissables sont peut variées et peuvent être modélisées par le biais de règles de la langue \cite{LM_grammar}. Dans un cadre plus récent, les modèles probabilistes basé sur les N-grammes sont utilisés. Disposant d'un volume de données textuelles assez conséquent, l'utilisation de modèle basés sur les N-grammes ont prouvé leurs utilité \cite{nlp_ngrams}\cite{speech_reco_Yu2015}\cite{LM_n-grams}
+		Cette étape consiste à modéliser les aspects linguistiques de la langue que le système essaye de traiter, souvent spécifique au domaine d'application pour restreindre l'espace de recherche des mots reconnaissables par ce dernier et déterminer la séquence de mots en sortie la plus plausible. les modèles utilisés sont basé soit sur des grammaires à contexte libre dans le cas où les séquences de mots reconnaissables sont peut variées et peuvent être modélisées par le biais de règles de la langue \cite{LM_grammar}. Dans un cadre plus récent, les modèles probabilistes basé sur les N-grammes sont utilisés. Disposant d'un volume de données textuelles assez conséquent, l'utilisation de modèle basés sur les N-grammes ont prouvé leurs utilité \cite{nlp_ngrams,speech_reco_Yu2015,LM_n-grams}
 		
 		
 \section{Compréhension du langage naturel (NLU)}
 	\paragraph{}
-	Après avoir obtenu la requête de l'utilisateur, le module qui prend le relai est celui de la compréhension du langage naturel. Ce domaine fait partie du traitement automatique du langage naturel (NLP), il est principalement focalisé sur les tâches qui traitent le niveau sémantique voir même pragmatique de la langue,  
-	\subsection{Définition}
+	Après avoir obtenu la requête de l'utilisateur, le module qui prend le relai est celui de la compréhension du langage naturel. Ce domaine fait partie du traitement automatique du langage naturel (NLP), il est principalement focalisé sur les tâches qui traitent le niveau sémantique voir même pragmatique de la langue tel que la classification de texte, l'analyse de sentiments ou encore le traitement automatiques des e-mails. Dans le contexte d'un SPA, le but final d'un module de compréhension du langage naturel est de construire une représentation sémantique de la requête de l'utilisateur, étant donné une telle requête préalablement transformé en texte brut dans un langage naturel le module essayera d'en extraire une information primordiale qui est l'intention du locuteur. Une intention (ou intent) est une abstraction sémantique d'un but ou d'un sous-but de l'utilisateur, plusieurs requêtes de l'utilisateur peuvent avoir le même intent, ce qui rend l'utilisation d'une telle représentation essentielle pour que la machine puise mieux comprendre l'utilisateur.
+	\subsection{Classification d'intentions}
 		\paragraph{}
-	\subsection{Classification d'Intent}
-		\paragraph{}
+		La classification d'intentions à partir d'un texte est une tâche réalisable avec des techniques récentes d'apprentissage automatique, plus précisément en utilisant des modèles basé sur les réseaux de neurones récurrents à mémoire court et long terme (LSTM) (voir \ref{lstm_architecture}). Dans \cite{intent_classification} et \cite{intent_slots} deux architectures ont fait leurs preuves, dans le premier travail les auteurs ont utilisé une architecture BLSTM (LSTM Bidirectionnel) pour capturer les contextes droit et gauche d'un mot donné \cite{blstm}, le dernier état caché retourné par la cellule LSTM est ensuite utilisé pour la classification, une couche d'attention est ajoutée \cite{attention_mechanism} pour permettre au modèle de se focaliser sur certaines parties du texte en entrée. La deuxième architecture est un peu plus simpliste, en effet elle utilise des cellules LSTM basiques avec une couche de classification sur le dernier état, l'avantage est le temps d'apprentissage assez réduit au détriment d'une erreur de classification moins accrue mais toujours dans les normes.
+		\begin{figure}[H]
+			\centering
+			\label{LSTM_intent}
+			\includegraphics[width=0.65\linewidth]{images/NLU/intent_classification.png}
+			\caption{Architecture de base d'un classificateur d'intents \cite{intent_classification}}
+		\end{figure}
+	\newpage
 	\subsection{Extraction d'entités}
 		\paragraph{}
+		Déterminer l'intention d'un utilisateur ne s'arrête pas qu'au stade de l'identification de ce dit intent, en effet pour mieux représenter l'information récolté depuis la requête il faut en extraire des entités (nommés ou spécifiques au domaine) qui seront des arguments de l'intent identifié, cette tâche consiste donc à, pour un intent $I$ donné, extraire les arguments $Args$ qui lui sont appropriés depuis le texte de la requête. Plusieurs approches sont possibles, dans \cite{intent_slots} les auteurs ont taclé le problème comme étant la traduction d'une séquence de mots en entrée en une séquence d'entités en sortie, le schéma suivant explicite le processus :
+		\begin{figure}[H]
+			\centering
+			\label{LSTM_slots}
+			\includegraphics[width=0.80\linewidth]{images/NLU/seq2seq.png}
+			\caption{Architecture de base d'un classificateur d'intents doublé d'un extracteur d'entité \cite{intent_slots}}
+		\end{figure} 
 	\subsection{Analyse sémantique}
-
+		\paragraph{}
+		Disposant des deux modèles précédemment cités, le module NLU peut maintenant construire une représentation sémantique adéquate qui va être transmise au module suivant qui sera le gestionnaire du dialogue, l'avantage d'voir en sortie une structure sémantique universelle est la non dépendance par rapport à la langue de l'utilisateur, en effet le système pourra encore fonctionner si une correspondance entre la nouvelle langue et le format choisi pour la représentation sémantique peut être trouvé. Le module donnera donc en sortie une trame sémantique (Semantic frame) qui comprendra les informations préalablement extraite, à savoir l'intent et les arguments (slots) qui lui sont propres \cite{intent_classification,intent_slots,semantic_frame} 
+		\begin{figure}[H]
+			\centering
+			\label{semantic_frame}
+			\includegraphics[width=0.80\linewidth]{images/NLU/semantic_frames.png}
+			\caption{Example d'une trame sémantique pour une requête donnée}
+		\end{figure} 
 \section{Gestion du dialogue}
 	\paragraph{}
 	La compréhension du langage naturel permet de transformer un texte en une représentation sémantique. Afin qu’un système puissent réaliser un dialogue aussi anthropomorphe que possible, il doit décider, à partir des représentations sémantiques reçues au cours du dialogue, quelle action à prendre à chaque étape de la conversation afin de la transmettre au générateur du langage naturel \ref{NLG} pour afficher le résultat à l’utilisateur. On distingue deux principaux modules généralement présent dans les systèmes de gestion de dialogue:
@@ -292,7 +333,7 @@ Récemment, des approches utilisant les réseaux de neurones profonds(refpart2) 
 		Les premières approches utilisaient des systèmes de règles destiné à un domaine bien spécifique. Elles étaient déployés dans plusieurs domaines d’application pour sa simplicité. Cependant, le travail manuel nécessaire reste difficile à faire, et, généralement, n’aboutit pas à des résultats flexibles qui peuvent suivre le flux du dialogue convenablement\cite{Lee2010}.
 	\subsection{Gestion de dialogue par apprentissage}
 		\paragraph{}
-		La résolution d’un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l’apprentissage par renforcement pour but d’estimer la récompense obtenue par une action et un état donnés. Cette préférence par rapport aux approches supervisées revient à la difficulté de produire des corpus de dialogues\cite{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Néanmoins, il existe des approches de bout en bout qui exploite des architectures avec réseaux de neurones profonds et traite le problème comme Seq2Seq(part2) afin de produire directement une sortie à partir des informations reçues par l’utilisateur\cite{Wen2017}\cite{Serban2016}.
+		La résolution d’un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l’apprentissage par renforcement pour but d’estimer la récompense obtenue par une action et un état donnés. Cette préférence par rapport aux approches supervisées revient à la difficulté de produire des corpus de dialogues\cite{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Néanmoins, il existe des approches de bout en bout qui exploite des architectures avec réseaux de neurones profonds et traite le problème comme Seq2Seq(part2) afin de produire directement une sortie à partir des informations reçues par l’utilisateur\cite{Wen2017,Serban2016}.
 
 
 \begin{figure}[H]
@@ -413,5 +454,5 @@ Une architecture souvent utilisée dans le traitement du langage naturel est l�
 	\caption{Schéma d'une architecture encodeur-décodeur pour NLG} 
 \end{figure}
 \paragraph{}
-Beaucoup d’approches de génération de langage naturel en gestion de dialogue utilise des encodeur-décodeur. Wen et al. (2015)\cite{Wen2015} utilise par exemple des LSTMs(part2) sémantiquement conditionnés; il ajoute aux LSTMs classiques une couche contenant des informations sur l’action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D’autres travaux utilisent des réseaux de neurones récurrent (part2) pour encoder l’état du gestionnaire de dialogue et l’entrée reçu suivis par un décodeur pour générer le texte de la réponse\cite{Sordoni2015}\cite{Serban2016}\cite{Goyal2016}.
+Beaucoup d’approches de génération de langage naturel en gestion de dialogue utilise des encodeur-décodeur. Wen et al. (2015)\cite{Wen2015} utilise par exemple des LSTMs(part2) sémantiquement conditionnés; il ajoute aux LSTMs classiques une couche contenant des informations sur l’action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D’autres travaux utilisent des réseaux de neurones récurrent (part2) pour encoder l’état du gestionnaire de dialogue et l’entrée reçu suivis par un décodeur pour générer le texte de la réponse\cite{Sordoni2015,Serban2016,Goyal2016}.
 	
