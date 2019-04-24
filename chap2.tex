@@ -58,11 +58,11 @@
 		\end{itemize}
 		Le réseau calculera une erreur $e(y,\hat{y}$ en fonction de sa valeur en sortie et de la valeur exacte puis corrigera cette erreur au fur et à mesure du parcoure des données d'apprentissage \cite{mlp}
 		
-		\subsubsection{Réseaux de neurones profonds}
+		\subsubsection{Réseaux de neurones profonds}\label{part2DNN}
 		\paragraph{}
 		Les réseaux de neurones à une seule couche sont dit \textit{shallow}, ils présentaient l'avantage d'être assez rapide durant la phase d'apprentissage, cependant les limites computationnelle d'antan se sont vu vite brisé avec le développement de processeurs plus puissants, de plus avec l'explosion des données sur le web, toutes les conditions nécessaires pour la mise en place d'architectures plus complexes étaient réunies. Les réseaux de neurones profonds sont une adaptation des réseaux multi-couches classiques avec généralement plus de 3 couches cachées. \par même si le principe reste le même, l'apprentissage profond est puissant car les architectures les plus complexes permettent d'extraire automatiquement les caractéristiques qui sont importantes mais non visibles, c'est le cas des réseaux de neurones constitutionnels et récurrents \cite{dnn} 
 		
-		\subsubsection{Réseaux de neurones récurrents}
+		\subsubsection{Réseaux de neurones récurrents}\label{seq2seqpart2}
 		\paragraph{}
 		Un aspect que les réseaux de neurones (profonds ou pas) ne peuvent capturé est la notion de séquentialité, en effet beaucoup de problèmes qui sont de nature séquentielle ne peuvent être modélisé par les architectures dites classiques, comme l'analyse d'un texte, l'introduction d'une notion de séquence permet donc de capturer des dépendances entre certains états et leurs voisins, on parle ici de contexte \cite{rnn_lstms}.
 		\par 
@@ -243,7 +243,7 @@
 		\end{figure} 
 \section{Gestion du dialogue}
 	\paragraph{}
-	La compréhension du langage naturel permet de transformer un texte en une représentation sémantique. Afin qu’un système puissent réaliser un dialogue aussi anthropomorphe que possible, il doit décider, à partir des représentations sémantiques reçues au cours du dialogue, quelle action à prendre à chaque étape de la conversation afin de la transmettre au générateur du langage naturel \ref{NLG} pour afficher le résultat à l’utilisateur. On distingue deux principaux modules généralement présent dans les systèmes de gestion de dialogue:
+	La compréhension du langage naturel permet de transformer un texte en une représentation sémantique. Afin qu’un système puisse réaliser un dialogue aussi anthropomorphe que possible, il doit décider, à partir des représentations sémantiques reçues au cours du dialogue, quelle action à prendre à chaque étape de la conversation. Celle-ci est transmise au générateur du langage naturel \ref{NLG} pour afficher un résultat à l’utilisateur. On distingue deux principaux modules généralement présents dans les systèmes de gestion de dialogue:
 \begin{itemize}
 	\item Un module qui met à jour l’état du gestionnaire de dialogue.
 	\item Un module qui détermine la politique d’action du gestionnaire de dialogue.
@@ -257,14 +257,14 @@
 
 
 	\subsection{Processus de décision Markovien (MDP)}\label{MDP}
-	\paragraph{}Un gestionnaire de dialogue peut être modélisé par un processus de décision Markovien\cite{Bel1957}. Ce dernier est modélisé par un 4-tuple (S,A,P,R)(*):
+	\paragraph{}Un gestionnaire de dialogue peut être modélisé par un processus de décision Markovien\cite{Bel1957}. Ce dernier est modélisé par un 4-tuple ($S,A,P,R$)(*):
 	\begin{itemize}
-		\item S: ensemble d’états du système.
-		\item A: ensemble d’actions du système.
-		\item P: distribution de probabilités de transitions entre états sachant l’action prise. P(s’/s,a) est la probabilité de passer à l’état s’ sachant qu’on était à l’état s après avoir pris l’action a.
-		\item R: est la récompense reçue immédiatement après avoir changer d’état avec une action donnée. R(s’/s,a) est la récompense reçu après avoir passer à l’état s’ sachant qu’on était à l’état s après avoir pris l’action a.
+		\item $S$: ensemble des états du système.
+		\item $A$: ensemble des actions du système.
+		\item $P$: distribution de probabilités de transition entre états sachant l’action prise. $P(s’/s,a)$ est la probabilité de passer à l’état $s’$ sachant qu’on était à l’état $s$ après avoir pris l’action $a$.
+		\item $R$: est la récompense reçue immédiatement après avoir changer l’état avec une action donnée. $R(s’/s,a)$ est la récompense reçu après avoir passer à l’état $s’$ sachant qu’on était à l’état $s$ après avoir pris l’action $a$.
 	\end{itemize}
-	D’après (*) un MDP, à tout instant t, est dans un état s, dans notre cas c’est l’état du gestionnaire de dialogue. Il peut prendre une action a afin de passer à un nouvel état s’, et sur ce fait, il reçoit une récompense, qui ,dans notre cas, est une mesure sur les performance du système de dialogue. Le but est de maximiser les récompense reçu.
+	D’après (*) un MDP, à tout instant $t$, est dans un état $s$. Dans notre cas c’est l’état du gestionnaire de dialogue. Il peut prendre une action $a$ afin de passer à un nouvel état $s’$. Sur ce fait, il reçoit une récompense qui ,dans notre cas, est une mesure sur les performances du système de dialogue. Le but est de maximiser les récompenses reçues.
 	
 	\begin{figure}[H]
 		\centering
@@ -285,10 +285,10 @@
 		\end{figure}
 
 
-À l’arriver d’une nouvelle information, un module dédié met à jour l’état du gestionnaire du dialogue. Comme l’action du système de dialogue est décidée à partir de son état, cette tâche est donc essentiel au bon fonctionnement du système. Plusieurs méthodes ont été donc proposé pour gérer le suivi de l’état du gestionnaire de dialogue.
+À l’arriver d’une nouvelle information, un module dédié met à jour l’état du gestionnaire de dialogue. Comme l’action du système de dialogue est décidée à partir de son état, cette tâche est donc essentiel au bon fonctionnement du système. Plusieurs méthodes ont été proposées pour gérer le suivi de l’état du gestionnaire de dialogue.
 \subsubsection{Suivi de l’état avec une base de règles}
 \paragraph{}
-La méthode traditionnelle utilisée est d’écrire manuellement les règles à suivre lors de l’arrivé d’une nouvelle information pour mettre à jour l’état\cite{Goddeau1996}. Cependant, les bases de règles sont très susceptibles à faire des erreurs\cite{Chen2017} comme ils sont moins robuste face aux incertitudes.
+La méthode traditionnelle utilisée consiste à écrire manuellement les règles à suivre lors de l’arrivé d’une nouvelle information pour mettre à jour l’état\cite{Goddeau1996}. Cependant, les bases de règles sont très susceptibles à faire des erreurs\cite{Chen2017} comme ils sont peu robuste face aux incertitudes.
 
 
 \begin{figure}[H]
@@ -298,7 +298,7 @@ La méthode traditionnelle utilisée est d’écrire manuellement les règles à
 \end{figure}
 
 \subsubsection{Suivi de l’état avec des méthodes statistiques}
-Le suivi dans ce cas se fait en gardant une distribution de probabilités sur l’état du système. D’où, l’utilisation des processus de décision markovien partiellement observé (POMDP)\cite{Young2010} qu’on introduira par la suite. Dans ce cas, le système garde une distribution de probabilités sur les valeurs possibles des différents emplacements du cadre sémantique.
+Le suivi dans ce cas se fait en gardant une distribution de probabilités sur l’état du système. D’où, l’utilisation des processus de décision markovien partiellement observable (POMDP)\cite{Young2010} qu’on introduira par la suite. Dans ce cas, le système garde une distribution de probabilités sur les valeurs possibles des différents emplacements du cadre sémantique.
 
 \begin{figure}[H]
 	\centering
@@ -308,11 +308,11 @@ Le suivi dans ce cas se fait en gardant une distribution de probabilités sur l�
 
 \subsubsection{Processus de décision markovien partiellement observable (POMDP)}
 \paragraph{}
-Comme dans les processus de décision markovien, un POMDP\cite{Astrom1965} passe d’un état à un autre en prenant une des actions possibles. Cependant, ce dernier ne connait pas l’état exacte dans lequel il se trouve à un instant t. Il reçoit par contre une observation, dans notre cas c’est l’action de l’utilisateur, à partir de laquelle il peut estimer une distribution de probabilités sur l’état actuel. Pour résumer cela, un POMDP est un 6-tuple (S,A,P,R,M,O):
+Comme dans les processus de décision markovien, un POMDP\cite{Astrom1965} passe d’un état à un autre en prenant une des actions possibles. Cependant, ce dernier ne connait pas l’état exacte dans lequel il se trouve à un instant $t$. Il reçoit par contre une observation, dans notre cas c’est l’action de l’utilisateur, à partir de laquelle il peut estimer une distribution de probabilités sur l’état actuel. Pour résumer cela, un POMDP est un 6-tuple ($S,A,P,R,M,O$):
 \begin{itemize}
-\item Les 4 premiers composants sont les même que celui d’un MDP \ref{MDP}.
-\item M: l’ensemble des observation.
-\item O: distribution de probabilités sur les observations o sachant en connaissant l’état et l’action prise pour y arriver. O(o|s,a) est la probabilité d’observer o sachant qu’on se trouve à l’état s et qu’on a pris l’action a pour y arriver.
+\item Les 4 premiers composants sont les mêmes que ceux d’un MDP \ref{MDP}.
+\item $M$: l’ensemble des observations.
+\item $O$: distribution de probabilités sur les observations $o$ en connaissant l’état et l’action prise pour y arriver. $O(o|s,a)$ est la probabilité d’observer $o$ sachant qu’on se trouve à l’état $s$ et qu’on a pris l’action $a$ pour y arriver.
 \end{itemize}
 
 \begin{figure}[H]
@@ -323,17 +323,17 @@ Comme dans les processus de décision markovien, un POMDP\cite{Astrom1965} passe
 
 \subsubsection{Suivi de l’état avec réseaux de neurones profonds}
 \paragraph{}
-Récemment, des approches utilisant les réseaux de neurones profonds(refpart2) ont fait leurs apparitions. En effet, l'utilisation des architectures profondes permet de capter des relations complexes entre les caractéristiques d'un dialogue et ainsi mieux estimer l'état du système. Le réseau de neurones estime les probabilités de toutes les valeurs possibles d’un emplacement du cadre sémantique\cite{Henderson2013}. En conséquence, il peut être utilisé comme modèle de suivi d'état pour un processus partiellement observable.
+Récemment, des approches utilisant les réseaux de neurones profonds\ref{part2DNN} ont fait leurs apparitions. En effet, l'utilisation des architectures profondes permet de capter des relations complexes entre les caractéristiques d'un dialogue et ainsi mieux estimer l'état du système. Le réseau de neurones estime les probabilités de toutes les valeurs possibles d’un emplacement du cadre sémantique\cite{Henderson2013}. En conséquence, il peut être utilisé comme modèle de suivi d'état pour un processus partiellement observable.
 
 	\subsection{Politique de gestion de dialogue}
 		\paragraph{}
-		La première partie était dédiée au module qui suit l’état du système de dialogue. Dans cette partie, Nous allons présenter des approches proposées afin d’arriver au but du MDP, c’est à dire quelles actions prendre pour maximiser la somme des récompenses obtenus.
+		La première partie était dédiée au module qui suit l’état du système de dialogue. Dans cette partie, Nous allons présenter des approches proposées afin d’arriver au but du MDP, c’est à dire quelles actions prendre pour maximiser la somme des récompenses obtenues.
 		\subsubsection{Gestion de dialogue avec une base de règles}
 		\paragraph{}
-		Les premières approches utilisaient des systèmes de règles destiné à un domaine bien spécifique. Elles étaient déployés dans plusieurs domaines d’application pour sa simplicité. Cependant, le travail manuel nécessaire reste difficile à faire, et, généralement, n’aboutit pas à des résultats flexibles qui peuvent suivre le flux du dialogue convenablement\cite{Lee2010}.
-	\subsection{Gestion de dialogue par apprentissage}
+		Les premières approches utilisaient des systèmes de règles destiné à un domaine bien spécifique. Elles étaient déployées dans plusieurs domaines d’application pour leur simplicité. Cependant, le travail manuel nécessaire reste difficile à faire et, généralement, n’aboutit pas à des résultats flexibles qui peuvent suivre le flux du dialogue convenablement\cite{Lee2010}.
+	\subsubsection{Gestion de dialogue par apprentissage}
 		\paragraph{}
-		La résolution d’un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l’apprentissage par renforcement pour but d’estimer la récompense obtenue par une action et un état donnés. Cette préférence par rapport aux approches supervisées revient à la difficulté de produire des corpus de dialogues\cite{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Néanmoins, il existe des approches de bout en bout qui exploite des architectures avec réseaux de neurones profonds et traite le problème comme Seq2Seq(part2) afin de produire directement une sortie à partir des informations reçues par l’utilisateur\cite{Wen2017,Serban2016}.
+		La résolution d’un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l’apprentissage par renforcement pour but d’estimer la récompense obtenue par une action et un état donnés. Cette préférence par rapport aux approches supervisées revient à la difficulté de produire des corpus de dialogues\cite{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Néanmoins, il existe des approches de bout en bout qui exploitent des architectures avec réseaux de neurones profonds et traitent le problème comme Seq2Seq\ref{seq2seqpart2} afin de produire directement une sortie à partir des informations reçues de l’utilisateur\cite{Wen2017,Serban2016}.
 
 
 \begin{figure}[H]
@@ -341,26 +341,26 @@ Récemment, des approches utilisant les réseaux de neurones profonds(refpart2) 
 	\includegraphics[width=.7\linewidth]{images/DM/DMSeq2Seq.png} 
 	\caption{Schéma de gestion de dialogue de bout en bout avec architecture Seq2Seq} 
 \end{figure}
-\subsection{Apprentissage par renforcement} \label{reinf_learning}
+\subsubsection{Apprentissage par renforcement} \label{reinf_learning}
 \paragraph{}
-L’apprentissage par renforcement est une approche qui a pour but d’estimer une politique d’actions à prendre dans un environnement pour maximiser une mesure d’évaluation qui est sous forme de récompenses obtenues après chaque action\cite{Weisz2018}. L’environnement est souvent modéliser comme un MDP, ou éventuellement POMDP. L’agent d’apprentissage passe donc d’un état à un autre en prenant des actions dans cet environnement. L’apprentissage se fait dans ce cas en apprenant par l’expérience de l’agent, à savoir les récompenses obtenues par les actions prises et de quels états elles étaient prises. Il peut ainsi estimer la fonction de récompense pour pouvoir faire le choix d’actions optimales. 
+L’apprentissage par renforcement est une approche qui a pour but d’estimer une politique d’actions à prendre dans un environnement. Celle-ci doit maximiser une mesure d’évaluation qui est sous forme de récompenses obtenues après chaque action\cite{Weisz2018}. L’environnement est souvent modélisé comme un MDP, ou éventuellement POMDP. L’agent d’apprentissage passe donc d’un état à un autre en prenant des actions dans cet environnement. L’apprentissage se fait dans ce cas en apprenant par l’expérience de l’agent, à savoir les récompenses obtenues par les actions prises et de quels états elles étaient prises. Il peut ainsi estimer la fonction de récompense pour pouvoir faire le choix d’actions optimales. 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\linewidth]{images/DM/RLSchema.png} 
 	\caption{Schéma d'interaction agent-environnement dans l'apprentissage par renforcement} 
 \end{figure}
-Il existe plusieurs méthodes que l’agent peut prendre afin qu’il estime la fonction de récompense \cite{Dimitri2012}, notamment Deep Q Learning (DQN) \cite{Mnih2015} qui utilise les réseaux de neurones profonds pour trouver une approximation à cette fonction. Dans cette approche, à chaque fois que l'agent prenne une action, il compare la récompense reçue avec celle estimée par le réseau de neurones, il applique ensuite l'algorithme de rétro-propagation pour corriger les erreurs du réseau. 
+Il existe plusieurs méthodes que l’agent peut utiliser pour estimer la fonction de récompense \cite{Dimitri2012}, notamment Deep Q Learning (DQN) \cite{Mnih2015} qui utilise les réseaux de neurones profonds pour trouver une approximation à cette fonction. Dans cette approche, à chaque fois que l'agent prend une action, il compare la récompense reçue avec celle estimée par le réseau de neurones, il applique ensuite l'algorithme de rétro-propagation pour corriger les erreurs du réseau. 
 
 \paragraph{}
 Le système de dialogue est modélisé par un MDP. Seulement, ce dernier inclut l’utilisateur comme partie de l’environnement. En conséquence, pour appliquer l’apprentissage par renforcement, il est nécessaire qu’un utilisateur communique avec le système pour qu’il apprenne. D’où, la nécessité d’utiliser les simulateurs d’utilisateur.
 
-\subsection{Simulateur d'utilisateur}
+\paragraph{Simulateur d'utilisateur}
 Un simulateur d’utilisateur est un programme qui se comporte comme un humain interagissant avec un système de dialogue. Celui-là doit pouvoir estimer sa satisfaction après une interaction. en d’autres termes, il doit comporter d'une fonction de récompense. Il existe plusieurs méthodes pour créer un simulateur d’utilisateur:
 \begin{itemize}
 	\item Les simulateurs d’utilisateur basé règles: dans ce cas une liste de règles est écrite manuellement que le simulateur doit suivre pour communiquer avec le système\cite{Schatzmann2007}.
 	\item Les simulateurs d’utilisateur basé n-grammes: ils traitent un dialogue comme une séquence d’actions. Ils prennent les n-1 actions pour estimer l’action la plus probable que peut prendre le simulateur à partir des statistiques tirées d'un	 corpus de dialogues\cite{Georgila2005}.
-	\item Les simulateurs d’utilisateur basé HMM: les états du modèle sont les états du système, les observations sont ses actions. Ainsi un HMM peut estimer l’état le plus probable du système pour prendre une action. Il existe d’autres variantes, IHMM et IOHMM, qui incluent les probabilités conditionnelles des actions utilisateur avec l’état système et l’action système directement dans le modèle HMM\cite{Cuayhuitl2005}.
+	\item Les simulateurs d’utilisateur basé HMM: les états du modèle sont les états du système, les observations sont ses actions. Ainsi un HMM peut estimer l’état le plus probable du système pour prendre une action. Il existe d’autres variantes, IHMM et IOHMM, qui incluent les probabilités conditionnelles des actions de l'utilisateur sachant l’état du système ou l’action du système directement dans le modèle HMM\cite{Cuayhuitl2005}.
 	\item Les simulateurs d’utilisateur avec apprentissage par renforcement: Comme le gestionnaire de dialogue, le simulateur apprend par renforcement au même temps. Dans ce cas la fonction de récompense pour les deux agents peut être apprise à partir des dialogues humain-humain\cite{Chandramohan2011}.
 \end{itemize}
 
@@ -372,18 +372,18 @@ Un simulateur d’utilisateur est un programme qui se comporte comme un humain i
 
 \section{Génération du langage naturel (NLG)}\label{NLG}
 	\paragraph{}
-	Le domaine de la génération automatique du langage naturel est l’un des domaines dont les bordures sont difficiles à définir (Evans et al., 2002). il est vrai que la sortie d’un tel système est clairement du texte. Cependant, l’ambiguïté se trouve dans ses l’entrées, c’est à dire, sur quoi se basera le système pour générer le texte. D’après (Reiter \& Dale, 1997)\cite{Reiter:1997} la génération du langage naturel est décrite comme étant le sous domaine de l’intelligence artificielle qui traite la construction des systèmes de génération de texte à partir d’une représentation non-linguistique de l’information, celle-ci peut être une représentation sémantique, des données numériques, une base de connaissances ou même des données visuelles (images ou vidéos). Ceci dit, d’autres travaux ,comme Labbé \& Portet (2012)\cite{Labbé2012}, utilisent les même techniques pour des entrées linguistique. Enfin la génération du langage naturel peut être très proche de la gestion de dialogue\cite{Dethlefs2014}, en effet, le texte généré doit prendre en compte l’historique de la conversation et le contexte de l’utilisateur.\newline
+	Le domaine de la génération automatique du langage naturel est l’un des domaines dont les bordures sont difficiles à définir\cite{evans2002}. il est vrai que la sortie d’un tel système est clairement du texte. Cependant, l’ambiguïté se trouve dans ses entrées, c’est à dire, sur quoi se basera le système pour générer le texte. D’après (Reiter \& Dale, 1997)\cite{Reiter:1997} la génération du langage naturel est décrite comme étant le sous domaine de l’intelligence artificielle qui traite la construction des systèmes de génération de texte à partir d’une représentation non-linguistique de l’information. Celle-ci peut être une représentation sémantique, des données numériques, une base de connaissances ou même des données visuelles (images ou vidéos). Ceci dit, d’autres travaux ,comme Labbé \& Portet (2012)\cite{Labbé2012}, utilisent les mêmes techniques pour des entrées linguistiques. Enfin la génération du langage naturel peut être très proche de la gestion de dialogue\cite{Dethlefs2014}, en effet, le texte généré doit prendre en compte l’historique de la conversation et le contexte de l’utilisateur.\newline
 	Il existe six tâches trouvées fréquemment dans les systèmes de génération de texte \cite{Reiter:1997}.
 	
 	\subsection{Détermination du contenu}
 	\paragraph{}
-	Cette partie consiste à sélectionner les informations de l’entrée dont le système veut transmettre le contenu sous forme de texte naturel à l’utilisateur. En effet, les données en entrée peuvent contenir plus d’informations que ce que l’on désire communiquer\cite{Yu:2007}, de plus, cette information peut aussi dépendre de l’utilisateur et de ses connaissances\cite{Dethlefs2014}. Ce qui requiert de mettre au point un système qui détecte les informations pertinentes à l’utilisateur.
+	Cette partie consiste à sélectionner les informations de l’entrée dont le système veut transmettre leur contenu sous forme de texte naturel à l’utilisateur. En effet, les données en entrée peuvent contenir plus d’informations que ce que l’on désire communiquer\cite{Yu:2007}. De plus, le choix de l'information peut aussi dépendre de l’utilisateur et de ses connaissances\cite{Dethlefs2014}. Ce qui requiert de mettre au point un système qui détecte les informations pertinentes à l’utilisateur.
 	\subsection{Structuration de texte}
 	\paragraph{}
 	Après la détermination du contenu, le système doit ordonner les information à transmettre. Ceci dépend grandement du domaine d’application qui peut exiger des contraintes d’ordre temporelle ou de préférence par importance des idées. Les informations à transmettre en elles-mêmes sont souvent reliées par sens ce qui implique une certaine structuration de texte à respecter.\newpage
 	\subsection{Agrégation de phrases}
 	\paragraph{}
-	Certaines informations peuvent être transmises dans une même phrase. Cette partie introduit des notions de la linguistique afin que le texte généré soit plus lisible et éviter les répétition. Un exemple de cela peut être la description de la météo à Alger au cours de la matinée:
+	Certaines informations peuvent être transmises dans une même phrase. Cette partie introduit des notions de la linguistique afin que le texte généré soit plus lisible et éviter les répétitions. Un exemple de cela peut être la description de la météo à Alger au cours de la matinée:
 	\begin{itemize}
 		\item Il va faire 16° à Alger à 7h.
 		\item Il va faire 17° à Alger à 8h.
@@ -393,17 +393,17 @@ Un simulateur d’utilisateur est un programme qui se comporte comme un humain i
 	Ceci peut être agrégé en un texte plus compacte: "La température moyenne à Alger sera de 17° entre 7h et 10h."
 	
 	\subsection{Lexicalisation}
-	\paragraph{}Le système choisit les mots et les expressions à utiliser pour communiquer le contenu des phrases sélectionner. La difficulté de cette tâche revient à l’existence de plusieurs manière d’exprimer la même idée. Cependant, certains mots ou expressions sont plus appropriés en certaines situations que d’autres. En effet, “inscrire un but” est une façon inadéquate d’exprimer un but contre son camp\cite{Gatt2018}.
+	\paragraph{}Le système choisit les mots et les expressions à utiliser pour communiquer le contenu des phrases sélectionnées. La difficulté de cette tâche revient à l’existence de plusieurs manières d’exprimer la même idée. Cependant, certains mots ou expressions sont plus appropriés en certaines situations que d’autres. En effet, “inscrire un but” est une façon inadéquate d’exprimer un but contre son camp\cite{Gatt2018}.
 	
 	\subsection{Génération d’expressions référentielles (REG)}
-	\paragraph{}Cette partie du système se focalise dans la génération d’expressions référentielles qui peuvent être entre autres: noms propres, groupes nominaux ou pronoms et ceci a pour but d’identifier les entités du domaine. Cette tâche semble être très proche de sa prédécesseur; elle s’avère néanmoins plus délicate dû à la difficulté de confier suffisamment d’information sur l’entité afin de la différencier des autres\cite{Reiter:1997}. Le système doit faire un choix de l’expression référentielle en se basant sur plusieurs facteurs, par exemple “Mohammed”, “Le professeur” ou “Il” font référence à la même personne. Cependant, le choix entre eux dépendrait de si l’entité a été mentionnée auparavant et des détails l’accompagnant par exemple. 
+	\paragraph{}Cette partie du système se focalise dans la génération d’expressions référentielles qui peuvent être entre autres: noms propres, groupes nominaux ou pronoms et ceci a pour but d’identifier les entités du domaine. Cette tâche semble être très proche de sa prédécesseur; elle s’avère néanmoins plus délicate dû à la difficulté de confier suffisamment d’information sur l’entité afin de la différencier des autres\cite{Reiter:1997}. Le système doit faire un choix de l’expression référentielle en se basant sur plusieurs facteurs, par exemple “Mohammed”, “Le professeur” ou “Il” font référence à la même personne. Le choix entre eux dépend de comment l’entité a été mentionnée auparavant, si elle l'a été, et des détails qui l'ont accompagnés. 
 	
 	\subsection{Réalisation linguistique}
 	\paragraph{}
-	La dernière tâche consiste à combiner les mots et expressions sélectionnés pour construire une phrase linguistiquement correcte. Ceci requiert l’utilisation des bonnes formes morphologiques des mots, les ordonner et éventuellement  l’addition de certains mots du langage afin de réaliser une structure de phrase grammaticalement et sémantiquement correcte. Plusieurs méthodes ont été proposées, principalement les méthodes basées sur des règles manuellement construites (modèles de phrases, systèmes basés grammaires) ou des approches statistiques \cite{Gatt2018}.
+	La dernière tâche consiste à combiner les mots et expressions sélectionnés pour construire une phrase linguistiquement correcte. Ceci requiert l’utilisation des bonnes formes morphologiques des mots, les ordonner, et éventuellement  l’addition de certains mots du langage afin de réaliser une structure de phrase grammaticalement et sémantiquement correcte. Plusieurs méthodes ont été proposées, principalement les méthodes basées sur des règles manuellement construites (modèles de phrases, systèmes basés grammaires) et des approches statistiques \cite{Gatt2018}.
 	\paragraph{Modèles de phrases:} La réalisation se fait en utilisant des modèles de phrases prédéfinis. Il suffit de remplacer des espaces réservés par certaines entrées du système. Par exemple, une application dans un contexte météorologique pourrait utiliser le modèle suivant: “la température à [ville] atteint [température]° le [date]”.\\
-Cette méthode est utilisée lorsque les variations des sorties de l’application sont minimales. Son utilisation a l’avantage et l’inconvénient d’être rigide. D’un coté il est facile de contrôler la qualité des sorties syntaxiquement et sémantiquement tout en utilisant des règles de remplissage complexe \cite{Theune2001}. Cependant, lorsque le domaine d’application présente beaucoup d’incertitude, cette méthode exige un travail manuel énorme, voire impossible à faire, pour réaliser une tâche pareille. Bien que certains travaux ont essayer de faire un apprentissage de modèles de phrases à partir d’un corpus\cite{Angeli2012} cette méthode reste inefficace lorsqu’il s’agit d’application qui nécessite un grand nombre de variations linguistiques.
-	\paragraph{Systèmes basés grammaire:} La réalisation peut se faire en suivant une grammaire du langage. Celle-si contient les règles morphologiques et de structures de la langues, notamment la grammaire systémique fonctionnelle (SFG)\cite{Halliday2004} a été largement utilisé comme dans NIGEL\cite{Mann1983} ou KPML\cite{Bateman1997}. L’exploitation des grammaires dans la génération du texte nécessite généralement des entrées détaillées. En plus des composantes du lexique sélectionnées, des descriptions de leurs rôles ainsi que leurs fonctions grammaticales sont souvent exigées. Un exemple d’entrée d’un système basé grammaire est celui de SURGE\cite{Elhadad1996}:
+Cette méthode est utilisée lorsque les variations des sorties de l’application sont minimales. Son utilisation a l’avantage et l’inconvénient d’être rigide. D’un coté il est facile de contrôler la qualité des sorties syntaxiquement et sémantiquement tout en utilisant des règles de remplissage complexe \cite{Theune2001}. Cependant, lorsque le domaine d’application présente beaucoup d’incertitude, cette méthode exige un travail manuel énorme, voire impossible à faire, pour réaliser une tâche pareille. Bien que certains travaux ont essayé de faire un apprentissage de modèles de phrases à partir d’un corpus\cite{Angeli2012} cette méthode reste inefficace lorsqu’il s’agit d’applications qui nécessitent un grand nombre de variations linguistiques.
+	\paragraph{Systèmes basés grammaire:} La réalisation peut se faire en suivant une grammaire du langage. Celle-si contient les règles morphologiques et de structures de la langue, notamment la grammaire systémique fonctionnelle (SFG)\cite{Halliday2004} a été largement utilisé comme dans NIGEL\cite{Mann1983} ou KPML\cite{Bateman1997}. L’exploitation des grammaires dans la génération du texte nécessite généralement des entrées détaillées. En plus des composantes du lexique sélectionnées, des descriptions de leurs rôles ainsi que leurs fonctions grammaticales sont souvent exigées. Un exemple d’entrée d’un système basé grammaire est celui de SURGE\cite{Elhadad1996}:
 	\begin{center}
 		\begin{forest} [
 			[cat:clause]
@@ -434,25 +434,25 @@ Cette méthode est utilisée lorsque les variations des sorties de l’applicati
 	\end{center}
 	Qui génère la phrase: “She hands the draft to the editor”.\newline
 
-Comme les modèles de phrases, les systèmes basés grammaire nécessite un énorme travail manuel. En particulier, il est difficile de prendre en compte le contexte en définissant les règles de choix entre les variantes possibles du texte résultat à partir des entrées\cite{Gatt2018}.
+Comme les modèles de phrases, les systèmes basés grammaire nécessitent un énorme travail manuel. En particulier, il est difficile de prendre en compte le contexte en définissant les règles de choix entre les variantes possibles du texte résultat à partir des entrées\cite{Gatt2018}.
 
 \paragraph{Approches statistiques:} Il existe plusieurs méthodes basées sur des statistiques pour la tâche de réalisation. Certains se basent sur des grammaires probabilistes, cette dernière a l’avantage de minimiser le travail manuel tout en couvrant plus de cas de réalisation. Il existe principalement deux approches l’utilisant\cite{Gatt2018}:
 \begin{itemize}
 	\item La première se base sur une petite grammaire qui génère plusieurs alternatives qui sont ensuite ordonnés selon un modèle statistique basé sur un corpus pour sélectionner la phrase la plus probable (par exemple Langkilde-Geary (2000)\cite{LangkildeGeary2000}).
 	\item La deuxième méthode utilise les informations statistiques directement au niveau de la génération pour produire la solution optimale (exemple: Belz (2008)\cite{Belz2008}).
 \end{itemize}
-	Dans les deux méthodes sus-citées la grammaire de base peut être manuellement faite, dans ce cas, les informations statistiques aideront à la détermination de la solution optimale, ou elle peut être extraite à partir des données, comme l’utilisation des Treebanks \footnote{un Treebank est un texte analysé qui contient des informations syntaxiques ou sémantiques sur les structures de phrases} pour déduire les règles de grammaire\cite{Espinosa2008}.\newline
+	Dans les deux méthodes sus-citées la grammaire de base peut être manuellement faite. Dans ce cas, les informations statistiques aideront à la détermination de la solution optimale. Elle peut être aussi extraite à partir des données, comme l’utilisation des Treebanks \footnote{un Treebank est un texte analysé qui contient des informations syntaxiques ou sémantiques sur les structures de phrases} pour déduire les règles de grammaire\cite{Espinosa2008}.\newline
 \paragraph{}
 D’autres approches statistiques n’utilisent pas des grammaires mais se basent sur des classificateurs. Ces derniers peuvent être cascadés de telle sorte à décider quel constituant utiliser dans quelle position ainsi que les modifications nécessaires pour générer un texte correcte. À noter qu’une telle approche, ne nécessitant pas l’utilisation de grammaire, utilise des entrées plus abstraites et moins détaillées linguistiquement. À voire même la possibilité de s’étendre aux autres tâches de NLG, c’est à dire un système qui accomplit plusieurs tâches de NLG en parallèle en utilisant les entrées initiales. Dans la suite de ce travail nous allons présenter certains de ces systèmes qui sont plus utilisés récemment.
 
 \subsection{Systèmes basés encodeur-décodeur}
 \paragraph{}
-Une architecture souvent utilisée dans le traitement du langage naturel est l’encodeur-décodeur (part2). En particulier, son utilisation dans les tâches seq2seq (part2) ce qui permet de mettre en correspondance une séquence de taille variable en entrée avec une autre séquence en sortie. Les modèles seq2seq peuvent être adapter pour convertir une représentation abstraite de l’information en langage naturel\cite{Ferreira2017}.\newline
+Une architecture souvent utilisée dans le traitement du langage naturel est l’encodeur-décodeur. En particulier, son utilisation dans les tâches seq2seq\ref{seq2seqpart2} ce qui permet de mettre en correspondance une séquence de taille variable en entrée avec une autre séquence en sortie. Les modèles seq2seq peuvent être adapter pour convertir une représentation abstraite de l’information en langage naturel\cite{Ferreira2017}.\newline
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.95\linewidth]{images/NLG/Encoder.png} 
 	\caption{Schéma d'une architecture encodeur-décodeur pour NLG} 
 \end{figure}
 \paragraph{}
-Beaucoup d’approches de génération de langage naturel en gestion de dialogue utilise des encodeur-décodeur. Wen et al. (2015)\cite{Wen2015} utilise par exemple des LSTMs(part2) sémantiquement conditionnés; il ajoute aux LSTMs classiques une couche contenant des informations sur l’action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D’autres travaux utilisent des réseaux de neurones récurrent (part2) pour encoder l’état du gestionnaire de dialogue et l’entrée reçu suivis par un décodeur pour générer le texte de la réponse\cite{Sordoni2015,Serban2016,Goyal2016}.
+Beaucoup d’approches de génération de langage naturel en gestion de dialogue utilise des encodeur-décodeur. Wen et al. (2015)\cite{Wen2015} utilise par exemple des LSTMs\ref{lstm_architecture}) sémantiquement conditionnés; il ajoute aux LSTMs classiques une couche contenant des informations sur l’action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D’autres travaux utilisent des réseaux de neurones récurrent pour encoder l’état du gestionnaire de dialogue et l’entrée reçue suivie par un décodeur pour générer le texte de la réponse\cite{Sordoni2015,Serban2016,Goyal2016}.
 	
