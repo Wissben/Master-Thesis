@@ -2,16 +2,23 @@
 
 \section{Introduction}
 %Of course talk here about what the chapter is about
-Parler de la structure générale du chapitre
+Durant ce chapitre, nous allons présenter en détail les étapes de conceptions de notre système, tout d'abord une architecture générale est présentée et décortiquée, ensuite chaque module du système sera détaillé du point de vue des composants qui le constitueraient en donnant un maximum de détails tout en restant assez concis. Une conclusion viendra clôturer ce chapitre pour introduire ensuite le suivant.
 \section{Architecture du système}
 %Try to be as precise as possible while letting room for more details to the next sections
-Essayer d'être aussi précis que possible tout en laissant assez de détails à être expliqués dans les sections suivantes
+\begin{figure}[H]
+	\label{spa_arch}
+	\centering
+	\includegraphics[width=0.88\linewidth]{images/SPA_architecture.png}
+	\caption{Architecture générale de notre système}
+\end{figure}
+\paragraph{}
+Comme montré dans la figure ci dessus (\ref{spa_arch}) et comme cité dans le chapitre précédent (voir \ref{spa_schem_section}) le système se présente comme l'interconnexion de cinq parties dont une interface \footnote{ici nous par interface nous entendons le sens abstrait du terme et non obligatoirement  dans le sens interface graphique} et quatre modules internes, chaque module forme ainsi un maillon d'une chaîne qui représente une partie du cycle de vie du système. L'architecture du système est une pipeline (chaîne de traitement) de processus qui s'exécutent de manière indépendante mais qui font circuler un flux de données entre eux dans un format préalablement décidé (voir \ref{spa_diagram}). Nous pouvons séparer ces parties en deux catégories :
 	\subsection{Couche utilisateur}
 %	What the users sees as input/output and the interfaces that are available for him
-	Ce que l'utilisateur peut voir comme entrée/sortie et les interfaces qui lui sont accessibles
+	Cette couche représente ce que l'utilisateur peut voir comme entrée/sortie et les interfaces qui lui sont accessibles, puisque l'assistant est un processus qui communique majoritairement avec l'utilisateur à travers des échanges verbaux, nous avons pensé à implémenter l'interface du système comme une processus qui s'exécute en arrière plan et qui attend d'être activer (pour le moment par un événement physique, c.à.d clique sur un bouton/icône ou raccourci clavier), l'assistant pourra ensuite répondre en affichant un texte à l'écran qui sera vocalement synthétisé envoyer à l'utilisateur via l'interface de sortie de son choix (afficher le texte et sa transcription vocale pourrait palier au manque d'un périphérique de sortie audio).
 	\subsection{Couche système }
 %	What the users doesn't see and what are the main components of the system
-	Ce que l'utilisateur ne voit pas et fait donc partie du système interne
+	Cette couche quant à elle représente ce que l'utilisateur ne voit pas et fait donc partie du fonctionnement interne du système, elle regroupe les quatre grandes étapes d'un cycle de vie pour une commande reçu de la couche utilisateur. Comme mentionné dans le chapitre précédent (voir \ref{spa_life_cycle}), la requête passe par un module de reconnaissance de la parole, qui traduira en texte le signale audio correspondant à la requête, le module suivant va extraire l'intention de l'utilisateur et ses arguments (par exemple \textit{"open the home folder"} pourrait donner  une intention dy type  \textit{open\_file\_desire[file\_name="home",parent\_directory="?"]}), le gestionnaire de dialogue gardera trace de l'ensemble des échanges effectués entre l'utilisateur et l'assistant et essayera d'atteindre le but final formuler par la requête (la plus récente ou la plus ancienne), pour ce faire il aura besoin d'interagir avec ce qu'on a appelé un environnement d'exécution, qui peut être la machine où l'assistant réside ou une API \footnote{Application programming interface ou interface de programmation applicative } qui aura accès à un service a distance (sur internet par exemple) ou locale (dans un réseau domestique). Finalement une action spéciale qui servira à informer l'utilisateur sera envoyé au module suivant pour être transformé en son équivalant en langage naturel, puis le texte sera vocalement synthétiser et envoyé vers l'interface de sortie de l'application.
 
 \section{Module de reconnaissance automatique de la parole}
 	\subsection{Architecture du module}

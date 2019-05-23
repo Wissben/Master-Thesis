@@ -167,6 +167,7 @@
 	\end{equation}
 	Pour y parvenir d'une manière efficace, un décodeur qui implémente l'algorithme de viterbi peut être utiliser \cite{viterbi,viterbi_hmm}
 \section{Schéma global d'un SPA}
+	\label{spa_schem_section}
 	\paragraph{}
 	Durant nos lectures des différents travaux sur le domaine, nous avons pu dresser un schéma assez générale qui englobe les principaux modules d'un SPA : 
 	\begin{figure}[H]
@@ -178,6 +179,7 @@
 	\paragraph{}
 	Le processus peut être résumé en des étapes cruciales (qui seront détaillées dans les section suivante) : 
 	\begin{itemize}
+		\label{spa_life_cycle}
 		\item L'utilisateur énonce une requête en utilisant sa voix, le signal est ensuite transformé en sa version textuelle.
 		\item La requête étant sous un format textuel brut ne peut pas être interprété ou comprise par la machine, une représentation sémantique est générée qui compactera les principales informations contenues dans la requête, à savoir l'intentions de l'utilisateur et ses arguments.
 		\item Au fur et à mesure que l'utilisateur énonce des requête, le système doit pouvoir être capable d'utiliser le contexte du dialogue pour interagir avec ce dernier pour pouvoir atteindre le but final du dialogue (exécuter uen commande système, trouver des informations sur le web ou sur la machine locale ...), le gestionnaire du dialogue communique avec son environnement en utilisant la même représentation sémantique produite par l'analyse précédente.
