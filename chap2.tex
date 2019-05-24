@@ -276,7 +276,7 @@
 	\end{figure}
 	
 	
-	\subsection{État du gestionnaire de dialogue}
+	\subsection{État du gestionnaire de dialogue}\label{trame}
 		\paragraph{}
 		L’état d’un système de dialogue est une représentation sémantique qui contient des informations sur le but final de l’utilisateur ainsi que l’historique de la conversation. La représentation souvent utilisée dans les systèmes de dialogue est celle du cadre sémantique \cite{Chen2017}. Cette structure contient des emplacements à remplir sur un domaine donné, la figure \ref{SFrame} illustre un exemple de cadre sémantique.\newline
 		
@@ -289,7 +289,7 @@
 
 
 À l’arriver d’une nouvelle information, un module dédié met à jour l’état du gestionnaire de dialogue. Comme l’action du système de dialogue est décidée à partir de son état, cette tâche est donc essentiel au bon fonctionnement du système. Plusieurs méthodes ont été proposées pour gérer le suivi de l’état du gestionnaire de dialogue.
-\subsubsection{Suivi de l’état avec une base de règles}
+\subsubsection{Suivi de l’état avec une base de règles}\label{suivi}
 \paragraph{}
 La méthode traditionnelle utilisée consiste à écrire manuellement les règles à suivre lors de l’arrivé d’une nouvelle information pour mettre à jour l’état\cite{Goddeau1996}. Cependant, les bases de règles sont très susceptibles à faire des erreurs\cite{Chen2017} comme ils sont peu robuste face aux incertitudes.
 
@@ -358,7 +358,7 @@ Il existe plusieurs méthodes que l’agent peut utiliser pour estimer la foncti
 \paragraph{}
 Le système de dialogue est modélisé par un MDP. Seulement, ce dernier inclut l’utilisateur comme partie de l’environnement. En conséquence, pour appliquer l’apprentissage par renforcement, il est nécessaire qu’un utilisateur communique avec le système pour qu’il apprenne. D’où, la nécessité d’utiliser les simulateurs d’utilisateur.
 
-\paragraph{Simulateur d'utilisateur}
+\paragraph{Simulateur d'utilisateur}\label{usersim}
 Un simulateur d’utilisateur est un programme qui se comporte comme un humain interagissant avec un système de dialogue. Celui-là doit pouvoir estimer sa satisfaction après une interaction. en d’autres termes, il doit comporter d'une fonction de récompense. Il existe plusieurs méthodes pour créer un simulateur d’utilisateur:
 \begin{itemize}
 	\item Les simulateurs d’utilisateur basé règles: dans ce cas une liste de règles est écrite manuellement que le simulateur doit suivre pour communiquer avec le système\cite{Schatzmann2007}.
