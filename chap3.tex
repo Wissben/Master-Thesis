@@ -186,8 +186,41 @@ Les autres actions sont créer de façon similaire avec des règles à suivre lo
 		\caption{Diagramme de décision de l'action à prendre}
 		
 	\end{figure}\label{action_diag}
-En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir des changements effectués sur l’état de l’utilisateur, le tableau suivant associe les changements avec leurs récompenses :
-TABLEAUUUUU\\
+En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir des changements effectués sur l’état de l’utilisateur, le tableau suivant \ref{table_reward} associe les changements avec leurs récompenses :
+\begin{table}[H]\label{table_reward}
+	\begin{center}
+		
+		\begin{tabular}{l|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+			\textbf{Événements} & \textbf{Récompenses}\\
+			\hline
+			Similarité améliorée & 2\\
+			\hline
+			Succès & 2\\
+			\hline
+			Sous-but réalisé & 2\\
+			\hline
+			Similarité diminuée & -3\\
+			\hline
+			Confirmation d'une question & 0\\
+			\hline
+			Autre & -1\\
+			\hline
+		\end{tabular}
+	\caption{Tableau des récompenses}
+	\end{center}
+\end{table}
+\begin{itemize}
+	\item \textbf{similarité améliorée:} On calcule la similarité entre l'arborescence courante et l'arborescence but. La valeur de la similarité est égale à $n\_sim/n\_diff$ avec : 
+	\begin{itemize}
+		\item $n\_sim$ : nombre de fichiers qui existent dans les deux arborescences.
+		\item $n\_diff$ : nombre de fichiers qui n’existent que dans une des deux arborescences.  
+	\end{itemize}
+	\item \textbf{Succès:} c'est à dire, réaliser le but final du simulateur. Pour arriver à cet événement, l'agent ne fait qu'améliorer la similarité, c'est pourquoi les deux événements ont la même valeur de récompense.
+	\item \textbf{Sous-but réalisé:} c'est la récompense donnée quand l'agent arrive au sous-but du simulateur.
+	\item \textbf{Similarité diminuée:} la récompense est dans ce cas négative et supérieur en valeur absolue à celle que l'agent obtient lorsqu'il améliore la similarité. Ce choix a pour but d'éviter que l'agent boucle sur des actions dont la somme des récompenses est supérieur ou égale à zero. Par exemple il peut créer ensuite supprimer le même fichier, si la somme de ces deux actions est supérieur ou égale à zéro, l'agent peut boucler sur ces actions indéfiniment sans pour autant recevoir des récompenses négatives.
+	\item \textbf{Confirmation d'une question:} l'utilisateur peut confirmer une action à l'agent. La récompense est nul pour que l'agent puisse demander une confirmation quand il n'est pas sûr de ce qu'il doit faire sans diminuer le cumule des récompenses reçues.
+	\item \textbf{Autre:} La récompense est de -1 pour éviter que le dialogue dure long temps. 
+\end{itemize}
 Pour résumer le fonctionnement du simulateur, à l’arrivé d’une nouvelle action agent, celle-ci met à jour l’état du simulateur. L’état du simulateur se compose de deux parties : un simulateur d’arborescence de fichiers qui simule l’état de l’arborescence courant, et des variables d’état qui contiennent d’autres informations comme l’état des sous-buts, le fichier en cours de traitement, les informations reçues de l’agent, le répertoire courant, etc. Après la mise à jour de l’état, si l’action de l’agent nécessite une réponse immédiate comme la demande d’une information ou la permission d’exécuter une action, celle-ci est traité directement, sinon le simulateur initie le traitement d’une nouvelle sous-tâche. C’est à dire, Si un sous-but existe, une action qui le traite est générée, sinon une action qui traite le but final est générée.
 	\subsection{Modèles d'apprentissage}
 	Comme on l’a déjà cité dans le chapitre précédent, il existe plusieurs algorithmes d’apprentissage par renforcement comme Q-Learning ou State-Action-Reward-State-Action (SARSA)\cite{Rummery1994}. Cependant ces algorithmes, en essayant d’estimer la fonction Q de récompense, traitent le problème comme un tableau état/action et essayent d’estimer pour chaque état et action la récompense résultante. Ceci implique que ces algorithmes ne peuvent pas estimer la fonction de récompense pour des état qu’ils n’ont pas vu pendant l’apprentissage. Pour pallier à ce problème, Deep Q Learning (DQL)\cite{Mnih2015} utilise un réseau de neurones comme estimateur de la fonction Q. Ce qui lui permet d’avoir une notion de similarité entre les états ; ainsi il peut estimer la récompense pour des états jamais vus auparavant.
