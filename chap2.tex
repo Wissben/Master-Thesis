@@ -168,23 +168,23 @@
 	\end{equation}
 	Pour y parvenir d'une manière efficace, un décodeur qui implémente l'algorithme de viterbi peut être utiliser \cite{viterbi,viterbi_hmm}
 \section{Schéma global d'un SPA}
-	\label{spa_schem_section}
+	\label{spaSchemSection}
 	\paragraph{}
 	Durant nos lectures des différents travaux sur le domaine, nous avons pu dresser un schéma assez générale qui englobe les principaux modules d'un SPA : 
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.75\linewidth]{images/SPA_diagram_2.png}
 		\caption{Schéma abstractif d'un SPA \cite{spa_arch}}
-		\label{spa_diagram}
+		\label{fig:spaDiagram}
 	\end{figure}
 	\paragraph{}
 	Le processus peut être résumé en des étapes cruciales (qui seront détaillées dans les section suivante) : 
 	\begin{itemize}
-		\label{spa_life_cycle}
+		\label{spaLifeCycle}
 		\item L'utilisateur énonce une requête en utilisant sa voix, le signal est ensuite transformé en sa version textuelle.
 		\item La requête étant sous un format textuel brut ne peut pas être interprété ou comprise par la machine, une représentation sémantique est générée qui compactera les principales informations contenues dans la requête, à savoir l'intentions de l'utilisateur et ses arguments.
 		\item Au fur et à mesure que l'utilisateur énonce des requête, le système doit pouvoir être capable d'utiliser le contexte du dialogue pour interagir avec ce dernier pour pouvoir atteindre le but final du dialogue (exécuter uen commande système, trouver des informations sur le web ou sur la machine locale ...), le gestionnaire du dialogue communique avec son environnement en utilisant la même représentation sémantique produite par l'analyse précédente.
-		\item Puisqu'il est préférable de cacher à l'utilisateur tout comportement interne au système, il sera préférable de transformer la trame sémantique (voir \ref{semantic_frame}) en texte naturelle pour l'afficher en sortie.
+		\item Puisqu'il est préférable de cacher à l'utilisateur tout comportement interne au système, il sera préférable de transformer la trame sémantique (voir ~\ref{fig:semanticFrame}) en texte naturelle pour l'afficher en sortie.
 	\end{itemize}
 	\paragraph{}
 	Il est à noter que chacun des modules seront indépendant pour ce qu'il est de leur fonctionnement interne, ainsi aucun n'assumera un fonctionnement arbitraire des autres modules, seul le format des informations qui circulent entre eux devra être établi au préalable pour un fonctionnement durable et robuste au changement.
@@ -197,7 +197,7 @@
 	
 	\begin{figure}[H]
 		\centering
-		\label{ASR_schema}
+		\label{ASRSchema}
 		\includegraphics[width=0.60\linewidth]{images/ASR/schema.png}
 		\caption{Architecture des systèmes de reconnaissance de la parole \cite{speech_reco_Yu2015}}
 	\end{figure}
@@ -215,6 +215,7 @@
 		
 \section{Compréhension du langage naturel (NLU)}
 	\paragraph{}
+	\label{nlu_chap2}
 	Après avoir obtenu la requête de l'utilisateur, le module qui prend le relai est celui de la compréhension du langage naturel. Ce domaine fait partie du traitement automatique du langage naturel (NLP), il est principalement focalisé sur les tâches qui traitent le niveau sémantique voir même pragmatique de la langue tel que la classification de texte, l'analyse de sentiments ou encore le traitement automatiques des e-mails. Dans le contexte d'un SPA, le but final d'un module de compréhension du langage naturel est de construire une représentation sémantique de la requête de l'utilisateur, étant donné une telle requête préalablement transformé en texte brut dans un langage naturel le module essayera d'en extraire une information primordiale qui est l'intention du locuteur. Une intention (ou intent) est une abstraction sémantique d'un but ou d'un sous-but de l'utilisateur, plusieurs requêtes de l'utilisateur peuvent avoir le même intent, ce qui rend l'utilisation d'une telle représentation essentielle pour que la machine puise mieux comprendre l'utilisateur.
 	\subsection{Classification d'intentions}
 		\paragraph{}
@@ -230,18 +231,18 @@
 		Déterminer l'intention d'un utilisateur ne s'arrête pas qu'au stade de l'identification de ce dit \textit{intent}, en effet pour mieux représenter l'information récoltée depuis la requête il faut en extraire des entités (nommés ou spécifiques au domaine) qui seront des arguments de l'intent identifié, cette tâche consiste donc à, pour un intent $I$ donné, extraire les arguments $Args$ qui lui sont appropriés depuis le texte de la requête. Plusieurs approches sont possibles, dans \cite{intent_slots} les auteurs ont taclé le problème comme étant la traduction d'une séquence de mots en entrée en une séquence d'entités en sortie, le schéma suivant explicite le processus :
 		\begin{figure}[H]
 			\centering
-			\label{LSTM_slots}
 			\includegraphics[width=0.80\linewidth]{images/NLU/seq2seq.png}
 			\caption{Architecture de base d'un classificateur d'intents doublé d'un extracteur d'entité \cite{intent_slots}}
+			\label{fig:lstmslots}
 		\end{figure} 
 	\subsection{Analyse sémantique}
 		\paragraph{}
 		Disposant des deux modèles précédemment cités, le module NLU peut maintenant construire une représentation sémantique adéquate qui va être transmise au module suivant qui sera le gestionnaire du dialogue, l'avantage d'voir en sortie une structure sémantique universelle est la non dépendance par rapport à la langue de l'utilisateur, en effet le système pourra encore fonctionner si une correspondance entre la nouvelle langue et le format choisi pour la représentation sémantique peut être trouvée. Le module donnera donc en sortie une trame sémantique (Semantic frame) qui comprendra les informations préalablement extraites, à savoir l'intent et les arguments (slots) qui lui sont propres \cite{intent_classification,intent_slots,semantic_frame}.
 		\begin{figure}[H]
 			\centering
-			\label{semantic_frame}
 			\includegraphics[width=0.80\linewidth]{images/NLU/semantic_frames.png}
 			\caption{Example d'une trame sémantique pour une requête donnée}
+			\label{fig:semanticFrame}
 		\end{figure} 
 \section{Gestion du dialogue}
 	\paragraph{}
