@@ -2,39 +2,222 @@
 \section{Introduction}
 
 \section{Environnement de développement}
-
+Dans cette section nous allons présenter les différents outils (logiciels et matériels) qui ont été utilisé pour l'implémentation de BETHANO.
+	\subsection{Machines utilisées}
+	\paragraph{}
+	Principalement, le développement se divise en deux parties : 
+	\begin{itemize}
+		\item Apprentissage : les données sont récoltées ou construites puis nettoyées et préparées. Les modèles sont développés, entraînés puis testés.
+		\item Les modules sont implémentés puis connectés et intégrés dans l'application.
+	\end{itemize}
+	\par Pour ce faire nous avons utilisé des machines dont les spécificités sont mentionnés ci-dessous :
+	%TODO insert figures with their caption here OR one diagram with specs
+	\begin{figure}[H] 
+		\centering
+		\includegraphics[width=0.88\linewidth]{images/implementation/machines.png}
+		\caption{Caractéristiques des machines}
+		\label{fig:machines}
+		
+	\end{figure}
+	\par
+	En ce qui concerne la partie logicielle une liste non exhaustive est présentée ci dessous, qui ne mentionne que les outils les plus utilisés et les plus exploités :
+	\subsection{Langages de programmation}
+		\begin{figure}[H] 
+		\centering
+		\includegraphics[width=0.3\linewidth]{images/implementation/langs.png}
+		\caption{Langages de programmation utilisés}
+		\label{fig:langs}
+	\end{figure}
+		\subsubsection*{Python}
+		\label{python}
+		\paragraph{}
+		 C'est un langage de programmation interprété de haut niveau, structuré et open source. Il est multi-paradigme (orienté objet, programmation fonctionnelle et impérative) et multi-usage. Il est, comme la plupart des applications et outils open source, maintenu par une équipe de développeurs un peu partout dans le monde. Il offre une grande panoplie d'extensions (packages) pour résoudre une variété de problèmes, qu'ils soient reliés au développement d'applications de bureau, web ou mobiles \cite{python}.
+		
+		\subsubsection*{Javascript} 
+		\paragraph{}
+		JavaScript est un langage de programmation utilisé principalement par les navigateurs web pour exécuter un bout de code incorporé dans une page web plus communément appelé script. Il permet la manipulation de tout les éléments inclus dans une page, et par conséquent permet une gestion dynamique de ces dernier. Il est beaucoup utilisé du coté client mais peut aussi être exécuté du coté serveur. Tout comme Python il offre une grande variété dans le choix des modules qui peuvent ajouter de nouvelles fonctionnalités, le tout géré par un gestionnaire de module \textit{npm} \footnote{Node Package Manager ou Gestionnaire de packages Node} devenu un standard \cite{js}.
+	
+	\subsection{Librairies et bibliothèques}
+	\begin{figure}[H] 
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/implementation/libs_frams.png}
+		\caption{Bibliothèques et librairies les plus utilisées}
+		\label{fig:libs_frams}
+	\end{figure}
+		\subsubsection*{DeepSpeech API}
+		\paragraph{}
+		Package python qui fait office d'interface entre un script Python et la librairie de reconnaissance automatique de la parole DeepSpeech \cite{deepspeech_paper}. Il permet entre autre de charger différents modèles acoustiques ou modèles de langues. Il offre aussi la possibilité d'utiliser des scripts d'apprentissage prédéfinis pour peu que les données soient organisé suivant une certaine norme, ces scripts sont notamment hautement paramétrables \cite{deepseech_github}.
+		
+		\subsubsection*{PyAudio}
+		\paragraph{}
+		Librairie python destinée à la manipulation des fichiers ou flux audios. Elle offre entre autre la possibilité d'extraire des méta-données sur un flux audio (fréquence d'échantillonnage, débit ...). La possibilité d'extraire le vecteur de caractéristiques d'un extrait audio est aussi présente comme fonctionnalité \cite{pyaudio}.
+		
+		\subsubsection*{Beatiful Soup}
+		\paragraph{}
+		Bibliothèque Open source permettant l'analyse de fichier html pour en extraire ou y injecter des données. Principalement utilisée pour filtrer les balises nécessaire depuis une page web \cite{bs4}.
+		
+		\subsubsection*{PySpark}
+		\paragraph{}
+		Package Python utilisé comme interface pour interagir avec un serveur Spark. Il permet entre autre de lire et écrire des données dans le nouveau format Hadoop \cite{pyspark}.
+		
+		\subsubsection*{Scikit-Learn}
+		\paragraph{}
+		Bibliothèque Open source conçue pour rapidement développer des modèles pour l'apprentissage automatique, principalement utilisé pour ses nombreux outils de pré-traitement des données (codification, normalisation, filtrage ...) \cite{sklearn}.
+		
+		\subsubsection*{Numpy}
+		\paragraph{}
+		Bibliothèque spécialisée dans la manipulation de grands volumes de données numériques, notamment les vecteurs (tableaux) multi-dimensionnels, les opérations sur ces dernier sont implémentés en C pour optimiser au maximum leur coût en temps de calcul ou ressources mémoires utilisées. Elle offre des structures de données compatibles avec beaucoup d'autre librairies comme Tensorflow ou Keras \cite{numpy}.
+		
+		\subsubsection*{Tensorflow \& Keras}\label{tf&keras}
+		\paragraph{}
+		Vaste librairie dédiée à l'apprentissage automatique, et plus particulièrement au réseaux de neurones et l'apprentissage profond. Optimisée pour exécuter des opérations à grande échelle et massivement distribuées sur un réseau, Tensorflow offre la possibilité d'implémenter une grande variété d'architectures de modèles avec un maximum d'efficacité. Elle dispose d'un package Python permettant d'interagir avec le cœur de la librairie mais reste néanmoins assez bas-niveau et rudimentaire. Keras quant à lui propose de rajouter une couche d'abstraction à Tensorflow. c'est une package python destiné à faciliter le développement de modèles pour l'apprentissage profond tout en offrant la possibilité de rajouter et modifier un grand nombre de fonctionnalités par défaut. Sa force réside dans le fait qu'il peut utiliser au plus bas niveau plusieurs librairies autre que Tensorflow comme Theano et CNLTK \cite{tf,keras,theano,cnltk}.
+		
+		\subsubsection*{Flask}
+		\paragraph{}
+		Micro-librairie Open source dédiée au développement d'applications basé web. De base, cette librairie est très légère, mais elle offre la possibilité d'ajouter des extensions qui s'intègrent très facilement au système de base \cite{flask}.
+		
+		\subsubsection*{Vuetify}
+		\paragraph{}
+		Librairie Open source basée sur VueJs dédié au développement d'interface web ou mobile. Elle implémente le paradigme Material Design de Google et offre la possibilité d'étendre les composants de base et de créer des interfaces belle et adaptatives \cite{vuetify}.
+	\subsection{Outils et logiciels de développement}
+		\subsubsection*{PyCharm}
+		\paragraph{}
+		PyCharm est un environnement de développement intégré spécialisé et optimisé pour programmer dans le langage Python (voir \ref{python} ci dessus). Il permet l'analyse de code en continue et offre un débogueur intégré pour exécuter un code instruction par instruction. Il offre également l'intégration de logiciel de gestion de versions comme Git \cite{git}, et supporte le développement web avec Django et Flask \cite{pycharm}.
+		
+		\subsubsection*{Git}
+		\paragraph{}
+		Système de gestion de versions décentralisé. Il permet entre autre de gérer les différentes versions d'un projet durant son développement, mais aussi de garder l'historiques des modifications effectuées ainsi que la possibilité de régler des conflits lors de l'intégration finale des contributions des développeurs \cite{Git}.
+		
+		\subsubsection*{Google Colaboratory}
+		\paragraph{}
+		Colaboratory est un outil de recherche et développement pour la formation et la recherche associées à l'apprentissage profond. C'est un environnement Python qui ne nécessite aucune configuration et offre la possibilité d'utiliser de puissantes machines rendues accessibles par Google pour accélérer la phase d'apprentissage \cite{colab}.
+		
+		\subsubsection*{Protégé}
+		\paragraph{}
+		Protégé est un système dédié à la création et la modification d'ontologies. Il est développé en Java et est Open source distribué sous une licence libre (la Mozilla Public License). Il se démarque par le fait qu'il permet de travailler sur des ontologies de très grandes dimensions 
+		\cite{protege}.
+		
+		
 \section{ASR (to be changed)}
-\subsection{Ensemble de test}
-\subsection{Méthodologie d'évaluation}
-\subsection{Résultats}
-\subsection{Intégration dans l'application}
-
+\paragraph{}
+Pour ce premier module, il a été très difficile d'effectuer les tests idéals. En effet, nous n'avons pas pu trouver un ensemble de données qui proposait du contenu en rapport avec Bethano. Cependant puisque nous avons pu construire un mini-ensemble pour tester l'apport de notre modèle de langue. Les résultats ne doivent pas être pris comme une référence absolue, mais plutôt comme une indication pour de futurs possible tests.
+	\subsection{Ensemble de test}
+	\paragraph{}
+	Pour tester le modèle acoustiques, les données récoltées à travers le projet CommonVoice \ref{common_voice} constituent un assez bon échantillon. De par la nature des enregistrement (sur téléphone portable, par plusieurs genre et accent de locuteurs ...) et mais aussi de par le volume (environs 500 heures d'enregistrements audios). 
+	\par
+	Pour le modèle de langue il s'agit de celui mentionné dans la section \ref{lm}. Quelques modifications ont été rajoutée comme le filtrage des mots qui n'appartiennent pas à la langue anglaise. Mais au prix du sacrifice de quelques noms propres non reconnus ou bien de séquences de mots/lettres sans réel sens.
+	\subsection{Méthodologie d'évaluation}
+	\paragraph{}
+	Les tests ont été effectués dans un serveur Colab pour libérer les machines locales. Les principales étapes sont les suivantes :  
+	\begin{enumerate}
+		\item \textbf{Préparation des données} : Les données sont téléchargé depuis le serveur de Mozilla pour être stockées sur le serveur. il faut ensuite lancer le script d'évaluation qui converti les fichiers audio en .wav et construit un fichier index au format .csv pour trouver les enregistrements sur le disque.
+		\item \textbf{Métriques retenues} : À chaque lot de données (fixé à 64 instances) le \textbf{WER} (Word Error Rate) est calculé. Pour rappel la formule du WER est la suivante :
+		\begin{equation*}
+			WER(y,\hat{y}) = \frac{S+D+I}{S+D+C} = \frac{S+D+I}{N}
+		\end{equation*}
+		Où : 
+		\begin{itemize}
+			\item $y$ est la séquence de mots prédite appelée Hypothèse.
+			\item $\hat{y}$ est la séquence de mots réelle appelée Référence.
+			\item $S$ est le nombre de substituions (compté en mots) réalisées entre l'hypothèse et la référence.
+			\item $D$ est le nombre de suppressions qu'a effectué le système. donc le nombre de mots supprimés dans l'hypothèse par rapport à la référence.
+			\item $I$ est le nombre d'insertions effectuées par le système (c.à.d) le nombre de mots rajouté à l'hypothèse par rapport à la référence.
+			\item $C$ est le nombre de mots bien placés.
+			\item $N$ est la longueur totale de la séquence en nombre de mots
+		\end{itemize}
+		\item \textbf{Boucle d'évaluation} l'opération précédente est réitérée en incrémentant à chaque fois le taux d'utilisation de notre modèle de langue (de 20\% à 100\% avec un pas de 10\%). Le WER associé est ensuite comparé à celui obtenu en utilisant le modèle de langue par défaut que propose DeepSpeech. L'algorithme suivant explique les démarches :
+%		TODO make algo here
+	\end{enumerate}
+	\subsection{Résultats}
+	\paragraph{}
+	Les résultats sont décrits dans les tableaux ... et ...
+	\subsection{Intégration dans l'application}
 
 \section{NLU (to be changed)}
-\subsection{Ensemble de test}
-\subsection{Méthodologie d'évaluation}
-\subsection{Résultats}
-\subsection{Intégration dans l'application}
-
+\paragraph{}
+Pour ce module, une approche assez classique à été utilisée, l'ensemble de test est extrait de l'ensemble d'apprentissage (plus de détail dans la section suivante ). Les métriques d'évaluation utilisées sont mentionnées dans la sous section \ref{nlu_steps}. Nous commençons d'abord par détailler le contenu de l'ensemble de tests. Puis nous présenterons la méthodologie suivie pour la réalisation de ces tests. Un tableau récapitulatif sera présenté avant la fin pour illustrer les différents résultats.
+	\subsection{Ensemble de test}
+	\paragraph{}
+	Comme mentionné dans la section XXX, nous avons nous même construit un ensemble d'apprentissage relativement varié. Il regroupe essentiellement des commandes ou requêtes liées à l'exploration de fichier pour le moment car c'est la tâche rudimentaire que Bethano peut accomplir.
+	\par
+	L'ensemble de test est dérivé de celui d'apprentissage selon une politique de découpage basée sur le taux de présence d'un intent (intention). Comme illustré dans XXX, un pourcentage de chaque groupe d'instance affilié à la même classe est utilisé à la fois pour la validation et pour le test.
+	
+	Une liste exhaustive des intentions et slots est introduite respectivement dans les tableax XXX et XXX ci dessous :
+%	TODO insert table of intents and their tags
+%	TODO figure here for ratio splitting  
+	\subsection{Méthodologie d'évaluation}
+	\label{nlu_steps}
+	\paragraph{}
+	Après avoir construit l'ensemble de test, un parcours exhaustif des différentes combinaisons des paramètres suivant est effectué : 
+	\begin{itemize}
+		\item \textbf{Architecture d'encodage} :
+		C'est à dire l'utilisation ou pas d'un réseau récurent LSTM de base ou bien BiLSTM. Le but étant de montrer que le modèle pourra mieux interprété les données en entrée s'il capture le contexte de chaque mots.
+		
+		\item \textbf{Nombre neurones pour la couche de classification d'intention } : Lorsque l'encodeur retourne le dernier vecteur d'état caché, ce dernier passera par un réseau de neurones complètement connecté et multi-couche (nombre de couches fixé à 3 par soucis de performance, une couche d'entrée, une couche intermédiera et une couche de sortie). Le nombre de neurones dans la couche caché dépend grandement de la complexité de la tâche à effectuer. La classification d'intentions pour l'exploration de fichier était relativement simple, nous avons commencé avec 32 neurones puis nous avons doublé ce nombre jusqu'à 512 pour, en théorie, donnée plus de puissance au classificateur tout en évitant une sur-apprentissage par surplus de neurones.
+		
+		\item \textbf{Nombre d'unités d'une cellule LSTM (respectivement BiLSTM)}:
+		Comme mentionné dans XXXXX, les portes d'une cellule LSTM (résp. BiLSTM) sont en vérité des réseaux de neurones denses (complètement connectés) et donc un ensemble de matrice de poids à être optimiser. La capacité à "apprendre" la représentation des séquence dépend donc aussi du nombre de neurones dans ces mini-réseaux. Par le même raisonnement employé pour le classificateur d'intention, nous avons commencé avec un petit nombre de neurones pour examiner où se trouverait le seuil minimal qui permettra au modèle de généraliser, mais aussi où le seuil critique se situerait pour permettre au modèle de ne pas tomber dans un cas de sur-apprentissage. Nous partons de 128 jusqu'à 512 unités avec pas de 32 unités.
+		
+		\item \textbf{Fonction d'activations} : 
+		C'est un élément essentiel qui permet d'introduire la non-linéarité dans les relations entre chaque neurones de couches voisines. Ces fonctions permettent de mieux représenter les seuils d'activations des neurones. La fonction la plus utilisée dans la littérature est actuellement ReLu (Rectified Linear Unit) car elle a expérimentalement donnée de meilleurs résultats dans une grande variété de tâches et problèmes liés à l'apprentissage automatique et à la classification et étiquetage de texte. Par souci d'exhaustivité nous avons quand même décidé de tester deux autre fonctions $tanh$ (Tangente Hyperbolique) et $sigmoid$ (Sigmoïde). Pour chaque couche de sortie, la fonction $Softmax$ à été appliquée car chaque couche traite d'un problème de classification multi-classes.
+%		TODO equations for fucntions
+		\item \textbf{Fonction erreur}:
+		C'est l'élément clé pour la phase d'apprentissage, cette fonction détermine le degré d'exactitude du modèle, à quel point il est proche de la bonne réponse. Nous avons décidé d'utiliser comme fonction erreur la fonction $Categorical_Crossentropy$ ou Erreur Logistique. toute fois de par la nature de l'ensemble d'apprentissage et de test. Une version pondérée de cette fonction à été préféré, Pour palier au problème du non équilibrage des classes (que ce soit pour la classification d'intentions, ou pour la reconnaissance d'entité du domaine).
+		\par
+		Les poids des classes sont calculés selon la formule suivante : 
+		
+		\begin{equation*}
+			Poids_i = \max(1,\log{\frac{T}{T_i}})
+		\end{equation*}
+		Où :
+		\begin{itemize}
+			\item  $T$ est le nombre total d'instances
+			\item  $T_i$ est le nombre d'instance dont la classe est $C_i$
+		\end{itemize}
+		
+		La formule de la fonction erreur devient donc : 
+		\begin{equation*}
+			Erreur(y,\hat{y}) = - \sum_{i}^{C} y_i * \log(\hat{y}) * Poids_i 
+		\end{equation*}
+		Où : 
+		\begin{itemize}
+			\item $y$ est le vecteur en sortie produit par le modèle à la suite d'une fonction $Softmax$.
+			\item $\hat{y}$ est le vecteur de classe réelle présent dans l'ensemble d'apprentissage
+			\item $C$ est le nombre de classe au total.
+		\end{itemize}
+	
+		\item \textbf{Fonction d'apprentissage}:
+		Le choix de la fonction d'apprentissage est généralement affecté par un désir de précision et de rapidité. Une fonction qui converge rapidement en un minimum local peut être parfois préféré à une autre qui prendrait un temps considérable pour soit se retrouver dans le même minimum ou un autre minimum local (donc sans garanti de minimum optimal de la fonction erreur ). Les deux fonctions utilisées sont RmsProp et Adam qui sont connue pour leur rapidité de convergence.
+		
+		\item \textbf{Encodage des entrée sorties}:
+		Là encore le choix de l'encodage des données influe grandement sur la capacité du modèle à distinguer et à représenter les différentes informations qui lui sont présentées. Comme initiative de notre part nous avons mentionné dans la section XXX l'ajout de l'étiquette morphosyntaxique de chaque mot à l'encodage. Nous avons donc lancé les tests sur un encodage avec (respectivement sans) l'ajout des étiquettes pour mieux constater sont intérêt.
+		
+		\item \textbf{Découpage des données}
+		Comme mentionné dans XXX, la stratégie était de prendre aléatoirement les même proportions pour chaque sous ensemble de chaque classes (intentions ou entités de domaine). Comme nous avons décidé de faire varier les proportions de test et d'apprentissage en fixant celui de validation car nous avons remarqué que notre modèle n'arrivait pas à bien généraliser la relation entre les entrées et les sorties. Notre intuition portait sur le fait que le manque de données pouvait en être la cause (voir la section XXX pour plus de détails). Ainsi nous avons varié le taux de découpage pour le tests entre $25$ et $90\%$ avec un pas de $25\%$ sauf pour la dernière étape qui était de $15\%$. Le taux de découpage pour l'apprentissage est évidement de $(100\%-T_{test})*10\%$.
+		\par
+		Pour éviter que le modèle ne sur-apprenne, nous avons volontairement interchanger quelques mots dans la séquence d'entrée et celle de sortie pour introduire un certain taux d'erreur et de variété. Cet échange se fait suivant une probabilité $q$ fixé à $20\%$, bien entendu les étiquettes morphosyntaxiques ne sont pas échangé pour garder la structure de la phrase correcte.
+	\end{itemize}
+	\par
+	Pour expliciter le processus, nous présentons ci dessous un algorithme récapitulatif
+	\subsection{Résultats}
+	\subsection{Intégration dans l'application}
 
 \section{DM (to be changed)}
-\subsection{Ensemble de test}
-\subsection{Méthodologie d'évaluation}
-\subsection{Résultats}
-\subsection{Intégration dans l'application}
-
-
+	\subsection{Ensemble de test}
+	\subsection{Méthodologie d'évaluation}
+	\subsection{Résultats}
+	\subsection{Intégration dans l'application}
 
 \section{NLG (to be changed)}
-\subsection{Ensemble de test}
-\subsection{Méthodologie d'évaluation}
-\subsection{Résultats}
-\subsection{Intégration dans l'application}
+	\subsection{Ensemble de test}
+	\subsection{Méthodologie d'évaluation}
+	\subsection{Résultats}
+	\subsection{Intégration dans l'application}
 
 \section{L'application :name here:}
-\subsection{Architecture de l'application}
-\subsection{Architecture du serveur}
-\subsection{L'interface utilisateur}
+	\subsection{Architecture de l'application}
+	\subsection{Architecture du serveur}
+	\subsection{L'interface utilisateur}
 
 
 \section{Conclusion}
