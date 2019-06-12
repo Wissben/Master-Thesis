@@ -499,7 +499,24 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 	\end{table}
 	\paragraph{}
 	Les tableaux \ref{tab:lstm_3} et \ref{tab:bilstm_3} démontrent que la taille des données d'apprentissage poussent vers de meilleurs résultats. Cela reste conforme à notre intuition théorique et encourage encore plus le développement d'un corpus plus volumineux pour possiblement de meilleurs résultats.
+	
+%	Other tables here
+	
+	
+	\paragraph{}
+	Talk
+	\paragraph{}
+	Pour mieux visualiser les différence de qualité de prédictions des différent modèles, la figure \ref{compare} ci dessous est proposée.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.9\linewidth]{images/implementation/graphs.png} 
+		\caption{Graphe comparatif selon les proportions et selon les paramètres} 
+	\end{figure}
+	
 	\subsection{Intégration dans l'application}
+	\paragraph{}
+	Le module de compréhension du langage naturel se verra intégré dans l'application sous forme d'un micro-service résidant dans un serveur. Les requêtes qui parviennent du module précédent sont ensuite transformées et envoyées au module suivant pour la suite du pipeline.
 
 \section{DM (to be changed)}
 	\subsection{Ensemble de test}
