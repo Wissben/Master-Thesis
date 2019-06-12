@@ -193,13 +193,312 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 		Là encore le choix de l'encodage des données influe grandement sur la capacité du modèle à distinguer et à représenter les différentes informations qui lui sont présentées. Comme initiative de notre part nous avons mentionné dans la section XXX l'ajout de l'étiquette morphosyntaxique de chaque mot à l'encodage. Nous avons donc lancé les tests sur un encodage avec (respectivement sans) l'ajout des étiquettes pour mieux constater sont intérêt.
 		
 		\item \textbf{Découpage des données}
-		Comme mentionné dans XXX, la stratégie était de prendre aléatoirement les même proportions pour chaque sous ensemble de chaque classes (intentions ou entités de domaine). Comme nous avons décidé de faire varier les proportions de test et d'apprentissage en fixant celui de validation car nous avons remarqué que notre modèle n'arrivait pas à bien généraliser la relation entre les entrées et les sorties. Notre intuition portait sur le fait que le manque de données pouvait en être la cause (voir la section XXX pour plus de détails). Ainsi nous avons varié le taux de découpage pour le tests entre $25$ et $90\%$ avec un pas de $25\%$ sauf pour la dernière étape qui était de $15\%$. Le taux de découpage pour l'apprentissage est évidement de $(100\%-T_{test})*10\%$.
+		Comme mentionné dans XXX, la stratégie était de prendre aléatoirement les même proportions pour chaque sous ensemble de chaque classes (intentions ou entités de domaine). Comme nous avons décidé de faire varier les proportions de test et d'apprentissage en fixant celui de validation car nous avons remarqué que notre modèle n'arrivait pas à bien généraliser la relation entre les entrées et les sorties. Notre intuition portait sur le fait que le manque de données pouvait en être la cause (voir la section XXX pour plus de détails). Ainsi nous avons varié le taux de découpage pour le tests entre $25$ et $75\%$ avec un pas de $25\%$. Le taux de découpage pour l'apprentissage est évidement de $(100\%-T_{test})*10\%$.
 		\par
 		Pour éviter que le modèle ne sur-apprenne, nous avons volontairement interchanger quelques mots dans la séquence d'entrée et celle de sortie pour introduire un certain taux d'erreur et de variété. Cet échange se fait suivant une probabilité $q$ fixé à $20\%$, bien entendu les étiquettes morphosyntaxiques ne sont pas échangé pour garder la structure de la phrase correcte.
 	\end{itemize}
 	\par
-	Pour expliciter le processus, nous présentons ci dessous un algorithme récapitulatif
+	Pour le reste des hyperparasites, la plus part ont été fixé par manque de temps et de ressources. Ainsi le nombre d'epochs (itération) a été limité au maximum à 4 avec une politique d'arrêt anticipé si la fonction erreur d'évaluation ne diminue pas plus d'un taux $\Delta E = 2*10^{-3}$. Les métriques employées pour évaluer les deux classificateurs sont les suivantes : 
+	\begin{itemize}
+		\item \textbf{Précision} : il s'agit d'une métrique classique qui évalue à quel point le modèle est bon pour prédire les classes.
+		\begin{equation*}
+			Pr = \frac{VP}{VP+FP}
+		\end{equation*}
+		Où : 
+		\begin{itemize}
+			\item $VP$ (Vrais Positifs) : nombre de cas où le modèle prédit correctement la classe comme étant positive.
+			\item $FP$ (Faux Positifs) : nombre de cas où le modèle ne prédit pas correctement la classe comme étant positive (il rate son tir).
+		\end{itemize}
+
+		\item \textbf{Rappel} : Cette métrique évalue la capacité dy modèle à effectuer des classifications correctes par rapport à tout l'ensemble de test. Plus formellement : 
+		\begin{equation*}
+		Rap = \frac{VP}{VP+FN}
+		\end{equation*}
+		Où : 
+		\begin{itemize}
+			\item $VP$ (Vrais Positifs) : nombre de cas où le modèle prédit correctement la classe comme étant positive.
+			\item $FN$ (Faux Négatif) : nombre de cas où le modèle ne prédit pas correctement la classe comme étant négative (il rate son tir).
+		\end{itemize}
+	
+		\item \textbf{F-Mesure} : Mesure qui combine (d'un point de vu ensembliste) la précision et le rappel. Elle ne privilégie aucune des deux et essaye de donner un aperçu plus global de l'efficacité de l'algorithme.
+		\begin{equation*}
+		Fm = \frac{2*Rap*Pr}{Rap+Pr}
+		\end{equation*}
+	\end{itemize}
 	\subsection{Résultats}
+	\paragraph{}
+	Pour les résultats qui vont suivre, Chaque tableau sera accompagné d'un paragraphe qui servira de commentaire aux résultats obtenus. Des remarques peuvent y être insérées pour attirer l'attention sur des détails non flagrants.
+	
+	% Please add the following required packages to your document preamble:
+	% \usepackage{graphicx}
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				64                                                                    & 512                                                            & relu                & rmsprop                & 0,9687                                                                 & 0,9669                                                              & 0,9293                                                                            & 0,9230                                                                         & 0,9470                                                               \\ \hline
+				32                                                                    & 128                                                            & relu                & rmsprop                & 0,9743                                                                 & 0,9725                                                              & 0,9214                                                                            & 0,9128                                                                         & 0,9452                                                               \\ \hline
+				64                                                                    & 256                                                            & relu                & rmsprop                & 0,9753                                                                 & 0,9743                                                              & 0,9141                                                                            & 0,9061                                                                         & 0,9424                                                               \\ \hline
+				32                                                                    & 512                                                            & relu                & rmsprop                & 0,9750                                                                 & 0,9735                                                              & 0,9082                                                                            & 0,9019                                                                         & 0,9396                                                               \\ \hline
+				32                                                                    & 256                                                            & relu                & rmsprop                & 0,9755                                                                 & 0,9741                                                              & 0,9066                                                                            & 0,8985                                                                         & 0,9387                                                               \\ \hline
+				256                                                                   & 512                                                            & relu                & rmsprop                & 0,9716                                                                 & 0,9711                                                              & 0,8842                                                                            & 0,8761                                                                         & 0,9257                                                               \\ \hline
+				64                                                                    & 128                                                            & relu                & rmsprop                & 0,9700                                                                 & 0,9689                                                              & 0,8744                                                                            & 0,8636                                                                         & 0,9192                                                               \\ \hline
+				128                                                                   & 512                                                            & relu                & rmsprop                & 0,9647                                                                 & 0,9635                                                              & 0,8690                                                                            & 0,8584                                                                         & 0,9139                                                               \\ \hline
+				256                                                                   & 128                                                            & relu                & rmsprop                & 0,9704                                                                 & 0,9692                                                              & 0,8473                                                                            & 0,8342                                                                         & 0,9052                                                               \\ \hline
+				128                                                                   & 256                                                            & relu                & rmsprop                & 0,9714                                                                 & 0,9707                                                              & 0,8431                                                                            & 0,8345                                                                         & 0,9049                                                               \\ \hline
+				128                                                                   & 128                                                            & relu                & rmsprop                & 0,9638                                                                 & 0,9626                                                              & 0,8425                                                                            & 0,8283                                                                         & 0,8993                                                               \\ \hline
+				256                                                                   & 256                                                            & relu                & rmsprop                & 0,7215                                                                 & 0,7141                                                              & 0,7573                                                                            & 0,7275                                                                         & 0,7299                                                               \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage sans étiquetage morphosyntaxique avec des cellules LSTM avec découpage Apprentissage : 25\%, Validation : 10\%, Test : 75\%.}
+		\label{tab:lstm_1}
+	\end{table}
+	
+	\paragraph{}
+	Nous pouvons remarquer depuis le tableau \ref{tab:lstm_1} que pour un ensemble d'apprentissage assez réduit, le modèle arrive tout de même à bien classifier la majorité des intentions avec un rappel maximum avoisinant les $97\%$. Cependant le slot-filling se révèle être une tâche plus ardue. avec un rappel ne dépassant pas $92\%$. La meilleure combinaison qui équilibre les deux tâches utilise un petit nombre de neurones pour la classification d'intentions, mais en revanche demande une grande capacité de calcul pour la mémorisation des séquences en utilisant 512 unités dans les cellules LSTM.
+	
+	% Please add the following required packages to your document preamble:
+	% \usepackage{graphicx}
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				128            & 512                     & relu                & rmsprop            & 0,9749                             & 0,9736                                & 0,9426                    & 0,9380                       & 0,9573                 \\ \hline
+				64             & 256                     & relu                & rmsprop            & 0,9737                             & 0,9729                                & 0,9389                    & 0,9325                       & 0,9545                 \\ \hline
+				32             & 256                     & relu                & rmsprop            & 0,9746                             & 0,9735                                & 0,9344                    & 0,9298                       & 0,9531                 \\ \hline
+				128            & 256                     & relu                & rmsprop            & 0,9709                             & 0,9703                                & 0,9360                    & 0,9304                       & 0,9519                 \\ \hline
+				256            & 512                     & relu                & rmsprop            & 0,9768                             & 0,9762                                & 0,9272                    & 0,9221                       & 0,9505                 \\ \hline
+				128            & 128                     & relu                & rmsprop            & 0,9684                             & 0,9674                                & 0,9354                    & 0,9299                       & 0,9503                 \\ \hline
+				64             & 128                     & relu                & rmsprop            & 0,9687                             & 0,9684                                & 0,9344                    & 0,9286                       & 0,9500                 \\ \hline
+				256            & 128                     & relu                & rmsprop            & 0,9681                             & 0,9673                                & 0,9349                    & 0,9286                       & 0,9497                 \\ \hline
+				64             & 512                     & relu                & rmsprop            & 0,9741                             & 0,9732                                & 0,9257                    & 0,9188                       & 0,9479                 \\ \hline
+				32             & 512                     & relu                & rmsprop            & 0,9721                             & 0,9714                                & 0,9149                    & 0,9089                       & 0,9418                 \\ \hline
+				256            & 256                     & relu                & rmsprop            & 0,9686                             & 0,9679                                & 0,9048                    & 0,8995                       & 0,9352                 \\ \hline
+				32             & 128                     & relu                & rmsprop            & 0,9736                             & 0,9721                                & 0,8894                    & 0,8817                       & 0,9292                 \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage sans étiquetage morphosyntaxique avec des cellules BiLSTM avec découpage Apprentissage : 25\%, Validation : 10\%, Test : 75\%.}
+		\label{tab:bilstm_1}
+	\end{table}
+	
+	\paragraph{}
+	Sur le tableau \ref{tab:bilstm_1}, l'ajout de l'information du contexte pour un mot à une position donnée à travers l'utilisation d'une architecture BiLSTM affecte systématiquement les scores (Précision, Rappel, F-Mesure ...). Ceux ci augmentent d'un certain taux ($\approx 10\%$) dans la majorité des cas. Il est a noter que pour le même nombre d'unités BiLSTM, le nombre de neurones pour la classification d'intentions a doublé.
+	
+	
+	
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				64             & 256                     & relu                & rmsprop            & 0,9690                             & 0,9686                                & 0,9354                    & 0,9287                       & 0,9504                \\ \hline
+				32             & 512                     & relu                & rmsprop            & 0,9717                             & 0,9706                                & 0,9304                    & 0,9238                       & 0,9491                \\ \hline
+				32             & 128                     & relu                & rmsprop            & 0,9769                             & 0,9738                                & 0,9189                    & 0,9115                       & 0,9453                \\ \hline
+				128            & 256                     & relu                & rmsprop            & 0,9689                             & 0,9681                                & 0,9204                    & 0,9131                       & 0,9426                \\ \hline
+				128            & 512                     & relu                & rmsprop            & 0,9714                             & 0,9708                                & 0,8756                    & 0,8693                       & 0,9218                \\ \hline
+				256            & 128                     & relu                & rmsprop            & 0,9707                             & 0,9699                                & 0,8767                    & 0,8674                       & 0,9212                \\ \hline
+				256            & 256                     & relu                & rmsprop            & 0,9650                             & 0,9642                                & 0,8767                    & 0,8707                       & 0,9191                \\ \hline
+				32             & 256                     & relu                & rmsprop            & 0,9703                             & 0,9693                                & 0,8609                    & 0,8513                       & 0,9129                \\ \hline
+				128            & 128                     & relu                & rmsprop            & 0,9713                             & 0,9695                                & 0,8565                    & 0,8455                       & 0,9107                \\ \hline
+				64             & 128                     & relu                & rmsprop            & 0,9696                             & 0,9672                                & 0,8556                    & 0,8465                       & 0,9097                \\ \hline
+				256            & 512                     & relu                & rmsprop            & 0,9751                             & 0,9739                                & 0,8418                    & 0,8291                       & 0,9050                \\ \hline
+				64             & 512                     & relu                & rmsprop            & 0,9761                             & 0,9750                                & 0,8275                    & 0,8201                       & 0,8997                \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage avec étiquetage morphosyntaxique avec des cellules LSTM avec découpage Apprentissage : 25\%, Validation : 10\%, Test : 75\%.}
+		\label{tab:lstm_1_postag}
+	\end{table}
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				32             & 256                     & relu                & rmsprop            & 0,9726                             & 0,9715                                & 0,9481                    & 0,9436                       & 0,9589                \\ \hline
+				64             & 256                     & relu                & rmsprop            & 0,9735                             & 0,9731                                & 0,9370                    & 0,9329                       & 0,9541                \\ \hline
+				256            & 512                     & relu                & rmsprop            & 0,9733                             & 0,9723                                & 0,9357                    & 0,9304                       & 0,9529                \\ \hline
+				256            & 256                     & relu                & rmsprop            & 0,9682                             & 0,9670                                & 0,9394                    & 0,9352                       & 0,9525                \\ \hline
+				32             & 512                     & relu                & rmsprop            & 0,9683                             & 0,9656                                & 0,9392                    & 0,9330                       & 0,9515                \\ \hline
+				128            & 512                     & relu                & rmsprop            & 0,9794                             & 0,9790                                & 0,9230                    & 0,9163                       & 0,9494                \\ \hline
+				32             & 128                     & relu                & rmsprop            & 0,9726                             & 0,9708                                & 0,9300                    & 0,9232                       & 0,9491                \\ \hline
+				256            & 128                     & relu                & rmsprop            & 0,9654                             & 0,9645                                & 0,9324                    & 0,9266                       & 0,9472                \\ \hline
+				64             & 512                     & relu                & rmsprop            & 0,9651                             & 0,9636                                & 0,9324                    & 0,9261                       & 0,9468                \\ \hline
+				128            & 128                     & relu                & rmsprop            & 0,9702                             & 0,9687                                & 0,8721                    & 0,8670                       & 0,9195                \\ \hline
+				64             & 128                     & relu                & rmsprop            & 0,9735                             & 0,9719                                & 0,8369                    & 0,8278                       & 0,9025                \\ \hline
+				128            & 256                     & relu                & rmsprop            & 0,9741                             & 0,9732                                & 0,8209                    & 0,8114                       & 0,8949                \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage avec étiquetage morphosyntaxique avec des cellules BiLSTM avec découpage Apprentissage : 25\%, Validation : 10\%, Test : 75\%.}
+		\label{tab:bilstm_1_postag}
+	\end{table}
+	
+	\paragraph{}
+	Quant aux deux tableaux \ref{tab:lstm_1_postag} et \ref{tab:bilstm_1_postag}, ils montrent que l'ajout de l'étiquette morphosyntaxique a amélioré les résultats pour cas de l'utilisation d'une cellule LSTM simple tout en réduisant le nombre d'unités requise, moins de calculs et plus d'efficacité. Cela se confirme encore plus pour le cas de l'utilisation de l'architecture BiLSTM, en réduisant de presque la moitié la puissance de calcul nécessaire et en augmentant un tout petit peu la qualité des prédictions.
+	
+	
+	
+	
+%	----------------------------------------------------------------------- %
+%POSTAGS
+		% Please add the following required packages to your document preamble:
+	% \usepackage{graphicx}
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				64             & 512                     & relu                & rmsprop            & 0,9717                             & 0,9708                                & 0,9340                    & 0,9262                       & 0,9506                \\ \hline
+				128            & 512                     & relu                & rmsprop            & 0,9711                             & 0,9698                                & 0,9316                    & 0,9269                       & 0,9498                \\ \hline
+				256            & 512                     & relu                & rmsprop            & 0,9728                             & 0,9725                                & 0,9300                    & 0,9239                       & 0,9498                \\ \hline
+				32             & 512                     & relu                & rmsprop            & 0,9708                             & 0,9699                                & 0,9293                    & 0,9222                       & 0,9480                \\ \hline
+				256            & 128                     & relu                & rmsprop            & 0,9749                             & 0,9741                                & 0,9079                    & 0,8988                       & 0,9389                \\ \hline
+				64             & 256                     & relu                & rmsprop            & 0,9706                             & 0,9698                                & 0,9096                    & 0,9030                       & 0,9383                \\ \hline
+				32             & 256                     & relu                & rmsprop            & 0,9740                             & 0,9724                                & 0,8921                    & 0,8859                       & 0,9311                \\ \hline
+				64             & 128                     & relu                & rmsprop            & 0,9751                             & 0,9729                                & 0,8901                    & 0,8796                       & 0,9294                \\ \hline
+				128            & 256                     & relu                & rmsprop            & 0,9712                             & 0,9706                                & 0,8930                    & 0,8817                       & 0,9291                \\ \hline
+				32             & 128                     & relu                & rmsprop            & 0,9707                             & 0,9691                                & 0,8897                    & 0,8776                       & 0,9267                \\ \hline
+				256            & 256                     & relu                & rmsprop            & 0,9718                             & 0,9712                                & 0,8629                    & 0,8555                       & 0,9153                \\ \hline
+				128            & 128                     & relu                & rmsprop            & 0,9650                             & 0,9633                                & 0,8212                    & 0,8081                       & 0,8894                \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage sans étiquetage morphosyntaxique avec des cellules LSTM avec découpage Apprentissage : 50\%, Validation : 10\%, Test : 50\%.}
+		\label{tab:lstm_2}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				64             & 256                     & relu                & rmsprop            & 0,9740                             & 0,9732                                & 0,9425                    & 0,9369                       & 0,9567                \\ \hline
+				32             & 512                     & relu                & rmsprop            & 0,9689                             & 0,9673                                & 0,9456                    & 0,9409                       & 0,9557                \\ \hline
+				256            & 512                     & relu                & rmsprop            & 0,9752                             & 0,9745                                & 0,9390                    & 0,9326                       & 0,9553                \\ \hline
+				64             & 512                     & relu                & rmsprop            & 0,9771                             & 0,9762                                & 0,9339                    & 0,9302                       & 0,9543                \\ \hline
+				256            & 256                     & relu                & rmsprop            & 0,9716                             & 0,9711                                & 0,9327                    & 0,9266                       & 0,9505                \\ \hline
+				128            & 256                     & relu                & rmsprop            & 0,9654                             & 0,9645                                & 0,9384                    & 0,9328                       & 0,9503                \\ \hline
+				128            & 128                     & relu                & rmsprop            & 0,9699                             & 0,9693                                & 0,9326                    & 0,9264                       & 0,9496                \\ \hline
+				64             & 128                     & relu                & rmsprop            & 0,9679                             & 0,9667                                & 0,8941                    & 0,8879                       & 0,9291                \\ \hline
+				32             & 256                     & relu                & rmsprop            & 0,9649                             & 0,9629                                & 0,8947                    & 0,8887                       & 0,9278                \\ \hline
+				32             & 128                     & relu                & rmsprop            & 0,9539                             & 0,9480                                & 0,8215                    & 0,8064                       & 0,8824                \\ \hline
+				256            & 128                     & relu                & rmsprop            & 0,9710                             & 0,9700                                & 0,7782                    & 0,7656                       & 0,8712                \\ \hline
+				128            & 512                     & relu                & rmsprop            & 0,8747                             & 0,8657                                & 0,7848                    & 0,7628                       & 0,8219                \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage sans étiquetage morphosyntaxique avec des cellules BiLSTM avec découpage Apprentissage : 50\%, Validation : 10\%, Test : 50\%.}
+		\label{tab:bilstm_2}
+	\end{table}
+	
+	
+	\paragraph{}
+	Depuis les résultats des tableaux \ref{tab:lstm_2} et \ref{tab:bilstm_2}, il semblerait que le choix de l'architecture BiLSTM augmenterait la qualité des classifications, même si ce n'est que d'un petit taux. Ils semblent aussi montrer que notre intuition sur la faible quantité de données que nous possédions soit fondée. Les scores F-Mesure en moyenne tendent à augmenter avec l'injection de nouvelles données d'apprentissage.
+	
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				128 & 512 & relu & rmsprop & 0,9723 & 0,9716 & 0,9388 & 0,9330 & 0,9539 \\ \hline
+				64 & 256 & relu & rmsprop & 0,9720 & 0,9709 & 0,9278 & 0,9219 & 0,9482 \\ \hline
+				256 & 512 & relu & rmsprop & 0,9737 & 0,9731 & 0,9238 & 0,9193 & 0,9475 \\ \hline
+				32 & 128 & relu & rmsprop & 0,9729 & 0,9712 & 0,9256 & 0,9182 & 0,9469 \\ \hline
+				32 & 512 & relu & rmsprop & 0,9692 & 0,9681 & 0,9278 & 0,9226 & 0,9469 \\ \hline
+				64 & 512 & relu & rmsprop & 0,9689 & 0,9671 & 0,9187 & 0,9107 & 0,9414 \\ \hline
+				256 & 256 & relu & rmsprop & 0,9702 & 0,9699 & 0,9077 & 0,9016 & 0,9373 \\ \hline
+				32 & 256 & relu & rmsprop & 0,9734 & 0,9716 & 0,8769 & 0,8689 & 0,9227 \\ \hline
+				64 & 128 & relu & rmsprop & 0,9712 & 0,9693 & 0,8732 & 0,8641 & 0,9195 \\ \hline
+				256 & 128 & relu & rmsprop & 0,9662 & 0,9655 & 0,8661 & 0,8563 & 0,9135 \\ \hline
+				128 & 128 & relu & rmsprop & 0,9631 & 0,9614 & 0,8223 & 0,8090 & 0,8889 \\ \hline
+				128 & 256 & relu & rmsprop & 0,9694 & 0,9686 & 0,8020 & 0,7936 & 0,8834 \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage avec étiquetage morphosyntaxique avec des cellules LSTM avec découpage Apprentissage : 50\%, Validation : 10\%, Test : 50\%.}
+		\label{tab:lstm_2_postag}
+	\end{table}
+
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				32 & 256 & relu & rmsprop & 0,9920 & 0,9914 & 0,9650 & 0,9623 & 0,9777 \\ \hline
+				256 & 512 & relu & rmsprop & 0,9883 & 0,9879 & 0,9652 & 0,9625 & 0,9760 \\ \hline
+				64 & 128 & relu & rmsprop & 0,9903 & 0,9903 & 0,9621 & 0,9594 & 0,9755 \\ \hline
+				128 & 128 & relu & rmsprop & 0,9935 & 0,9931 & 0,9581 & 0,9550 & 0,9749 \\ \hline
+				128 & 512 & relu & rmsprop & 0,9896 & 0,9889 & 0,9619 & 0,9591 & 0,9749 \\ \hline
+				32 & 512 & relu & rmsprop & 0,9900 & 0,9894 & 0,9603 & 0,9577 & 0,9744 \\ \hline
+				64 & 512 & relu & rmsprop & 0,9893 & 0,9886 & 0,9604 & 0,9579 & 0,9741 \\ \hline
+				32 & 128 & relu & rmsprop & 0,9906 & 0,9900 & 0,9559 & 0,9524 & 0,9722 \\ \hline
+				64 & 256 & relu & rmsprop & 0,9871 & 0,9870 & 0,9570 & 0,9539 & 0,9713 \\ \hline
+				256 & 128 & relu & rmsprop & 0,9878 & 0,9877 & 0,9518 & 0,9481 & 0,9689 \\ \hline
+				256 & 256 & relu & rmsprop & 0,9882 & 0,9875 & 0,9016 & 0,8959 & 0,9433 \\ \hline
+				128 & 256 & relu & rmsprop & 0,9885 & 0,9883 & 0,8658 & 0,8610 & 0,9259 \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage avec étiquetage morphosyntaxique avec des cellules BiLSTM avec découpage Apprentissage : 50\%, Validation : 10\%, Test : 50\%.}
+		\label{tab:bilstm_2_postag}
+	\end{table}
+	\paragraph{}
+	Cependant, pour les tableaux \ref{tab:lstm_2_postag} et \ref{tab:bilstm_2_postag}. Nous pouvons observer que l'ajout de l'information morphosyntaxique à diminué le taux de réussite de la prédiction d'un faible taux au profit d'une moindre puissance de calculs.
+	
+%75 10 25
+
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				128 & 256 & relu & rmsprop & 0,9916307 & 0,9896523 & 0,9627657 & 0,95995647 & 0,9760 \\ \hline
+				64 & 256 & relu & rmsprop & 0,99043167 & 0,99039567 & 0,96294695 & 0,9600461 & 0,9760 \\ \hline
+				32 & 512 & relu & rmsprop & 0,99135494 & 0,991259 & 0,9618442 & 0,9587705 & 0,9758 \\ \hline
+				256 & 512 & relu & rmsprop & 0,9900959 & 0,98919666 & 0,9606803 & 0,95757425 & 0,9744 \\ \hline
+				32 & 256 & relu & rmsprop & 0,98709524 & 0,986915 & 0,9616008 & 0,95892894 & 0,9736 \\ \hline
+				128 & 512 & relu & rmsprop & 0,9884785 & 0,98834586 & 0,95814633 & 0,9548097 & 0,9724 \\ \hline
+				32 & 128 & relu & rmsprop & 0,9872662 & 0,9868825 & 0,95559824 & 0,95183223 & 0,9704 \\ \hline
+				256 & 256 & relu & rmsprop & 0,9905734 & 0,9905734 & 0,9509028 & 0,9470265 & 0,9698 \\ \hline
+				64 & 128 & relu & rmsprop & 0,9896091 & 0,98959714 & 0,95202535 & 0,947657 & 0,9697 \\ \hline
+				64 & 512 & relu & rmsprop & 0,9893765 & 0,9893525 & 0,95193136 & 0,9479144 & 0,9696 \\ \hline
+				128 & 128 & relu & rmsprop & 0,9873956 & 0,9873596 & 0,92632926 & 0,92039603 & 0,9554 \\ \hline
+				256 & 128 & relu & rmsprop & 0,9802998 & 0,9792326 & 0,91053396 & 0,90138716 & 0,9429 \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage sans étiquetage morphosyntaxique avec des cellules LSTM avec découpage Apprentissage : 75\%, Validation : 10\%, Test : 25\%.}
+		\label{tab:lstm_3}
+	\end{table}
+	
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+				\hline
+				\textbf{\begin{tabular}[c]{@{}c@{}}Nombre de\\ neurones\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Unités\\ LSTM\end{tabular}} & \textbf{Activation} & \textbf{Apprentissage} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Intention\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Précision\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Rappel\\ Entités de\\ domaine\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}F-Mesure\\ moyenne\end{tabular}} \\ \hline
+				256 & 256 & relu & rmsprop & 0,99003595 & 0,990012 & 0,96583736 & 0,96263885 & 0,9771 \\ \hline
+				64 & 512 & relu & rmsprop & 0,9871703 & 0,9871223 & 0,9650179 & 0,9625874 & 0,9755 \\ \hline
+				32 & 128 & relu & rmsprop & 0,98888487 & 0,98869306 & 0,9625747 & 0,9600506 & 0,9750 \\ \hline
+				128 & 512 & relu & rmsprop & 0,98804444 & 0,98790026 & 0,9615633 & 0,9587429 & 0,9741 \\ \hline
+				64 & 128 & relu & rmsprop & 0,9868231 & 0,98663056 & 0,9627016 & 0,95984924 & 0,9740 \\ \hline
+				32 & 512 & relu & rmsprop & 0,9861543 & 0,98460525 & 0,96218276 & 0,95968837 & 0,9732 \\ \hline
+				256 & 512 & relu & rmsprop & 0,98173183 & 0,98168373 & 0,96553797 & 0,96298146 & 0,9730 \\ \hline
+				32 & 256 & relu & rmsprop & 0,98651797 & 0,9864697 & 0,96105814 & 0,95713913 & 0,9728 \\ \hline
+				256 & 128 & relu & rmsprop & 0,9919135 & 0,9918654 & 0,95364505 & 0,95015824 & 0,9719 \\ \hline
+				128 & 256 & relu & rmsprop & 0,9883518 & 0,98701894 & 0,9547271 & 0,95164615 & 0,9704 \\ \hline
+				128 & 128 & relu & rmsprop & 0,97793764 & 0,9778777 & 0,9609247 & 0,95799255 & 0,9687 \\ \hline
+				64 & 256 & relu & rmsprop & 0,98692375 & 0,98558605 & 0,8580563 & 0,8503752 & 0,9202 \\ \hline
+			\end{tabular}%
+		}
+		\caption{Résultats des tests pour un encodage sans étiquetage morphosyntaxique avec des cellules BiLSTM avec découpage Apprentissage : 75\%, Validation : 10\%, Test : 25\%.}
+		\label{tab:bilstm_3}
+	\end{table}
+	\paragraph{}
+	Les tableaux \ref{tab:lstm_3} et \ref{tab:bilstm_3} démontrent que la taille des données d'apprentissage poussent vers de meilleurs résultats. Cela reste conforme à notre intuition théorique et encourage encore plus le développement d'un corpus plus volumineux pour possiblement de meilleurs résultats.
 	\subsection{Intégration dans l'application}
 
 \section{DM (to be changed)}
