@@ -29,6 +29,7 @@ Comme montré dans la figure ci dessus (voir ~\ref{spaArch}) et comme cité dans
 	Nous allons maintenant détailler la conception des différents modules en précisant à chaque fois le ou les procédés de sa mise en œuvre. 
 \section{Module de reconnaissance automatique de la parole}
 \paragraph{}
+\label{asr_probs}
 Premier module du système, il joue un rôle clé dans la véridicité du dialogue entre l'utilisateur et la machine, en effet il doit être assez robuste et précis dans la transcription de la requête en entrée afin de minimiser les erreurs et les ambiguïtés qui peuvent survenir dans le reste de la pipeline. Dans cette optique, nous avons décidé de ne pas développer entièrement un sous-système en partant de zéro, par faute de temps et par soucis de précision nous avons opté pour l'exploitation d'un outil open-source nommé DeepSpeech \cite{deepspeech_paper}, naturellement du fait que ce soit un projet open-source nous avons pu avoir accès à différentes informations concernant le modèle d'apprentissage, d'inférence et la nature des données utilisées pour l'apprentissage les tests.
 	\subsection{Architecture du module}
 	\paragraph{}
@@ -62,6 +63,7 @@ Premier module du système, il joue un rôle clé dans la véridicité du dialog
 	\subsection{Modèle de la langue}
 		\subsubsection*{Type du modèle}
 		\paragraph{}
+		
 		Pour ce qui est du type du modèle de langue, c'est un modèle basé sur les N-grammes (3-grammes pour être plus précis) qui est utilisé, en effet il permet de façon assez simple et intuitive de capturer l'enchaînement des mots dans une langue donnée, rendant ainsi la transcription finale assez proche de la façon dont les mots sont distribués dans le corpus d'apprentissage.
 		
 		\subsubsection*{Données d'apprentissage}
@@ -102,6 +104,7 @@ Second module du système, son rôle et de faire office de couche d'abstraction 
 		\caption{Architecture du module compréhension automatique du langage naturel}
 	\end{figure}
 	\paragraph{}
+	\label{encoding}
 	Comme précédemment cité (voir \ref{system_layer}), le module possède une architecture en pipeline qui reçoit en entrée le texte brut de la requête, sa codification varie selon les approches que nous avons exploré et qui seront plus explicitées dans le chapitre suivant Réalisation et Expérimentions, pour mieux capturer l'aspect sémantique des mots dans le texte, nous avons décidé d'utiliser un modèle pré-entraîné par Google de Word2Vec (entraîné sur 100 milliard de mots) pour produire un vecteur de taille fixe pour chaque mots, pour encoder l'information syntaxique de la requête nous avons concaténé au vecteur de prolongement de chaque mot de la requête (Word Embedding Vector) le vecteur codifiant son étiquette morphosyntaxique. Après avoir codifié la séquence de mots, elle est envoyée aux modèles de classification d'intentions et d'extraction d'entités \footnote{Par entité nous entendons les arguments de l'intention}, qui sont en fait un seul modèle joint dont l'architecture est détailler dans \ref{joint_model}. Ces deux informations sont ensuite décodées et passées au constructeur de trame sémantique qui structurera ces dernières en une seule entité sémantique dans le format suivant : 
 	donnant le format suivant \begin{lstlisting}[language=json]
 	{
@@ -127,6 +130,7 @@ Second module du système, son rôle et de faire office de couche d'abstraction 
 		L'encodage se fait en utilisant un réseau de neurones récurent de type BLSTM (Bidirectionnel Long Short Term Memory) pour mieux capturer le contexte droit (respectivement gauche) de chaque entrée, le dernier vecteur en sortie est ensuite utilisé comme vecteur d'entrée pour un réseau de neurones Fully Connected (Complètement connecté) dont la dernière couche est une couche de prédiction sur une distribution de probabilités des intentions possibles. Ce dernier vecteur sert aussi de d'état initial au décodeur qui est aussi un réseau de neurones récurent de type BLSTM, à chaque étape de l'inférence une étiquette est produite en sortie pour chaque position du texte en entrée (les longueur des séquences d'entrée et de sortie sont donc égales) en utilisant un autre réseau de neurone Fully Connected sur chaque vecteur d'état de sortie des cellules LSTM du décodeur (voir ~\ref{fig:lstmslots})
 		\subsubsection{Les données d'apprentissage}
 		\paragraph{}
+		\label{nlu_dataset}
 		Ne disposant pas d'un ensemble d'apprentissage pré-existant pour les intentions que nous avons développé, nous avons tenté d'en construire un nous même en l'enrichissant avec quelque modifications. Dans \cite{rasa_nlu} il a été noté que pour une tâche assez simple (comme pour notre cas l'exploration des fichiers dans un premier temps) une grande quantité de données n'est pas nécessaire (une cinquantaine d'exemples par intention approximativement) si les exemples ne sont pas facilement confondus, surtout si l'espace des possibilité pour les requête est assez réduit et peut facilement être expliciter. En jouant sur l'ordre des mots nous avons pu générer pour les XX intentions YYY patrons d'exemple au total (TOTAL PEUT ENCORE ÊTRE CHANGÉ 361 pour l'instant), un patron d'exemple une structure contenant des placeholders (compartiment) pouvant être rempli avec des valeurs généré programmatiquement, par exemple : 
 		\begin{lstlisting}[language=json]
 		delete the {file_name:} file under {parent_directory:}\end{lstlisting}
