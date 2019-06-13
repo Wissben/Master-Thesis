@@ -520,10 +520,6 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 		\includegraphics[width=.9\linewidth]{images/implementation/graphs.png} 
 		\caption{Graphe comparatif selon les proportions et selon les paramètres} 
 	\end{figure}
-	
-	\subsection{Intégration dans l'application}
-	\paragraph{}
-	Le module de compréhension du langage naturel se verra intégré dans l'application sous forme d'un micro-service résidant dans un serveur. Les requêtes qui parviennent du module précédent sont ensuite transformées et envoyées au module suivant pour la suite du pipeline.
 
 \section{Ontologie et manipulation du graphe d'état}
 \paragraph{}Les ontologies déjà présentées dans les sections \ref{onto1} et \ref{onto2} ont été créées en utilisant Protégé. Elles ont été ensuite exportées en format Turtle\footnote{Turtle est une syntaxe pour l'écriture des triplets d'un graphe de connaissance avec RDF} afin de les exploiter dans la suite de ce travail en utilisant la bibliothèque RDFLib de Python.

@@ -2,13 +2,38 @@
 
 \section{Introduction}
 	\paragraph{}
-	Durant ce chapitre, nous allons détailler un peu plus l'aspect technique d'une architecture typique pour un SPA, nous commencerons d'abord par définir des notions de base ainsi que des techniques d'apprentissage automatique, nous traiterons celles qui ont été les plus utilisées dans les travaux que nous avons examiné. La suite du chapitre sera organisé en sections qui décrirons chacune le fonctionnement d'une partie du SPA, en citant les travaux et références qui relatent de cette dernière. Nous terminerons sur une conclusion qui introduira le chapitre suivant.
+	Dans ce chapitre, nous allons détaillerons un peu plus l'aspect technique d'une architecture typique pour un SPA. Nous commencerons d'abord par définir des notions de base. Nous ne  traiterons que celles qui ont été les plus utilisées dans les travaux que nous avons examiné. La suite du chapitre sera organisée en sections qui décrirons chacune le fonctionnement d'une partie du SPA, en citant les travaux et références qui relatent de cette dernière. Nous terminerons sur une conclusion qui introduira le chapitre suivant.
+	
+\section{Schéma global d'un SPA}
+\label{spaSchemSection}
+\paragraph{}
+Durant nos lectures des différents travaux sur le domaine, nous avons pu dresser un schéma assez général qui englobe les principaux modules d'un SPA : 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{images/SPA_diagram_2.png}
+	\caption{Schéma abstractif d'un SPA \cite{spa_arch}}
+	\label{fig:spaDiagram}
+\end{figure}
+\paragraph{}
+Le processus peut être résumé en des étapes cruciales (qui seront détaillées dans les sections suivantes) : 
+\begin{itemize}
+	\label{spaLifeCycle}
+	\item L'utilisateur énonce une requête en utilisant sa voix. Le signal est ensuite transformé en sa version textuelle.
+	\item La requête étant sous un format textuel brut ne peut pas être interprétée ou comprise par la machine. Une représentation sémantique est générée qui regroupera les principales informations contenues dans la requête, à savoir l'intention de l'utilisateur et ses arguments.
+	\item Au fur et à mesure que l'utilisateur énonce des requêtes, le système doit pouvoir être capable d'utiliser le contexte du dialogue pour interagir avec ce dernier afin d'atteindre le but final du dialogue (exécuter une commande système, trouver des informations internet ou sur la machine locale ...). Le gestionnaire du dialogue communique avec son environnement en utilisant la même représentation sémantique produite par l'analyse précédente.
+	\item Puisqu'il est préférable de cacher à l'utilisateur tout comportement interne au système, il serait préférable de transformer la trame sémantique (voir la figure ~\ref{fig:semanticFrame}) en texte naturel pour l'afficher en sortie.
+\end{itemize}
+\paragraph{}
+Il est à noter que chacun des modules seront indépendants pour ce qu'il est de leur fonctionnement interne. Ainsi, aucun n'assumera un fonctionnement arbitraire des autres modules. Seul le format des informations qui circulent entre eux devra être établi au préalable pour un fonctionnement durable et robuste au changement.
+\paragraph{}
+Pour ce qui est de la suite du chapitre, nous allons présenter les différents modules ainsi que les techniques et architectures qui sont considérées comme étant l'état de l'art du domaine. 
+
 \section{Notions et aspects théoriques}
 	\paragraph{}
-	Dans cette section nous essaierons de présenter différentes notions liées au domaine de l'apprentissage automatique, pour ensuite les citer dans les modules qui les utilisent. 
+	Dans cette section, nous présenterons différentes notions liées au domaine de l'apprentissage automatique, pour ensuite les citer dans les modules qui les utilise. 
 	\subsection{Apprentissage automatique}
 		\paragraph{}
-		Le plus souvent, un domaine scientifique peut être défini à travers le, ou les types de problèmes dont il essaye de trouver une solution, d'après \cite{mitchelllearning}, l'auteur à défini ce problème sous forme d'une question :
+		Le plus souvent, un domaine scientifique peut être défini à travers le, ou les types de problèmes dont il essaye de trouver une solution, d'après \cite{mitchelllearning}, l'auteur défini ce problème sous forme d'une question :
 		\begin{quote}
 			\say{How can we build computer systems that automatically improve with experience, and what are the fundamental laws that govern all learning processes?}\cite{mitchelllearning}
 		\end{quote}
@@ -17,65 +42,70 @@
 			\say{Comment pourrions nous développer un système informatique qui pourrait s'améliorer à travers l'expérience, et quelles seraient les lois qui régiraient le processus d'apprentissage?}
 		\end{quote}
 		\par 
-		D'après \cite{mitchelllearning} l'apprentissage automatique est un paradigme qui stipule qu'un système informatique peut apprendre à effectuer un ensemble de tâches T, sachant qu'il dispose d'un ensemble de données E, tout en améliorant sa performance P.
+		D'après \cite{mitchelllearning}, l'apprentissage automatique est un paradigme qui stipule qu'un système informatique peut apprendre à effectuer un ensemble de tâches T, sachant qu'il dispose d'un ensemble de données E, tout en améliorant sa performance P.
 		\par
-		Il existe plusieurs sous catégories d'apprentissage automatique, elles différent principalement par la manière dont le système apprend, du type de données sur les quelles il apprend, ainsi que du but de son apprentissage (classification, régression,...). Nous pouvons citer les catégories suivantes :
+		Il existe plusieurs sous-catégories d'apprentissage automatique. Elles diffèrent principalement par la manière dont le système apprend, du type de données sur lesquelles il apprend. ainsi que du but de son apprentissage (classification, régression,...). Nous pouvons citer les catégories suivantes :
 		\begin{itemize}
-			\item  \textbf{Apprentissage supervisé} : Les algorithmes de cette catégories ont besoin d'une assistance externe, les données doivent être séparées en deux parties (ensemble d'apprentissage et de test), un \textit{label} ou classe doit être associée à chaque instance pour permettre à l'algorithme de calculer un certain taux d'erreur qu'il essayera de minimiser au fur et à mesure qu'une nouvelle instance lui est présentée \cite{supervised_learning}. Idéalement le système pourra apprendre une certaines fonction $\hat{f} : X \rightarrow Y$ qui liera les entrées $X$ aux sorties $Y$ en minimisant l'erreur $E_Y$ 
+			\item  \textbf{Apprentissage supervisé} : Les algorithmes de cette catégories ont besoin d'une assistance externe. Les données doivent être séparées en deux parties (ensemble d'apprentissage et de test). Un \textit{label} (ou classe) est associé à chaque instance pour permettre à l'algorithme de calculer un certain taux d'erreur qu'il essayera de minimiser au fur et à mesure qu'une nouvelle instance lui est présentée \cite{supervised_learning}. Idéalement, le système pourra apprendre une certaine fonction $\hat{f} : X \rightarrow Y$ qui liera les entrées $X$ aux sorties $Y$ en minimisant l'erreur $E_Y$ 
 			
-			\item \textbf{Apprentissage non supervisé} : Ici, les algorithmes ne disposent pas d'un étiquetage des données, ils essayeront donc d'apprendre des \textit{pattern} ou motifs fréquents pour grouper les données similaires. De tels algorithmes ne se préoccupent pas de la classe, mais de la similarité entre un groupe de données \cite{unsupervised_learning}
+			\item \textbf{Apprentissage non supervisé} : Ici, les algorithmes ne disposent pas d'un étiquetage des données. Ils essayeront donc d'apprendre des \textit{pattern} ou motifs fréquents pour grouper les données similaires. De tels algorithmes ne se préoccupent pas de la classe, mais de la similarité entre un groupe de données \cite{unsupervised_learning}.
 			
-			\item \textbf{Apprentissage par renforcement} : Cette dernière catégories d'algorithmes apprennent par un système de \textit{trial and error} \footnote{Essais et erreur ?} en interagissant avec l'environnement pour accomplir une tâche (voir \ref{reinf_learning})
+			\item \textbf{Apprentissage par renforcement} : Cette dernière catégorie regroupe des algorithmes qui apprennent par un système de \textit{trial and error} (Essais et erreur). C'est à dire qu'en interagissant avec l'environnement. l'agent apprenant (l'algorithme) apprendra à accomplir une tâche précise en exécutant des actions qui modifierons sont état et celui de son environnement (voir la section \ref{reinf_learning})
 		\end{itemize}
+	\par
+	Dans les sections suivantes, nous nous intéresserons à quelques type d'algorithme d'apprentissage automatique. 
 	\subsection{Réseaux de neurones artificiels}
 		\paragraph{}
-		Un réseau de neurones artificiels est une structure d'appariement non-linéaire inspiré de la façon dont les systèmes nerveux biologiques fonctionnent. Ils permettent de modéliser les relations sous-jacentes des données. ils sont composés d'un nombre arbitrairement large de plus petites unités de calcul interconnectées appelées neurones, qui traient l'information d'une manière parallèle dans le but de résoudre un problème bien spécifique \cite{neural_nets}. Ils ont notamment connu un très grand succès lors des dernières années dans différents domaines comme la reconnaissance d'images \cite{inception}, la reconnaissance automatique de la parole \cite{speech_reco_dnn,speech_reco_Yu2015} ou encore la classification de textes \cite{seq2seq_multitask_classification,dnn_text_classification}.
+		Un réseau de neurones artificiels est une structure d'appariement non-linéaire entre un ensemble de caractéristiques en entrée et sortie inspiré de la façon dont les systèmes nerveux biologiques fonctionnent. Ils permettent de modéliser les relations sous-jacentes des données. Ils sont composés d'un nombre arbitrairement large de petites unités de calcul interconnectées appelées neurones, qui traient l'information d'une manière parallèle dans le but de résoudre un problème bien spécifique \cite{neural_nets}. Ils ont notamment connu un très grand succès lors des dernières années dans différents domaines comme la reconnaissance d'images \cite{inception}, la reconnaissance automatique de la parole \cite{speech_reco_dnn,speech_reco_Yu2015} ou encore la classification de textes \cite{seq2seq_multitask_classification,dnn_text_classification}.
 		\par 
-		Il existe une variété d'architectures de réseaux de neurones, nous traiterons dans cette section de trois d'entre elles : 
+		Il existe une variété d'architectures de réseaux de neurones. Nous traiterons dans cette section trois d'entre elles : 
 			\begin{itemize}
 				\item Réseaux de neurones multicouches denses
 				\item Réseaux de neurones profonds
 				\item Réseaux de neurones récurrents et leurs variantes
 			\end{itemize}
 		\subsubsection{Réseaux de neurones multicouches denses}
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=0.5\linewidth]{images/notions/mlp.png}
-			\caption{Architecture basique d'un réseaux de neurones multicouches}
-			\label{mlp}
-		\end{figure}
+	
 		\paragraph{}
-		La forme la plus basique que peut avoir un réseau de neurones est celle d'un réseau multicouches comme montré dans \ref{mlp}, elle se compose de trois parties :
+		La forme la plus basique que peut avoir un réseau de neurones est celle d'un réseau multicouches comme montré dans la figure \ref{mlp}. Elle se compose de trois parties :
 		\begin{itemize}
-			\item \textbf{Une couche d'entrée : } cette couche est composé d'un ensemble de neurones ou \textit{perceptron} \cite{perceptron}, elle représente l'information en entrée codifié en un vecteur numérique $\chi$
+			\item \textbf{Une couche d'entrée : } cette couche est composée d'un ensemble de neurones ou \textit{perceptrons} \cite{perceptron}. Elle représente l'information en entrée codifié en un vecteur numérique $\chi$
 			
-			\item  \textbf{Une ou plusieurs couches cachées :} le cœur du réseau, c'est une succession de couche de neurones dont chaque couche $\omega_i$ reçoit un signal sous forme d'une ou plusieurs valeurs numériques depuis une couche antérieure $\omega_{i-1}$ ou bien la couche d'entrée $\chi$, puis envois en sortie un autre signal de même nature qui est une combinaison non-linéaire du signal en entrée vers une couche suivante $\omega_{i+1}$ ou bien la couche de sortie
+			\item  \textbf{Une ou plusieurs couches cachées :} le cœur du réseau, c'est une succession de couche de neurones où chaque couche $\omega_i$ reçoit un signal sous forme d'une ou plusieurs valeurs numériques depuis une couche antérieure $\omega_{i-1}$ ou bien la couche d'entrée $\chi$, puis envoit en sortie un autre signal de même nature qui est une combinaison non-linéaire du signal en entrée vers une couche suivante $\omega_{i+1}$ ou bien la couche de sortie
 			\item \textbf{Une couche de sortie :}
 			elle permet de calculer une valeur $y$ qui peut être vu comme la prédiction du modèle $\Phi$ par rapport à son entrée $\chi$ : 
 			\begin{equation}
 				y = f_\Phi(\chi)
 			\end{equation}
 		\end{itemize}
-		Le réseau calculera une erreur $e(y,\hat{y}$ en fonction de sa valeur en sortie et de la valeur exacte puis corrigera cette erreur au fur et à mesure du parcoure des données d'apprentissage \cite{mlp}
-		
+		Le réseau calcule une erreur $e(y,\hat{y})$ en fonction de sa valeur en sortie et de la valeur exacte puis corrigera cette erreur au fur et à mesure du parcours des données d'apprentissage \cite{mlp}
+			\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\linewidth]{images/notions/mlp.png}
+			\caption{Architecture basique d'un réseaux de neurones multicouches}
+			\label{mlp}
+		\end{figure}
+	
 		\subsubsection{Réseaux de neurones profonds}\label{part2DNN}
 		\paragraph{}
-		Les réseaux de neurones à une seule couche sont dit \textit{shallow}, ils présentaient l'avantage d'être assez rapide durant la phase d'apprentissage, cependant les limites computationnelle d'antan se sont vu vite brisées avec le développement de processeurs plus puissants, de plus avec l'explosion des données sur le web, toutes les conditions nécessaires pour la mise en place d'architectures plus complexes étaient réunies. Les réseaux de neurones profonds sont une adaptation des réseaux multi-couches classiques avec généralement plus de 3 couches cachées. \par même si le principe reste le même, l'apprentissage profond est puissant car les architectures les plus complexes permettent d'extraire automatiquement les caractéristiques qui sont importantes mais non visibles, c'est le cas des réseaux de neurones convolutif et récurrents \cite{dnn} 
+		Les réseaux de neurones à une seule couche sont dit \textit{shallow}. Ils présentaient l'avantage d'être assez rapide durant la phase d'apprentissage. Cependant les limites computationnelles d'antan se sont vu vite brisées avec le développement de processeurs plus puissants. De plus, avec l'explosion des données sur internet, toutes les conditions nécessaires étaient réunies pour la mise en place d'architectures plus complexes. Les réseaux de neurones profonds sont une adaptation des réseaux multi-couches classiques avec généralement plus de 3 couches cachées. 
+		\par 
+		Même si le principe reste le même, l'apprentissage profond est puissant car les architectures les plus complexes permettent d'extraire automatiquement les caractéristiques qui sont importantes mais non visibles, c'est le cas des réseaux de neurones convolutif et récurrents \cite{dnn} 
 		
 		\subsubsection{Réseaux de neurones récurrents}\label{seq2seqpart2}
 		\paragraph{}
-		Un aspect que les réseaux de neurones (profonds ou pas) ne peuvent capturé est la notion de séquentialité, en effet beaucoup de problèmes qui sont de nature séquentielle ne peuvent être modélisé par les architectures dites classiques, comme l'analyse d'un texte, l'introduction d'une notion de séquence permet donc de capturer des dépendances entre certains états et leurs voisins, on parle ici de contexte \cite{rnn_lstms}.
+		Un aspect que les réseaux de neurones (profonds ou pas) ne peuvent capturé est la notion de séquentialité. En effet beaucoup de problèmes qui sont de nature séquentielle ne peuvent être modélisés par les architectures dites classiques, comme l'analyse d'un texte. L'introduction d'une notion de séquence permet donc de capturer des dépendances entre certains états et leurs voisins, on parle ici de contexte \cite{rnn_lstms}.
 		\par 
-		Les réseaux de neurones récurrents (RNNs) sont des réseaux de neurones \textit{feedforward} dont certaines connections en sortie sont réintroduite comme entrées dans le réseau durant une étape ultérieur du processus d'apprentissage, ceci introduit la notion de temps dans l'architecture, ainsi à un instant $t$, un neurones récurrent recevra en entré la données $x^{(t)}$ ainsi que la valeur de l'état caché $h^{(t-1)}$ résultante de l'étape précédente du réseau, la valeur en sorite $\hat{y}^{(t)}$ est calculée en fonction de l'état caché $h^{(t)}$, les équations suivantes montrent les calculs effectués :
+		Les réseaux de neurones récurrents (RNNs) sont des réseaux de neurones \textit{feedforward} dont certaines connections en sortie sont réintroduite comme entrées dans le réseau durant une étape ultérieure du processus d'apprentissage. Ceci introduit la notion de temps dans l'architecture. Ainsi à un instant $t$, un neurone récurrent recevra en entrée la donnée $x^{(t)}$ ainsi que la valeur de l'état caché $h^{(t-1)}$ résultante de l'étape précédente du réseau, la valeur en sortie $\hat{y}^{(t)}$ est calculée en fonction de l'état caché $h^{(t)}$. Les équations suivantes montrent les calculs effectués \cite{rnn_lstmss} :
 		\begin{equation}
 			h^{(t)} = \tanh(W^{hx} \times x^{(t1)} + W^{hh} \times h^{(t-1)} + b_h)
 		\end{equation}
 		
 		\begin{equation}
-			\hat{y}^{(t)} = softmax(W^{hy} \ times h^{(t1)} + b_y)
+			\hat{y}^{(t)} = softmax(W^{hy} \times h^{(t1)} + b_y)
 		\end{equation}
 		
-		Où $W^{hx}$ est la matrice de poids entre la couche d'entrée et l'état caché et $W^{hh}$ est la matrice de poids de récurrence (entre l'état $t$ et $t-1$) les deux vecteurs $b_h$ et $b_y$ sont les vecteurs de biais et $\times$ est l'opération du produit matriciel\cite{rnn_lstms}
+		Où $W^{hx}$ est la matrice de poids entre la couche d'entrée et l'état caché et $W^{hh}$ est la matrice de poids de récurrence (entre l'état $t$ et $t-1$). Les deux vecteurs $b_h$ et $b_y$ sont les vecteurs de biais et $\times$ est l'opération du produit matriciel\cite{rnn_lstms}
 		
 		\begin{figure}[H]
 			\centering
@@ -86,11 +116,11 @@
 			\caption{Architecture interne d'un réseau de neurones récurrent à un instant $t$ \cite{rnns_online}}
 		\end{figure}
 		\par 
-		Un des principaux problèmes que rencontrent les RNNs est celui du \textit{Vanishing gradient} traduit par la \textit{Problème de disparition du gradient} \cite{vanishing_gradient}, les relations à long termes entre les séquences ne sont donc pas capturées. Ainsi, pour remédier à ce problème, des architectures de réseaux de neurones dotées d'un module de mémoire ont étés introduites.
+		Un des principaux problèmes que rencontrent les RNNs est celui du \textit{Vanishing gradient} traduit par le \textit{Problème de disparition du gradient} \cite{vanishing_gradient}. Les relations à long terme entre les séquences ne sont donc pas capturées. Ainsi, pour remédier à ce problème, des architectures de réseaux de neurones dotées d'un module de mémoire ont étés introduites.
 		
-		\subsubsection{Réseaux de neurones récurrents à mémoire court et long terme (LSTM)}
+		\subsubsection*{Réseaux de neurones récurrents à mémoire court et long terme (LSTM)}
 		\paragraph{}
-		Premièrement introduit en 1997 par \textit{	Sepp Hochreiter } et al. dans \cite{lstm_original_paper}, cette architecture de réseaux de neurones récurrents est dotée d'un système de \textit{portes} qui filtrent l'information qui y passe ainsi que d'un état interne de la cellule mémoire d'un LSTM , ainsi nous pouvons décortiquer les composantes d'une cellule LSTM (voir \ref{lstm_architecture}) comme suit : 
+		Introduite en 1997 par \textit{	Sepp Hochreiter } et al. dans \cite{lstm_original_paper}, cette architecture de réseaux de neurones récurrents est dotée d'un système de \textit{portes} qui filtrent l'information qui y passe ainsi que d'un état interne de la cellule mémoire d'un LSTM, les composantes d'une cellule LSTM (voir \ref{lstm_architecture}) sont détaillés dans ce qui suit : 
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=0.55\linewidth]{images/notions/lstm_arch.png}
@@ -98,7 +128,7 @@
 			\label{lstm_architecture}
 		\end{figure}
 		\begin{itemize}
-			\item \textbf{Porte d'entrée (Input gate): } C'est une unité de calcul qui laisse passer certaines informations en entrée en utilisant une fonction d'activation sigmoïde pour pondéré les composantes du vecteur d'entrée à une étape $t$ et celles du vecteur d'état interne à l'étape $t-1$ (1: laisser passer, 0: ne pas laisser passer) et ainsi générer un vecteur candidat $C_t$ \cite{lstm_original_paper}.
+			\item \textbf{Porte d'entrée (Input gate): } C'est une unité de calcul qui laisse passer certaines informations en entrée en utilisant une fonction d'activation sigmoïde pour pondérée les composants du vecteur d'entrée à une étape $t$ et celles du vecteur d'état interne à l'étape $t-1$ (1: laisser passer, 0: ne pas laisser passer) et ainsi générer un vecteur candidat $C_t$ \cite{lstm_original_paper}.
 			\begin{equation}
 			\begin{gathered}
 			i_t = \sigma(W_i \times [h_{t-1},x_t] + b_i) \\
@@ -114,7 +144,7 @@
 			\end{gathered}
 			\end{equation}
 			
-			\item \textbf{État interne de la cellule (Internal cell's state ): } C'est une sorte de convoyeur qui fait circuler l'information à travers la cellule, cet état est mis à jour à travers la combinaison des deux valeurs précédemment filtré par les portes $f_c$ et $i_c$\cite{lstm_original_paper}.
+			\item \textbf{État interne de la cellule (Internal cell's state ): } C'est une sorte de convoyeur qui fait circuler l'information à travers la cellule. Cet état est mis à jour à travers la combinaison des deux valeurs précédemment filtrées par les portes $f_c$ et $i_c$ \cite{lstm_original_paper}.
 			
 			\begin{equation}
 			\begin{gathered}
@@ -122,7 +152,7 @@
 			\end{gathered}
 			\end{equation}
 			 
-			\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état interne du réseau, la cellule filtre son vecteur d'état et le combine avec la donné en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \cite{rnns_online,lstm_original_paper,rnn_lstms}.
+			\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état interne du réseau, la cellule filtre son vecteur d'état et le combine avec la donnée en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \cite{rnns_online,lstm_original_paper,rnn_lstms}.
 			
 			\begin{equation}
 			\begin{gathered}
@@ -132,25 +162,15 @@
 			\end{equation}
 		\end{itemize}
 	
-	\subsubsection{Modèle basé N-grammes}
-	\label{n-grams}
+	\subsection{Modèle de Markov caché (Hidden Markov Models HMM)}
 	\paragraph{}
-	Très souvent quand il est nécessaire de traiter un ensemble de mots, phrases ou bien tout entité atomique qui constitue une séquence, il serait intéressant de pouvoir assigner une probabilité de vraisemblance à une séquence (de mots par exemple) en particulier. 
-	\par Dans un contexte textuel, un N-gramme est une suite de N mots consécutifs qui forment une sous-chaîne $S\prime$ d'une chaîne de caractères $S$. Un exemple d'un ensemble de bi-grammes (2-grammes) pour la phrase "Ouvre le fichier \textit{home}" serait donc : (Ouvre,le), (le,fichier), (fichier,\textit{home}).
-	\par 
-	Ainsi, en disposant d'un corpus de texte assez large et diversifié et d'une méthode de comptage efficace, il serait possible de calculer la vraisemblance d'apparition d'un mot $w$ après une certaine séquence de mots $t$ sous forme d'une probabilité $P$ \cite{nlp_ngrams}.
-	\begin{equation}
-		P(w|t) = \frac{Comptage(t,w)}{Comptage(t)}
-	\end{equation}
-	\subsubsection{Modèle de Markov caché (Hidden Markov Models HMM)}
-	\paragraph{}
-	Informellement, un modèle de Markov caché (HMM) est un outil de de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est assumé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de sont état à l'instant $t-1$, il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \cite{hmm_intro,markov_process}.
-	\par D'un façon plus formelle, un HMM est un 5-tuple $<(S,V,\Pi,A,B>$ \cite{hmm_formal} où :
+	Informellement, un modèle de Markov caché (HMM) est un outil de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est assumé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de son état à l'instant $t-1$. Il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \cite{hmm_intro,markov_process}.
+	\par D'un façon plus formelle, un HMM est un 5-tuples $<(S,V,\Pi,A,B>$ \cite{hmm_formal} où :
 	\begin{itemize}
 		\item $S = \lbrace s_1 ... s_N \rbrace$ est l'ensemble fini des $N$ états du processus sous-jacent.
-		\item $V = \lbrace v_1 ... v_M \rbrace$ est l'ensemble des $M$ symboles qui constituent un certain vocabulaire.
+		\item $V = \lbrace v_1 ... v_M \rbrace$ est l'ensemble des $M$ symboles qui constitue un certain vocabulaire.
 		\item $\Pi = \lbrace \pi_i \rbrace$ est une distribution initiale des probabilité d'états tel que $\pi_i$ est la probabilité de se trouver à l'état $i$ à l'instant $t=0$, bien évidement $\sum_{i=1}^{N} \pi_i = 1$ 
-		\item $A=\lbrace a_{ij} \rbrace$ est une matrice $NxN$ dont chaque entrée $a_{ij}$ est la probabilité de transition d'un état $i$ à un état $j$ avec $\sum_{j=1}^{N} a_{ij} = 1$ pour tout $i,j = 1...N$.
+		\item $A=\lbrace a_{ij} \rbrace$ est une matrice $N \times N$ dont chaque entrée $a_{ij}$ est la probabilité de transition d'un état $i$ à un état $j$ avec $\sum_{j=1}^{N} a_{ij} = 1$ pour tout $i,j = 1...N$.
 		\item $B=\lbrace b_i(v_k)\rbrace$ est l'ensemble des distribution de probabilités d'émission (ou d'observation), donc $b_i(v_k)$ est la probabilité de générer un symbole $v_k$ du vocabulaire étant donné un certain état $i$ avec $\sum_{k=1}^{M} b_{i}(v_k) = 1$ pour tout $i= 1...N$. 
 		
 		\begin{figure}[H]
@@ -162,38 +182,16 @@
 	\end{itemize}
 	\par
 	\newpage
-	Le but serait de trouver la séquence d'états $S_{1:K}$ qui maximiserait la probabilité \cite{hmm_intro} : 
+	Le but serait de trouver la séquence d'états $S_{1:K}$ qui maximise la probabilité \cite{hmm_intro} : 
 	\begin{equation}
 		P(Y_{1:K} | O_{1:K}) = P(O_1)P(O_1|S_1)\prod_{t=2}^{K}P(S_t|S_{t-1})P(O_t|S_t) 
 	\end{equation}
-	Pour y parvenir d'une manière efficace, un décodeur qui implémente l'algorithme de viterbi peut être utiliser \cite{viterbi,viterbi_hmm}
-\section{Schéma global d'un SPA}
-	\label{spaSchemSection}
-	\paragraph{}
-	Durant nos lectures des différents travaux sur le domaine, nous avons pu dresser un schéma assez générale qui englobe les principaux modules d'un SPA : 
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.75\linewidth]{images/SPA_diagram_2.png}
-		\caption{Schéma abstractif d'un SPA \cite{spa_arch}}
-		\label{fig:spaDiagram}
-	\end{figure}
-	\paragraph{}
-	Le processus peut être résumé en des étapes cruciales (qui seront détaillées dans les section suivante) : 
-	\begin{itemize}
-		\label{spaLifeCycle}
-		\item L'utilisateur énonce une requête en utilisant sa voix, le signal est ensuite transformé en sa version textuelle.
-		\item La requête étant sous un format textuel brut ne peut pas être interprété ou comprise par la machine, une représentation sémantique est générée qui compactera les principales informations contenues dans la requête, à savoir l'intentions de l'utilisateur et ses arguments.
-		\item Au fur et à mesure que l'utilisateur énonce des requête, le système doit pouvoir être capable d'utiliser le contexte du dialogue pour interagir avec ce dernier pour pouvoir atteindre le but final du dialogue (exécuter uen commande système, trouver des informations sur le web ou sur la machine locale ...), le gestionnaire du dialogue communique avec son environnement en utilisant la même représentation sémantique produite par l'analyse précédente.
-		\item Puisqu'il est préférable de cacher à l'utilisateur tout comportement interne au système, il sera préférable de transformer la trame sémantique (voir ~\ref{fig:semanticFrame}) en texte naturelle pour l'afficher en sortie.
-	\end{itemize}
-	\paragraph{}
-	Il est à noter que chacun des modules seront indépendant pour ce qu'il est de leur fonctionnement interne, ainsi aucun n'assumera un fonctionnement arbitraire des autres modules, seul le format des informations qui circulent entre eux devra être établi au préalable pour un fonctionnement durable et robuste au changement.
-	\paragraph{}
-	Pour ce qui en est de la suite du chapitre, nous allons présenter les différents modules ainsi que les techniques et architectures qui sont considérés comme étant l'état de l'art du domaine. 
+	Pour y parvenir d'une manière efficace, un décodeur qui implémente l'algorithme de viterbi peut être utilisé \cite{viterbi,viterbi_hmm}
+
 \section{Reconnaissance automatique de la parole (ASR)}
 	\paragraph{}
-	Le premier module qui compose le système est celui de la reconnaissance automatique de la parole (ASR), le but d'un tel système (ou sous-système dans notre cas) est de convertir un signal audio correspondant la locution d'un utilisateur en un texte qui peut être interprété par la machine \cite{asr_definition}. Différentes approches ont été développées au court des années, une architecture s'est ensuite dégagée, les systèmes passent par deux phases : La phase d'apprentissage et la phase de reconnaissance. La première consiste a collecter les données qui constituent le corpus d'apprentissage, un ensemble de fichiers audios avec leurs transcriptions en texte et en phonèmes, le signal est ensuite traité pour en extraire des vecteurs de caractéristiques (ou attributs), la suite de l'apprentissage consiste à initialiser le HMM, lui passer les vecteurs précédemment extraits puis de l'enregistrer pour la phase suivante qui est la reconnaissance. Dans la deuxième phase le signal audio passe par le même procédé d'extraction des attributs, en utilisant un algorithme de décodage approprié \cite{viterbi_hmm}, la séquence d'observations passe par le HMM et la meilleure séquence de mots est sélectionnée \cite{speech_reco_Yu2015}.
-	\par Une architecture assez générale s'est dégagée, quatre modules sont impliqués dans le processus de la reconnaissance, nous les citerons dans les sections qui suivent en énumérant les modèles utilisés dans chacun.
+	Le premier module qui compose le système est celui de la reconnaissance automatique de la parole (ASR). Le but d'un tel système (ou sous-système dans notre cas) est de convertir un signal audio correspondant à la locution d'un utilisateur en un texte qui peut être interprété par la machine \cite{asr_definition}. Différentes approches ont été développées au cours des années. Une architecture s'est ensuite dégagé où, les systèmes passent par deux phases : La phase d'apprentissage et la phase de reconnaissance. La première consiste à collecter les données qui constituent le corpus d'apprentissage, un ensemble de fichiers audios avec leurs transcriptions en texte et en phonèmes. Le signal est ensuite traité pour en extraire des vecteurs de caractéristiques (ou attributs). La suite de l'apprentissage consiste à initialiser le HMM, lui passer les vecteurs précédemment extraits puis l'enregistrer pour la phase suivante qui est la reconnaissance. Dans la deuxième phase, le signal audio passe par le même procédé d'extraction des attributs, en utilisant un algorithme de décodage approprié \cite{viterbi_hmm},puis la séquence d'observations passe par le HMM et la meilleure séquence de mots est sélectionnée \cite{speech_reco_Yu2015}.
+	\par Une architecture assez générale s'est dégagée. Quatre modules sont impliqués dans le processus de la reconnaissance, nous les citerons dans les sections qui suivent en énumérant les modèles utilisés dans chacun.
 	
 	\begin{figure}[H]
 		\centering
@@ -204,22 +202,41 @@
 	
 	\subsection{Acquisition du signale et extraction d'attributs}
 		\paragraph{}
-		l'étape consiste à extraire une séquence de vecteurs caractéristiques à partir du signal audio, fournissant une représentation compacte de ce dernier. Le processus démarre par la segmentation du signal en \textit{trames}, une transformation de fourrier est ensuite appliquée à ces dernières pour engendrer un spectre de magnitude qui sera ensuite passé à un module de transformation en spectre de Mel (Mel-Spectrum) qui est une sorte de changement d'échelle, finalement, une transformation inverse de fourrier est appliqué pour engendrer le Mel-Cpestrum qui est le vecteur d'attributs que nous recherchions \cite{asr_extraction}. Un tel processus peut utiliser plusieurs techniques pour la mise à l'échelle: MFCC (Mel-frequency cepstrum) \cite{MFCC}, LPC (Linear Predictive coding) \cite{LSP} et RASTA (RelAtive SpecTrAl) \cite{RASTA}, chacune possédant ses avantages et ses inconvénients.
+		L'étape consiste à extraire une séquence de vecteurs caractéristiques à partir du signal audio, fournissant une représentation compacte de ce dernier. Le processus démarre par la segmentation du signal en \textit{trames}. Une transformation de fourrier est ensuite appliquée pour engendrer un spectre de magnitude qui sera ensuite passé à un module de transformation en spectre de Mel (Mel-Spectrum) qui est une sorte de changement d'échelle. Finalement, une transformation inverse de fourrier est appliquée pour engendrer le Mel-Cpestrum qui est le vecteur d'attributs que nous recherchions \cite{asr_extraction}. Un tel processus peut utiliser plusieurs techniques pour la mise à l'échelle: MFCC (Mel-frequency cepstrum) \cite{MFCC}, LPC (Linear Predictive coding) \cite{LSP} et RASTA (RelAtive SpecTrAl) \cite{RASTA}, chacune possédant ses avantages et ses inconvénients.
 	\subsection{Modélisation acoustique et modélisation du lexique}
 		\paragraph{}
-		C'est le cœur du système de reconnaissance, le but est de construire un modèle permettant d'identifier une séquence de phonèmes à partir d'une séquence d'observations de vecteurs d'attributs, ceci peut être fait on utilisant un modèle HMM et en disposant d'un corpus de fichiers audio accompagnés de leurs transcriptions en phonèmes et en texte \cite{hmm_acoustic_model,hmm_formal}, ou bien un réseau de neurones profonds \cite{speech_reco_Yu2015}, ou encore une hybridation de ces derniers \cite{dnn-hmm_acoustic_model}. Le modèle acoustique procède après la reconnaissance de la séquence de phonèmes au décodage de ce derniers, ceci est fait en utilisant un dictionnaire linguistique qui transcrit chaque mots du vocabulaire en les phonèmes qui le constituent, ceci peut induire à un cas d'ambiguïté où plusieurs mots peuvent avoir la même transcription phonétique (ou bien aucun mot ne correspond à cette séquence). Pour lever cette ambiguïté un modèle de langue est nécessaire pour décider quelle est la séquence de mots la plus probable qui coïncide avec la séquence de phonèmes observée.  
+		C'est le cœur du système de reconnaissance. Le but est de construire un modèle permettant d'identifier une séquence de phonèmes à partir d'une séquence d'observations de vecteurs d'attributs. Ceci peut être fait en utilisant un modèle HMM et en disposant d'un corpus de fichiers audio accompagnés de leurs transcriptions en phonèmes et en texte \cite{hmm_acoustic_model,hmm_formal}, ou bien un réseau de neurones profonds \cite{speech_reco_Yu2015}, ou encore une hybridation de ces derniers \cite{dnn-hmm_acoustic_model}. Le modèle acoustique procède après la reconnaissance de la séquence de phonèmes au décodage de ce dernier. Ceci est effectué en utilisant un dictionnaire linguistique qui transcrit chaque mots du vocabulaire en phonèmes qui le constituent. Ceci peut conduire à un cas d'ambiguïté où plusieurs mots peuvent avoir la même transcription phonétique (ou bien aucun mot ne correspond à cette séquence). Pour lever cette ambiguïté un modèle de langue est nécessaire pour décider quelle est la séquence de mots la plus probable qui coïncide avec la séquence de phonèmes observée.  
 	\subsection{Modélisation de la langue}
 		\paragraph{}
-		Cette étape consiste à modéliser les aspects linguistiques de la langue que le système essaye de traiter, souvent spécifique au domaine d'application pour restreindre l'espace de recherche des mots reconnaissables par ce dernier et déterminer la séquence de mots en sortie la plus plausible. les modèles utilisés sont basé soit sur des grammaires à contexte libre dans le cas où les séquences de mots reconnaissables sont peut variées et peuvent être modélisées par le biais de règles de la langue \cite{LM_grammar}. Dans un cadre plus récent, les modèles probabilistes basé sur les N-grammes sont utilisés. Disposant d'un volume de données textuelles assez conséquent, l'utilisation de modèle basés sur les N-grammes ont prouvé leurs utilité \cite{nlp_ngrams,speech_reco_Yu2015,LM_n-grams}
+		Cette étape consiste à modéliser les aspects linguistiques de la langue que le système essaye de traiter. Souvent ces aspects sont spécifique au domaine d'application afin de restreindre l'espace de recherche des mots reconnaissables par le système afin de déterminer la séquence de mots en sortie la plus plausible. Les modèles utilisés sont basés soit sur des grammaires à contexte libre dans le cas où les séquences de mots reconnaissables sont peu variées et peuvent être modélisées par le biais de règles de la langue \cite{LM_grammar}. Dans un cadre plus récent, des modèles probabilistes basés sur les N-grammes sont utilisés. 
+		\par
+		\label{n-grams}
+		Très souvent quand il est nécessaire de traiter un ensemble de mots, phrases ou bien toute entité atomique qui constitue une séquence, il est intéressant de pouvoir assigner une probabilité de vraisemblance à une séquence en particulier (par exemple une séquence de mots). 
+		\par Dans un contexte textuel, un N-gramme est une suite de N mots consécutifs qui forment une sous-chaîne $S\prime$ d'une chaîne de caractères $S$. Un exemple d'un ensemble de bi-grammes (2-grammes) pour la phrase "Ouvre le fichier \textit{home}" serait donc : (Ouvre,le), (le,fichier), (fichier,\textit{home}).
+		\par 
+		Ainsi, en disposant d'un corpus de texte assez large et diversifié et d'une méthode de comptage efficace, il serait possible de calculer la vraisemblance d'apparition d'un mot $w$ après une certaine séquence de mots $t$ sous forme d'une probabilité $P$ \cite{nlp_ngrams}.
+		\begin{equation}
+		P(w|t) = \frac{Comptage(t,w)}{Comptage(t)}
+		\end{equation}
+		\par
+		Disposant d'un volume de données textuelles assez conséquent, l'utilisation de modèle basés sur les N-grammes ont prouvé leurs utilité \cite{nlp_ngrams,speech_reco_Yu2015,LM_n-grams} .
 		
 		
 \section{Compréhension du langage naturel (NLU)}
 	\paragraph{}
 	\label{nlu_chap2}
-	Après avoir obtenu la requête de l'utilisateur, le module qui prend le relai est celui de la compréhension du langage naturel. Ce domaine fait partie du traitement automatique du langage naturel (NLP), il est principalement focalisé sur les tâches qui traitent le niveau sémantique voir même pragmatique de la langue tel que la classification de texte, l'analyse de sentiments ou encore le traitement automatiques des e-mails. Dans le contexte d'un SPA, le but final d'un module de compréhension du langage naturel est de construire une représentation sémantique de la requête de l'utilisateur, étant donné une telle requête préalablement transformé en texte brut dans un langage naturel le module essayera d'en extraire une information primordiale qui est l'intention du locuteur. Une intention (ou intent) est une abstraction sémantique d'un but ou d'un sous-but de l'utilisateur, plusieurs requêtes de l'utilisateur peuvent avoir le même intent, ce qui rend l'utilisation d'une telle représentation essentielle pour que la machine puise mieux comprendre l'utilisateur.
+	Après avoir obtenu la requête de l'utilisateur, le module qui prend le relais est celui de la compréhension du langage naturel. Ce domaine fait partie du traitement automatique du langage naturel (NLP). Il se focalise principalement sur les tâches qui traitent le niveau sémantique voir même pragmatique de la langue tel que la classification de texte, l'analyse de sentiments ou encore le traitement automatiques des e-mails. Dans le contexte d'un SPA, le but final d'un module de compréhension du langage naturel est de construire une représentation sémantique de la requête de l'utilisateur. Étant donné une telle requête préalablement transformé en texte brut dans un langage naturel, le module essayera d'en extraire une information primordiale qui est l'intention du locuteur.
+	
+	\subsection{L'intention}
+	\paragraph{}
+	L'intention est un élément clé dans notre travail. Nous allons donc la définir et expliquer pourquoi elle a été choisis comme abstraction sémantique d'une requête d'un utilisateur. \par
+	
+	Une intention (ou intent en anglais) est une représentation sémantique d'un but ou d'un sous-but de l'utilisateur, plusieurs requêtes de l'utilisateur peuvent avoir le même intent, ce qui rend l'utilisation d'une telle représentation essentielle pour que la machine puise mieux comprendre l'utilisateur. La motivation vient du fait que la machine ne peut pas comprendre une requête formulé dans un langage non-formel. Il a fallu trouvé un moyen de communication universel entre la machine et l'utilisateur de telle sorte que l'un puisse comprendre l'autre sans parler sa langue. L'intermédiaire entre ces deux parties est un traducteur bidirectionnel requête en langage naturel vers requête dans un langage formel et inversement. 
+	\par Le choix de l'intention doit être minutieusement étudié au préalable pour ne pas trop subdiviser un type d'intention, tout en gardant un certain degré de spécificité. À titre d'exemple, si deux intentions $Ouvrir_fichier$ et $Ouvrir_document$ existent, on retrouve ici une répétition de l'information $fichier$ qui est aussi un $document$. Dans ce cas il suffit d'éliminer un synonyme pour ne garder qu'un seul cas. \par
+	Un autre cas est celui du sur-découpage d'intentions déjà assez semblable, $Ouvrir_fichier$ et $Ouvrir_Repertoire$ peuvent être regroupés en une seul intention $Ouvrir_Entité$. Bien-sur ces choix sont purement conceptuel et dépendent fortement du problème traité par le système, choisir une représentation à la place d'une autre est lié à la nature de la tâche que le module doit réaliser \cite{intent_classification,intent_slots}
 	\subsection{Classification d'intentions}
 		\paragraph{}
-		La classification d'intentions à partir d'un texte est une tâche réalisable avec des techniques récentes d'apprentissage automatique, plus précisément en utilisant des modèles basé sur les réseaux de neurones récurrents à mémoire court et long terme (LSTM) (voir \ref{lstm_architecture}). Dans \cite{intent_classification} et \cite{intent_slots} deux architectures ont fait leurs preuves, dans le premier travail les auteurs ont utilisé une architecture BLSTM (LSTM Bidirectionnel) pour capturer les contextes droit et gauche d'un mot donné \cite{blstm}, le dernier état caché retourné par la cellule LSTM est ensuite utilisé pour la classification, une couche d'attention est ajoutée \cite{attention_mechanism} pour permettre au modèle de se focaliser sur certaines parties du texte en entrée. La deuxième architecture est un peu plus simpliste, en effet elle utilise des cellules LSTM basiques avec une couche de classification sur le dernier état, l'avantage est le temps d'apprentissage assez réduit au détriment d'une erreur de classification moins accrue mais toujours dans les normes.
+		La classification d'intentions à partir d'un texte est une tâche réalisable avec des techniques récentes d'apprentissage automatique, plus précisément en utilisant des modèles basé sur les réseaux de neurones récurrents à mémoire court et long terme (LSTM) (voir la section \ref{lstm_architecture}). Dans \cite{intent_classification} et \cite{intent_slots} deux architectures ont fait leurs preuves. Dans le premier travail, les auteurs ont utilisé une architecture BiLSTM (LSTM Bidirectionnel) pour capturer les contextes droit et gauche d'un mot donné \cite{blstm}. Le dernier état caché retourné par la cellule LSTM est ensuite utilisé pour la classification. Une couche d'attention est ajoutée \cite{attention_mechanism} pour permettre au modèle de se focaliser sur certaines parties du texte en entrée. La deuxième architecture est un peu plus simpliste. En effet elle utilise des cellules LSTM basiques avec une couche de classification sur le dernier état. L'avantage par rapport à la première architecture est le temps d'apprentissage assez réduit au détriment d'une erreur de classification plus accrue mais toujours dans les normes.
 		\begin{figure}[H]
 			\centering
 			\label{LSTM_intent}
@@ -228,20 +245,20 @@
 		\end{figure}
 	\subsection{Extraction d'entités}
 		\paragraph{}
-		Déterminer l'intention d'un utilisateur ne s'arrête pas qu'au stade de l'identification de ce dit \textit{intent}, en effet pour mieux représenter l'information récoltée depuis la requête il faut en extraire des entités (nommés ou spécifiques au domaine) qui seront des arguments de l'intent identifié, cette tâche consiste donc à, pour un intent $I$ donné, extraire les arguments $Args$ qui lui sont appropriés depuis le texte de la requête. Plusieurs approches sont possibles, dans \cite{intent_slots} les auteurs ont taclé le problème comme étant la traduction d'une séquence de mots en entrée en une séquence d'entités en sortie, le schéma suivant explicite le processus :
+		Déterminer l'intention d'un utilisateur ne s'arrête pas qu'au stade de l'identification de l'\textit{intent}. En effet, pour mieux représenter l'information récoltée depuis la requête, il faut en extraire des entités (nommés ou spécifiques du domaine) qui seront des arguments de l'intent identifié. Cette tâche consiste donc à, pour un intent $I$ donné, extraire les arguments $Args$ qui lui sont appropriés depuis le texte de la requête. Plusieurs approches sont possibles, dans \cite{intent_slots} les auteurs ont taclé le problème comme étant la traduction d'une séquence de mots en entrée en une séquence d'entités en sortie, le schéma suivant explicite le processus :
 		\begin{figure}[H]
 			\centering
-			\includegraphics[width=0.80\linewidth]{images/NLU/seq2seq.png}
+			\includegraphics[width=0.85\linewidth]{images/NLU/seq2seq.png}
 			\caption{Architecture de base d'un classificateur d'intents doublé d'un extracteur d'entité \cite{intent_slots}}
 			\label{fig:lstmslots}
 		\end{figure} 
 	\subsection{Analyse sémantique}
 		\paragraph{}
-		Disposant des deux modèles précédemment cités, le module NLU peut maintenant construire une représentation sémantique adéquate qui va être transmise au module suivant qui sera le gestionnaire du dialogue, l'avantage d'voir en sortie une structure sémantique universelle est la non dépendance par rapport à la langue de l'utilisateur, en effet le système pourra encore fonctionner si une correspondance entre la nouvelle langue et le format choisi pour la représentation sémantique peut être trouvée. Le module donnera donc en sortie une trame sémantique (Semantic frame) qui comprendra les informations préalablement extraites, à savoir l'intent et les arguments (slots) qui lui sont propres \cite{intent_classification,intent_slots,semantic_frame}.
+		Disposant des deux modèles précédemment cités, le module NLU peut maintenant construire une représentation sémantique adéquate qui va être transmise au module suivant qui sera le gestionnaire du dialogue. L'avantage d'avoir en sortie une structure sémantique universelle est la non dépendance par rapport à la langue de l'utilisateur. En effet, le système pourra encore fonctionner si une correspondance entre la nouvelle langue et le format choisi pour la représentation sémantique peut être trouvée. Le module donnera donc en sortie une trame sémantique (Semantic frame) qui comprendra les informations préalablement extraites, à savoir l'intent et les arguments (slots) qui lui sont propres \cite{intent_classification,intent_slots,semantic_frame}.
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=0.80\linewidth]{images/NLU/semantic_frames.png}
-			\caption{Example d'une trame sémantique pour une requête donnée}
+			\caption{Exemple d'une trame sémantique pour une requête donnée}
 			\label{fig:semanticFrame}
 		\end{figure} 
 \section{Gestion du dialogue}
