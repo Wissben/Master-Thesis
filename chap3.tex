@@ -156,31 +156,30 @@ Le but de ce module est de décider quelle action à prendre à chaque instant d
 Comme nous avons déjà vu, l'architecture typique des gestionnaires de dialogue se compose de deux parties principales: 
 \begin{itemize}
 	\item Un module qui suit l'état du dialogue: Pour gérer le dialogue avec l'utilisateur, le gestionnaire doit représenter l'état du dialogue de façon à pouvoir répondre aux actions de l'utilisateur. Ce module sert à suivre cet état après chaque étape du dialogue.
-	\item Une politique d'action: Celle-ci détermine l'action à prendre à partir d'un état donné.
+	\item Une politique d'actions: Celle-ci détermine l'action à prendre à partir d'un état donné.
 \end{itemize}
 \subsubsection{État du dialogue}
-Avant de détailler les deux modules du gestionnaire. Il est nécessaire d'introduire une représentation de l'état du dialogue. Classiquement, les trames sémantiques ont été utilisées (voir \ref{trame}). Le suivi d'état se fait dans ce cas en gardant trace des emplacements remplis durant le dialogue.
-Nous avons opter à utiliser une représentation plus riche; les graphes de connaissances sont une forme de représentation où les connaissances sont décrites sous forme d'un graphe orienté étiqueté. Des travaux ont déjà utilisé des graphes de connaissances\cite{Stoyanchev2018} et des ontologies\cite{Wessel2019} pour représenter l'état du système de dialogue. À partir de ce dernier une base de règles décide quelle action à prendre directement du graphe de connaissances. L'avantage par rapport à l'utilisation des trames sémantiques apparaît dans la flexibilité et le dynamisme des graphes de connaissances. En effet, pour une tâche comme la navigation dans les fichiers, l'état de l'arborescence des fichiers est sujet à des changements fréquents: ajout, suppression, modification, etc. Il est difficile de faire une représentation de l'information dans ce cas avec de simples emplacements à remplir.
-\subsubsection{Le suivi de l'état du dialogue}
-Le rôle du premier module est de mettre à jour l'état du système au cours du dialogue. Il reçoit l'action de l'utilisateur ou du gestionnaire et il produit un nouvel état.\\
-Dans notre cas, le module NLU produit toujours une trame sémantique contenant l'intention de l'utilisateur ainsi que ses paramètres. C'est alors le travail du traqueur d'état d'injecter le résultat du NLU dans le graphe de connaissances. Ceci consiste à transformer la trame sémantique en un graphe qui est ensuite ajouté au graphe d'état. Plus de détails seront donnés dans la section \ref{onto} où nous construirons une ontologie pour définir un vocabulaire de dialogue et comment elle peut être utilisé pour passer du résultat du NLU en un graphe de connaissances.
+Avant de détailler les deux modules du gestionnaire. Il est nécessaire d'introduire une représentation de l'état du dialogue. Classiquement, les trames sémantiques ont été utilisées dans ce but (voir \ref{trame}). Le suivi d'état se fait dans ce cas en gardant trace des emplacements remplis durant le dialogue.
+Nous avons opté pour l'utilisqtion d'une représentation plus riche, les graphes de connaissances, qui sont une forme de représentation où les connaissances sont décrites sous forme d'un graphe orienté étiqueté. Des travaux ont déjà utilisé des graphes de connaissances \cite{Stoyanchev2018} et des ontologies \cite{Wessel2019} pour représenter l'état du système de dialogue. À partir de ce dernier une base de règles décide quelle action prendre directement du graphe. L'avantage d'utiliser des graphes de connaissances par rapport à l'utilisation des trames sémantiques apparaît dans leur flexibilité et dynamisme. En effet, pour une tâche comme la navigation dans les fichiers, l'état de l'arborescence des fichiers est sujet à des changements fréquents: ajout, suppression, modification, etc. Il est difficile de faire une représentation de l'information dans ce cas avec de simples emplacements à remplir.
+\subsubsection{Suivi de l'état du dialogue}
+Le rôle du premier module est de mettre à jour l'état du système au cours du dialogue. Il reçoit l'action de l'utilisateur ou du gestionnaire et il produit un nouvel état. Dans notre cas, le module NLU produit toujours une trame sémantique contenant l'intention de l'utilisateur ainsi que ses paramètres. C'est alors le travail du traqueur d'état d'injecter le résultat du module NLU dans le graphe de connaissances. Ceci consiste à transformer la trame sémantique en un graphe qui est ensuite ajouté au graphe d'états. Plus de détails seront donnés dans la section \ref{onto} où nous construirons une ontologie pour définir un vocabulaire de dialogue et comment elle peut être utilisée pour passer du résultat du module NLU en un graphe de connaissances.
 \begin{figure}[H] 
 	
 	\centering
-	\includegraphics[width=0.6\linewidth]{images/Conception/DM/Transformer.png}
-	\caption{Schéma de transformation de trame sémqntique en graphe}
+	\includegraphics[width=0.8\linewidth]{images/Conception/DM/Transformer.png}
+	\caption{Schéma de transformation de trame sémantique en graphe}
 \end{figure}\label{transformer}
-\subsubsection{La politique d'action}
-La politique d'action peut être écrite manuellement, apprise à partir d'un corpus ou avec l'apprentissage par renforcement. Dans ce dernier cas, un agent doit interagir avec un utilisateur qui évalue ses performances afin qu'il puisse apprendre. Étant donné que l'apprentissage par renforcement nécessite un nombre important d'interactions, il est primordial d'utiliser un simulateur d'utilisateur. Ce dernier peut être basé règles, ou un modèle statistique extrait à partir d'un corpus de dialogue.\\
-Dans les trois cas de figure, il est difficile de réaliser un modèle varié et qui peut accomplir plusieurs tâches. D'un coté, un corpus contenant des dialogues sur toutes les tâches possibles est difficile à acquérir, si ces derniers sont nombreux et spécifiques à une application précise. De l'autre coté, écrire les règles d'un système de dialogue ou d'un simulateur d'utilisateur s'avère compliqué et nécessite un travail manuel énorme pour gérer toutes les tâches possibles.\\
-Pour pallier à cela, nous proposons d'utiliser une architecture multi-agents hiérarchique. Dans laquelle, les agents feuilles sont des agents qui peuvent répondre à une tâche ou une sous tâche bien précise. Tandis que les agents parents sélectionnent l'agent fils capable de répondre à l'intention de l'utilisateur.
+\subsubsection{La politique d'actions}
+La politique d'actions peut être écrite manuellement, apprise à partir d'un corpus ou à l'aide de l'apprentissage par renforcement. Dans ce dernier cas, un agent doit interagir avec un utilisateur qui évalue ses performances afin qu'il puisse apprendre. Étant donné que l'apprentissage par renforcement nécessite un nombre important d'interactions, il est primordial d'utiliser un simulateur d'utilisateur. Ce dernier peut être à base de règles, ou un modèle statistique extrait à partir d'un corpus de dialogue.
+\par Dans les trois cas de figure, il est difficile de réaliser un modèle varié et qui peut accomplir plusieurs tâches. D'un coté, un corpus contenant des dialogues sur toutes les tâches possibles est difficile à acquérir, si ces derniers sont nombreux et spécifiques à une application précise. De l'autre coté, écrire les règles d'un système de dialogue ou d'un simulateur d'utilisateur s'avère compliqué et nécessite un travail manuel énorme pour gérer toutes les tâches possibles.
+\par Pour pallier à cela, nous proposons d'utiliser une architecture multi-agents hiérarchique dans laquelle les agents feuilles sont des agents qui peuvent répondre à une tâche ou une sous-tâche bien précise, tandis que les agents parents sélectionnent l'agent fils capable de répondre à l'intention de l'utilisateur.
 \begin{figure}[H] 
 	
 	\centering
-	\includegraphics[width=0.6\linewidth]{images/Conception/DM/multiagent.png}
-	\caption{Schéma de l'architecture multi-agents}
+	\includegraphics[width=0.8\linewidth]{images/Conception/DM/multiagent.png}
+	\caption{Schéma de l'architecture multi-agents pour la gestion du dialogue}
 \end{figure}\label{multiagent}
-L'avantage d'une telle architecture est de permettre la division du problème en plusieurs sous-problèmes indépendants. En effet, un simulateur d'utilisateur ou un corpus qui sont destinés pour une seule tâche sont considérablement plus abordables à créer. De plus, cette architecture permet un développement incrémental dans le sens où elle facilite l'addition d'une nouvelle tâche pour l'assistant; il suffit d'ajouter des agents capable de traiter cette tâche à l'architecture. Cependant, un travail supplémentaire s'avère nécessaire qui est celui des agents parents. Ce travail est relativement simple, il suffit de faire un apprentissage supervisé des agents parents avec les simulateurs d'utilisateurs des agents fils. À tour de rôle et avec des probabilités de transitions entre les simulateurs d'utilisateurs, ces derniers communique avec l'agent parent. Comme on connaît pour chaque simulateur l'agent fils qui lui correspond, il est donc possible de faire un apprentissage supervisé où les entrées sont les actions des simulateurs et l'état du système, tandis que la sortie est l'agent fils qui peut répondre à l'action.
+L'avantage de l'architecture multi-agents hiérarchique est de permettre la division du problème en plusieurs sous-problèmes indépendants. En effet, un simulateur d'utilisateur ou un corpus qui sont destinés pour une seule tâche sont considérablement plus abordables à créer. De plus, cette architecture permet un développement incrémental dans le sens où elle facilite l'addition d'une nouvelle tâche pour l'assistant; il suffit d'ajouter des agents capables de traiter cette nouvelle tâche à l'architecture. Cependant, un travail supplémentaire s'avère nécessaire qui est celui des agents parents. Ce travail est relativement simple, il suffit de faire un apprentissage supervisé des agents parents avec les simulateurs d'utilisateurs des agents fils. À tour de rôle et avec des probabilités de transitions entre les simulateurs d'utilisateurs, ces derniers communiquent avec l'agent parent. Comme on connaît pour chaque simulateur l'agent fils qui lui correspond, il est donc possible de faire un apprentissage supervisé où les entrées sont les actions des simulateurs et l'état du système, tandis que la sortie est l'agent fils qui peut répondre à l'action.
 \begin{figure}[H] 
 	
 	\centering
@@ -188,7 +187,7 @@ L'avantage d'une telle architecture est de permettre la division du problème en
 	\caption{Schéma représentant l'apprentissage des agents parents avec les simulateurs des agents feuilles}
 \end{figure}\label{train_parent}
 \paragraph{}
-Pour résumer l'architecture globale du gestionnaire de dialogue, lorsque une nouvelle action utilisateur arrive au système, le traqueur d'état la reçoit. Il met à jour l'état du système en transformant l'action en un graphe de connaissances pour l'ajouter au graphe d'état. Ce nouvel graphe d'état ainsi que la dernière action reçue sont transmis à une architecture multi-agents hiérarchique qui va décider quelle action le système de dialogue doit prendre.
+Pour résumer l'architecture globale du gestionnaire de dialogue, lorsqu'une nouvelle action utilisateur arrive au système, le traqueur d'état la reçoit et met à jour l'état du système en transformant l'action en un graphe de connaissances pour l'ajouter au graphe d'état. Ce nouveau graphe d'état ainsi que la dernière action reçue sont transmis à une architecture multi-agents hiérarchique qui va décider quelle action le système de dialogue doit prendre.
 \begin{figure}[H] 
 	
 	\centering
@@ -196,26 +195,26 @@ Pour résumer l'architecture globale du gestionnaire de dialogue, lorsque une no
 	\caption{Schéma global du gestionnaire de dialogue}
 \end{figure}\label{globalDM}
 \subsection{Les ontologies du système}\label{onto}
-Une ontologie est une représentation des concepts et des relations d'un domaine donné. Elle définit un vocabulaire pour ce domaine afin de permettre aux programmes intelligents de comprendre  et de communiquer sur des données reliées à ce domaine.\\
-Nous définissons une ontologie de dialogue ainsi que des ontologies pour chaque tâche réalisable par notre assistant. Ce qui permettra à notre gestionnaire de comprendre le dialogue et les tâches qu'il peut réaliser.
+\paragraph{}Une ontologie est une représentation des concepts et des relations d'un domaine donné. Elle définit un vocabulaire pour ce domaine afin de permettre aux programmes intelligents de comprendre  et de communiquer sur des données reliées à ce domaine.
+\par Nous définissons une ontologie de dialogue ainsi que des ontologies pour chaque tâche réalisable par notre assistant. Ceci permettra à notre gestionnaire de comprendre le dialogue et les tâches qu'il peut réaliser.
 \subsubsection{Ontologie de dialogue}\label{onto1}
-D'abord on définit une ontologie de dialogue qui contient des concepts qui peuvent aider un assistant d'ordinateur pour gérer son dialogue.
+Nous définissons en premier une ontologie de dialogue qui contient des concepts qui peuvent aider un assistant d'ordinateur à gérer son dialogue.
 \begin{figure}[H] 
 	
 	\centering
-	\includegraphics[width=0.95\linewidth]{images/Conception/DM/main_onto.png}
+	\includegraphics[width=1.1\linewidth]{images/Conception/DM/main_onto.png}
 	\caption{Graphe de l'ontologie de dialogue}
 \end{figure}\label{mail_onto}
 Principalement l'ontologie se compose de six classes mères:
 \begin{itemize}
 	\item $Agent$ et $User$: ce sont les classes qui représentent l'utilisateur et l'agent qui participent au dialogue.
-	\item $Dialogue$: l'agent et l'utilisateur participe à un dialogue, ce dernier contient les actions des deux participants.
-	\item $Dialogue\_act$: la classe qui représente une action du dialogue, elle a deux sous-classes $Agent\_act$ et $User\_act$ qui représentent les actions de l'agent et de l'utilisateur respectivement.
-	\item $Act\_parameter$: C'est la classe mère des paramètres que peuvent prendre les actions de dialogue. Par exemple, l'action d'informer peut avoir en paramètre le nom d'un fichier.
+	\item $Dialogue$: l'agent et l'utilisateur participent à un dialogue; ce dernier contient les actions des deux participants.
+	\item $Dialogue\_act$: il s'agit de la classe qui représente une action du dialogue, elle a deux sous-classes $Agent\_act$ et $User\_act$ qui représentent les actions de l'agent et de l'utilisateur respectivement.
+	\item $Act\_parameter$: C'est la classe mère des paramètres que peuvent prendre les actions de dialogue. Par exemple, l'action d'informer peut avoir comme paramètre le nom d'un fichier.
 	\item $Desire$: C'est la classe mère des actions de l'agent que l'utilisateur peut demander. Par exemple, il peut demander l'ouverture d'un fichier donné.
 \end{itemize}
-Le reste des classes sont des classes filles qui détaillent plus les concepts du dialogue agent-utilisateur.\\
-À l'arriver d'une nouvelle action, le traqueur d'état va créer le graphe correspondant. Un exemple abstrait de cela est représenté dans la figure \ref{abstract_onto}. Une nouvelle action utilisateur est créée ainsi que ses paramètres et les relations entre eux.
+Le reste des classes sont des classes filles qui détaillent plus les concepts du dialogue agent-utilisateur.
+\par À l'arriver d'une nouvelle action, le traqueur d'état va créer le graphe correspondant. Un exemple abstrait de cela est représenté dans la figure \ref{abstract_onto}. Une nouvelle action utilisateur est créée ainsi que ses paramètres et les relations entre eux.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.88\linewidth]{images/Conception/DM/abstract_onto.png}
@@ -227,16 +226,16 @@ Un exemple d'ontologie pour la compréhension d'une tâche réalisable par l'ass
 \begin{figure}[H] 
 	
 	\centering
-	\includegraphics[width=0.95\linewidth]{images/Conception/DM/onto_browser.png}
+	\includegraphics[width=1.1\linewidth]{images/Conception/DM/onto_browser.png}
 	\caption{Graphe de l'ontologie de l'exploration de fichiers}
 \end{figure}\label{onto_browser}
 L'ontologie contient essentiellement:
 \begin{itemize}
-	\item Des actions sur les fichiers: Créer un fichier, supprimer un fichier, changer de répertoire, etc. Ces actions sont des sous-classes de la classe  $Agent\_act$ vu précédemment ainsi que les classes $Act\_parameter$ et $Desire$. Ce qui veut dire, d'un coté, que ces actions peuvent être des paramètres d'autres actions, comme demander à l'utilisateur s'il veut que l'assistant réalise une action donné, et d'un autre coté, que l'utilisateur peut demander à l'assistant de faire une de ces actions. 
-	\item Les concepts qui ont relation avec l'exploration de fichiers sont des sous-classes de $Act\_parameter$ étant donné qu'ils peuvent  être des paramètres d'actions, par exemple l'action d'ouvrir un fichier a comme paramètre un fichier.
-	\item Des relations entre ces concepts sont aussi définies comme un répertoire peut contenir des fichiers, ou une action de changement de répertoire doit avoir comme paramètre un répertoire cible.
+	\item Des actions sur les fichiers: Créer un fichier, supprimer un fichier, changer de répertoire, etc. Ces actions sont des sous-classes de la classe  $Agent\_act$ vue précédemment ainsi que les classes $Act\_parameter$ et $Desire$. Ceci veut dire, d'un côté, que ces actions peuvent être des paramètres d'autres actions, comme "demander à l'utilisateur s'il veut que l'assistant réalise une action donnée" et d'un autre côté, que l'utilisateur peut demander à l'assistant d'effectuer une de ces actions. 
+	\item Les concepts qui sont liés à l'exploration de fichiers sont des sous-classes de $Act\_parameter$ étant donné qu'ils peuvent  être des paramètres d'actions. Par exemple, l'action d'ouvrir un fichier a comme paramètre un fichier.
+	\item Des relations entre concepts sont aussi définies. Par exemple, un répertoire peut contenir des fichiers, ou une action de changement de répertoire doit avoir comme paramètre un répertoire cible.
 \end{itemize}
-La figure \ref{nonabstract_onto} représente l'arrivé d'une nouvelle action: "créer un fichier nommé 'travail'". l'action de l'utilisateur est donc représentée par un nouveau n\oe{}ud de type $U\_act\_desire$ qui désigne une action utilisateur qui demande une action de l'assistant. Cette dernière a comme paramètre un n\oe{}ud de type $Create\_file$ qui est l'action de l'agent que l'utilisateur veut réaliser. Cette action à son tour a des paramètres comme, dans ce cas, le fichier qu'on veut créer.
+La figure \ref{nonabstract_onto} représente l'arrivé d'une nouvelle action: "créer un fichier nommé 'travail'". L'action de l'utilisateur est donc représentée par un nouveau n\oe{}ud de type $U\_act\_desire$ qui désigne une action utilisateur qui demande une action de l'assistant. Cette dernière a comme paramètre un n\oe{}ud de type $Create\_file$ qui est l'action de l'agent que l'utilisateur veut réaliser. Cette action à son tour a des paramètres comme, dans ce cas, le fichier qu'on veut créer.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.88\linewidth]{images/Conception/DM/nonabstract_onto.png}
@@ -245,12 +244,12 @@ La figure \ref{nonabstract_onto} représente l'arrivé d'une nouvelle action: "c
 \end{figure}
 Similairement, les graphes des autres actions sont créées en se basant sur des règles de transformation.
 \subsection{Les simulateurs d'utilisateurs}
-Plusieurs méthodes peuvent être utilisées pour la création de simulateurs d'utilisateurs (voir \ref{usersim}). Les simulateurs basés sur des méthodes d'apprentissage sont les plus robustes. Cependant, ils nécessitent un nombre important de données. L'alternative c'est d'utiliser des simulateurs basés règles. Nous nous sommes inspirés des simulateurs basés agenda\cite{Schatzmann2007} qui sont des variantes des simulateurs basés règles pour créer nos propres simulateurs. Leur fonctionnement est simple, Ils commencent par générer un but. Pour y arriver, une agenda est créée, celle-ci contient les informations que doit convoyer le simulateur ainsi que les informations qu'il doit recevoir. Les actions sont sélectionnées en suivant des probabilités conditionnelles sur l'état de l'agenda. Enfin, les récompenses sont en fonction des informations reçues de l'agent.
+Plusieurs méthodes peuvent être utilisées pour la création de simulateurs d'utilisateurs (voir \ref{usersim}). Les simulateurs basés sur des méthodes d'apprentissage sont les plus robustes. Cependant, ils nécessitent un nombre important de données. L'alternative c'est d'utiliser des simulateurs basés règles. Nous nous sommes inspirés des simulateurs basés agenda\cite{Schatzmann2007} qui sont des variantes des simulateurs basés règles pour créer nos propres simulateurs. Leur fonctionnement est simple. Ils commencent par générer un but. Pour y arriver, un agenda est créé, qui contient les informations que doit convoyer le simulateur ainsi que les informations qu'il doit recevoir. Les actions sont sélectionnées en suivant des probabilités conditionnelles sur l'état de l'agenda. Enfin, les récompenses sont en fonction des informations reçues de l'agent.
 \subsubsection*{Simulateur pour l'exploration de fichiers}
-L'exploration de fichiers ne dépend pas de simples informations à transmettre et d'autres à recevoir comme dans les cas d'envoyer un e-mail, chercher une information sur internet ou bien lancer de la musique. Il s'agit d'une tâche dynamique dont la situation de départ est variante. Pareillement, le nombres d'actions change d'un état à un autre. Par exemple, le nombre de fichiers qu'on peut supprimer ou le nombre de répertoires qu'on peut y accéder ne sont pas fixes.\\
-Le simulateur commence d'abord par générer une arborescence aléatoire qui représente la situation initiale du système. Ensuite, le simulateur duplique cette arborescence en y introduisant des modifications pour générer une arborescence but. Enfin, le simulateur essaye de guider l'agent pour arriver au but en utilisant les actions utilisateurs possibles.\\
-En addition des actions de création et suppression de fichiers ainsi que les changements de répertoires qui peuvent guider l'agent au but, d'autres sous-buts peuvent être créés suivant une distribution de probabilité comme copier ou couper un fichier, renommer un fichier, ouvrir un fichier etc. Dans ce cas le simulateur donne la priorité aux sous-buts avant de reprendre les actions menant au but final.\\
-L'algorithme suivi par le simulateur est le suivant:
+L'exploration de fichiers ne dépend pas de simples informations à transmettre et d'autres à recevoir comme dans les cas d'envoyer un e-mail, chercher une information sur internet ou bien lancer de la musique. Il s'agit d'une tâche dynamique dont la situation de départ est variante. Pareillement, le nombres d'actions change d'un état à un autre. Par exemple, le nombre de fichiers qu'on peut supprimer ou le nombre de répertoires auxquels on peut accéder ne sont pas fixes.
+\par Le simulateur commence d'abord par générer une arborescence aléatoire qui représente la situation initiale du système. Ensuite, il duplique cette arborescence en y introduisant des modifications pour générer une arborescence but. Enfin, le simulateur essaye de guider l'agent pour arriver au but en utilisant les actions utilisateurs possibles.
+\par De plus, des actions de création et suppression de fichiers ainsi que les changements de répertoires qui peuvent guider l'agent au but, d'autres sous-buts peuvent être créés suivant une distribution de probabilité comme copier ou changer l'emplacement d'un fichier, renommer un fichier, ouvrir un fichier etc. Dans ce cas, le simulateur donne la priorité aux sous-buts avant de reprendre les actions menant au but final.
+\par L'algorithme suivi par le simulateur est le suivant:
 \makeatletter
 \def\BState{\State\hskip-\ALG@thistlm}
 \makeatother
@@ -258,7 +257,7 @@ L'algorithme suivi par le simulateur est le suivant:
 \begin{algorithm}[H]
 	\caption{Algorithme simulateur}\label{euclid}
 	\begin{algorithmic}[1]
-		\Procedure{Step}{entrées: $action\_agent$; sorties: $récompense, fin, succès$}
+		\Procedure{Step}{entrées: $action\_agent, max\_tour, tour$; sorties: $recompense, fin, succes, tour$}
 		\State $tour \gets tour+1$
 		\If {$tour > max\_tour$} 
 		\State $fin \gets \textit{true}$
@@ -280,19 +279,32 @@ L'algorithme suivi par le simulateur est le suivant:
 	\end{algorithmic}
 \end{algorithm}
 \begin{itemize}
-	\item \textbf{lignes 3-6:} cas échec on met $fin$ à \textbf{vrai} et on retourne une réponse de fin.
-	\item \textbf{ligne 8:} la fonction \textbf{maj\_état} met à jour l'état du simulateur et vérifie si on est arrivé à un état de succès.
-	\item \textbf{lignes 9-11:} cas succès on met $fin$ à \textbf{vrai} et on retourne une réponse de fin.
-	\item \textbf{ligne 13:} le simulateur décide quelle action à prendre selon l'action de l'agent. Le diagramme \ref{action_diag} résume cette décision.
+	\item \textbf{ligne 1:} en entrée de la procédure:
+	\begin{itemize}
+		\item $action\_agent$: l'action pour laquelle l'agent attend une réponse du simulateur.
+		\item $max\_tour$: le nombre maximum d'échanges agent-simulateur.
+		\item $tour$: le numéro de l'échange actuelle.
+	\end{itemize}
+	en sortie de la procédure:
+	\begin{itemize}
+		\item $recompense$: la récompense que donne le simulateur suite à la dernière action de l'agent.
+		\item $fin$: un booléen qui détermine si la discussion est terminée.
+		\item $succes$: un booléen qui détermine si l'agent est arrivé à un succès.
+		\item $tour$: la variable $tour$ est modifiée à l'intérieur de la procédure, elle doit être donc mise en sortie aussi.
+	\end{itemize}
+	\item \textbf{lignes 3-6:} si le nombre de tours passés est supérieur au nombre maximal de tours autorisés, le simulateur retourne un état d'échec et une action indiquant la fin de la discussion à l'agent.
+	\item \textbf{ligne 8:} en mettant à jour l'état du simulateur, ce dernier peut savoir si l'action de l'agent permet d'arriver au but du simulateur.
+	\item \textbf{lignes 9-11:} si c'est le cas, le simulateur l'indique à l'agent avec une action de fin.
+	\item \textbf{ligne 13:} sinon, le simulateur décide quelle action prendre selon l'action de l'agent. Le diagramme \ref{action_diag} résume cette décision.
 \end{itemize}
 
 \begin{figure}[H] 
 	\centering
-	\includegraphics[width=0.6\linewidth]{images/Conception/DM/action_diag.png}
+	\includegraphics[width=0.88\linewidth]{images/Conception/DM/action_diag.png}
 	\caption{Diagramme de décision de l'action à prendre}\label{action_diag}
 	
 \end{figure}
-En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir des changements effectués sur l'état de l'utilisateur, le tableau \ref{table_reward} associe les changements avec leurs récompenses:
+En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir des changements effectués sur l'état de l'utilisateur. Le tableau \ref{table_reward} associe les changements avec leurs récompenses:
 \begin{table}[H]
 	\begin{center}
 		
@@ -316,84 +328,94 @@ En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir 
 		\caption{Tableau des récompenses}\label{table_reward}
 	\end{center}
 \end{table}
+\par Il existe deux types d'actions:
 \begin{itemize}
+	\item Les actions qui affectent l'arborescence de fichiers. Soit elles permettent d'arriver à un sous-but ou bien elles changent la similarité entre l'arborescence courante et l'arborescence du but final.
+	\item Le reste des actions sont des échanges agent-utilisateur pour transmettre et recevoir des informations. Par exemple, l'agent peut demander le nom du répertoire parent d'un fichier.
+\end{itemize}
+\begin{itemize}
+	\item Nous avons choisi de donner une récompense unitaire négative pour chaque échange qui n'affecte pas l'arborescence de fichiers. La récompense négative permet d'éviter que le dialogue dure longtemps. L'agent essaye donc de minimiser ce genre d'actions afin de ne pas cumuler les récompense négatives.
+	\item \textbf{Confirmation d'une question:} la seule exception à cela c'est quand l'utilisateur confirme une action à l'agent. La récompense est nulle pour que l'agent puisse demander une confirmation quand il n'est pas sûr de ce qu'il doit faire sans diminuer le cumul des récompenses reçues.
 	\item \textbf{similarité améliorée:} On calcule la similarité entre l'arborescence courante et l'arborescence but. La valeur de la similarité est égale à $n\_sim/n\_diff$ avec: 
 	\begin{itemize}
 		\item $n\_sim$: nombre de fichiers qui existent dans les deux arborescences.
 		\item $n\_diff$: nombre de fichiers qui n'existent que dans une des deux arborescences.  
 	\end{itemize}
-	Si cette valeur s'améliore, on donne une récompense positive à l'agent.
-	\item \textbf{Succès:} c'est à dire, réaliser le but final du simulateur. Pour arriver à cet événement, l'agent ne fait qu'améliorer la similarité, c'est pourquoi les deux événements ont la même valeur de récompense.
-	\item \textbf{Sous-but réalisé:} c'est la récompense donnée quand l'agent arrive au sous-but du simulateur.
-	\item \textbf{Similarité diminuée:} la récompense est dans ce cas négative et supérieur en valeur absolue à celle que l'agent obtient lorsqu'il améliore la similarité. Ce choix a pour but d'éviter que l'agent boucle sur des actions dont la somme des récompenses est supérieure ou égale à zero. Par exemple, il peut créer ensuite supprimer le même fichier, si la somme de ces deux actions est supérieure ou égale à zéro, l'agent peut boucler sur ces actions indéfiniment sans pour autant recevoir des récompenses négatives.
-	\item \textbf{Confirmation d'une question:} l'utilisateur peut confirmer une action à l'agent. La récompense est nul pour que l'agent puisse demander une confirmation quand il n'est pas sûr de ce qu'il doit faire sans diminuer le cumule des récompenses reçues.
-	\item \textbf{Autre:} La récompense est de -1 pour éviter que le dialogue dure longtemps. 
+	Cette valeur change soit en ajoutant ou en supprimant un fichier. Dans le cas où un fichier est ajouté, si celui-ci existe dans l'arborescence but, $n\_sim$ est incrémentée et $n\_diff$ reste fixe; la valeur de la similarité augmente. Sinon, s'il n'existe pas dans l'arborescence but, $n\_diff$ est incrémentée et $n\_sim$ reste fixe; la valeur de la similarité diminue. Alternativement, si un fichier est supprimé, si celui-ci n'existe pas dans l'arborescence but, $n\_diff$ est décrémentée et $n\_sim$ reste fixe; la valeur de la similarité augmente. Sinon s'il existe dans l'arborescence but, $n\_sim$ est décrémentée et $n\_diff$ reste fixe; dans ce cas la valeur de la similarité diminue.
+	En conséquence, si cette valeur s'améliore, on donne à l'agent une récompense positive supérieure en valeur absolue à celle donnée dans les échanges d'informations.
+	\item \textbf{Succès:} c'est à dire, le but final du simulateur est réalisé. Pour arriver à cet événement, soit l'agent ajoute un fichier à l'arborescence ou bien il en supprime. Les autres actions comme renommer un fichier ou lui changer l'emplacement font partie des sous-buts. L'agent ne fait donc qu'améliorer la similarité qu'on a vue précédemment en ajoutant ou supprimant un fichier, c'est pourquoi les deux événements ont la même valeur de récompense.
+	\item \textbf{Sous-but réalisé:} c'est la récompense donnée quand l'agent arrive au sous-but du simulateur. Par exemple, en ouvrant un fichier, en le renommant ou en le copiant dans un autre répertoire etc. Elle est égale à celle donnée dans le cas où la similarité est améliorée car l'exécution de l'action menant à ce sous-but ne nécessite pas plus d'efforts ou d'échanges que quand le simulateur ajoute ou supprime un fichier.
+	\item \textbf{Similarité diminuée:} la récompense est dans ce cas négative et supérieure en valeur absolue à celle que l'agent obtient lorsqu'il améliore la similarité. Ce choix a pour but d'éviter que l'agent boucle sur des actions dont la somme des récompenses est supérieure ou égale à zero. Par exemple, il peut créer ensuite supprimer le même fichier, si la somme de ces deux actions est supérieure ou égale à zéro, l'agent peut boucler sur ces actions indéfiniment sans pour autant recevoir des récompenses négatives.
 \end{itemize}
-Pour résumer le fonctionnement du simulateur, à l'arrivé d'une nouvelle action agent, celle-ci met à jour l'état du simulateur. L'état du simulateur se compose de deux parties: un simulateur d'arborescence de fichiers qui simule l'état de l'arborescence courant, et des variables d'état qui contiennent d'autres informations comme l'état des sous-buts, le fichier en cours de traitement, les informations reçues de l'agent, le répertoire courant, etc. Après la mise à jour de l'état, si l'action de l'agent nécessite une réponse immédiate, comme la demande d'une information ou la permission d'exécuter une action, celle-ci est traité directement, sinon le simulateur initie le traitement d'une nouvelle sous-tâche. C'est à dire, Si un sous-but existe, une action qui le traite est générée, sinon une action qui traite le but final est générée.
+Pour résumer le fonctionnement du simulateur, à l'arrivé d'une nouvelle action agent, celle-ci met à jour l'état du simulateur. L'état du simulateur se compose de deux parties: un simulateur d'arborescence de fichiers qui simule l'état de l'arborescence courant, et des variables d'état qui contiennent d'autres informations comme l'état des sous-buts, le fichier en cours de traitement, les informations reçues de l'agent, le répertoire courant, etc. Après la mise à jour de l'état, si l'action de l'agent nécessite une réponse immédiate, comme la demande d'une information ou la permission d'exécuter une action, celle-ci est traité directement, sinon le simulateur initie le traitement d'une nouvelle sous-tâche. C'est à dire, Si un but intermédiaire existe, une action qui le traite est générée; sinon, une action qui traite le but final est générée.
 \subsection{Modèles d'apprentissage}\label{DQL}
-Comme on l'a déjà cité dans le chapitre précédent, il existe plusieurs algorithmes d'apprentissage par renforcement comme Q-Learning ou State-Action-Reward-State-Action (SARSA)\cite{Rummery1994}. Cependant ces algorithmes, en essayant d'estimer la fonction Q de récompense, traitent le problème comme un tableau état/action et essayent d'estimer pour chaque état et action la récompense résultante. Ceci implique que ces algorithmes ne peuvent pas estimer la fonction de récompense pour des état qu'ils n'ont pas vus pendant l'apprentissage. Pour pallier à ce problème, Deep Q Learning (DQL)\cite{Mnih2015} utilise un réseau de neurones comme estimateur de la fonction Q. Ce qui lui permet d'avoir une notion de similarité entre les états; ainsi il peut estimer la récompense pour des états jamais vus auparavant.
+Comme on l'a déjà cité dans le chapitre précédent, il existe plusieurs algorithmes d'apprentissage par renforcement comme Q-Learning ou State-Action-Reward-State-Action (SARSA)\cite{Rummery1994}. Cependant ces algorithmes, en essayant d'estimer la fonction Q de récompense, traitent le problème comme un tableau état/action et essayent d'estimer pour chaque état et action la récompense résultante. Ceci implique que ces algorithmes ne peuvent pas estimer la fonction de récompense pour des états qu'ils n'ont pas vus pendant l'apprentissage. Pour pallier à ce problème, Deep Q Learning (DQL)\cite{Mnih2015} utilise un réseau de neurones comme estimateur de la fonction Q, ce qui lui permet d'avoir une notion de similarité entre les états. Ainsi, il peut estimer la récompense pour des états jamais vus auparavant.
 \subsubsection*{Encodeur de graphe}
-La flexibilité des graphes les rend difficile à introduire dans un réseau de neurones vu que ce dernier n'accepte que des entrées de tailles fixes. Des méthodes ont été utilisées pour introduire les graphes dans des réseaux de neurones notamment les convolutions sur les graphes avec Graph Convolution Networks (GCN)\cite{KipfW17} qui s'avère être des variantes des Gated Graph Neural Networks (GGNN)\cite{Li2016GatedGS}. Ce dernier utilise des réseaux de neurones récurrent entre chaque deux n\oe{}uds reliés par une arrête pour transférer l'information d'un n\oe{}ud à un autre, ce qui résulte en des vecteurs ayant un encodage de l'information associé à chaque n\oe{}ud. Cette étape est répétée k fois pour que chaque n\oe{}ud aie des informations des n\oe{}uds qui sont à un maximum de k pas de distance, avec k un paramètre empirique. Enfin, les vecteurs d'états de chaque n\oe{}ud sont sommés pour produire un vecteur fixe encodant tout le graphe qui peut être relié au reste du réseau de neurones pour l'apprentissage.
+La flexibilité des graphes les rend difficiles à introduire dans un réseau de neurones vu que ce dernier n'accepte que des entrées de tailles fixes. Des méthodes ont été utilisées pour introduire les graphes dans des réseaux de neurones notamment les convolutions sur les graphes avec Graph Convolution Networks (GCN)\cite{KipfW17} qui s'avèrent être des variantes des Gated Graph Neural Networks (GGNN)\cite{Li2016GatedGS}. Ces derniers utilisent des réseaux de neurones récurrents (RNNs) entre chaque deux n\oe{}uds reliés par un arc pour transférer l'information d'un n\oe{}ud à un autre. C'est à dire que le RNN prend en entrée les vecteurs encodant un n\oe{}ud et un de ses arc pour essayer de propager l'information contenue dans ces vecteurs au n\oe{}ud destination. Ce dernier met à jour le vecteur l'encodant en sommant les résultats du RNN provenant des différents n\oe{}uds voisins. Ce qui résulte en des vecteurs ayant un encodage qui tient en compte le voisinage du noeud. Cette étape est répétée k fois pour que chaque n\oe{}ud aie des informations des n\oe{}uds qui sont à un maximum de k pas de distance, avec k un paramètre empirique. Enfin, la somme des vecteurs d'états des différents n\oe{}uds est effectuée pour produire un vecteur fixe encodant tout le graphe qui peut être relié au reste du réseau de neurones pour l'apprentissage.
 \begin{figure}[H] 
 	\centering
-	\includegraphics[width=0.8\linewidth]{images/Conception/DM/encoder.png}
+	\includegraphics[width=0.9\linewidth]{images/Conception/DM/encoder.png}
 	\caption{Schéma représentant un encodeur de graphe}
 	
 \end{figure}\label{encoder}
-Ces méthodes nécessitent tout le graphe pour l'encoder. Cependant, dans notre cas, après chaque action, le graphe augmente de taille ce qui nécessite de refaire l'encodage dès le début. Nous proposons de traiter le graphe comme une séquence de triplets: "n\oe{}ud; arc; n\oe{}ud" ou "sujet; predicat; objet" comme dans le framework Resource Description Framework (RDF). L'encodage se fait avec une architecture encodeur-décodeur basé sur des réseaux de neurones récurrents (RNN). Ainsi, à l'arriver de nouveaux triplets, il suffit d'utiliser l'état précédent pour y encoder les nouveaux triplets.
+Ces méthodes nécessitent tout le graphe pour l'encoder. Cependant, dans notre cas, après chaque action, le graphe augmente de taille ce qui nécessite de refaire l'encodage à partir du début. Nous proposons de traiter le graphe comme une séquence de triplets: "n\oe{}ud; arc; n\oe{}ud" ou "sujet; predicat; objet" comme dans la représentation Resource Description Framework (RDF). L'encodage se fait avec une architecture encodeur-décodeur basée sur des réseaux de neurones récurrents (RNN). Ainsi, à l'arrivée de nouveaux triplets, il suffit d'utiliser l'état précédent pour pouvoir encoder les nouveaux triplets.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.8\linewidth]{images/Conception/DM/encoder_seq.png}
 	\caption{Schéma représentant un encodeur séquentiel de graphe}
 	
 \end{figure}\label{encoder_seq}
-Pour faire l'apprentissage de cet architecture, il est possible de générer des graphes aléatoirement qu'on fait passer triplet par triplet dans l'encodeur. Celui-ci est un RNN qui prend en entrée l'état précédent du réseau et un triplet du graphe et qui produit en sortie un nouvel état. L'état final du RNN, après avoir fait passer tous les triplets du graphe, est utilisé dans le décodeur qui est un autre RNN. Ce dernier essaye de reconstruire le graphe triplet par triplet à partir de l'état reçu comme sortie de l'encodeur. Ainsi, si on peut reconstruire le graphe, on peut dire que le dernier état encode tout le graphe dans un vecteur de taille fixe.
+Comme le montre la figure \ref{encoder_seq}, lorsque un sous-graphe arrive, celui-ci est décomposé en triplets. Ensuite, chaque triplet est encodé séquentiellement dans le vecteur d'état précédent qui encode déjà l'ancienne état du graphe. Le résultat sera un vecteur d'état encodant la totalité du nouveau graphe.
+\par Pour faire l'apprentissage de cette architecture, il est possible de générer des graphes aléatoirement qu'on fait passer triplet par triplet dans l'encodeur. Celui-ci est un RNN qui prend en entrée l'état précédent du réseau et un triplet du graphe et qui produit en sortie un nouvel état. L'état final du RNN, après avoir fait passer tous les triplets du graphe, est utilisé dans le décodeur qui est un autre RNN. Ce dernier essaye de reconstruire le graphe triplet par triplet à partir de l'état reçu comme sortie de l'encodeur. Ainsi, si on peut reconstruire le graphe, on peut dire que le dernier état encode tout le graphe dans un vecteur de taille fixe.
 \begin{figure}[H] 
 	\centering
-	\includegraphics[width=0.8\linewidth]{images/Conception/DM/encoder_seq_train.png}
+	\includegraphics[width=0.9\linewidth]{images/Conception/DM/encoder_seq_train.png}
 	\caption{Schéma de l'apprentissage d'un encodeur séquentiel de graphe}
 	
 \end{figure}\label{encoder_seq_train}
 \subsubsection*{Les agents feuilles}
-Comme nous l'avons cité précédemment, les agents feuilles sont les agents responsable de répondre aux intentions de l'utilisateur. Pour faire l'apprentissage par renforcement d'un agent feuille, on utilise le simulateur d'utilisateur comme environnement de cet agent. Ce dernier interagit avec le simulateur pour but d'estimer la correspondance des récompenses en fonction des états. On utilise pour cela un réseau de neurones profond qui prend en entrée le graphe encodé de l'agent et il produit pour chaque action la récompense correspondante. Comme le nombre d'actions est variable, il est impossible d'utiliser une architecture de réseau de neurones qui produit une sortie pour chaque action, où chaque sortie est la récompense de l'action qui y correspond. Par conséquent, il est nécessaire de donner au réseau, en addition de l'état encodé, l'action candidate.
+Comme nous l'avons cité précédemment, les agents feuilles sont les agents responsables de répondre aux intentions de l'utilisateur. Pour faire l'apprentissage par renforcement d'un agent feuille, nous utilisons le simulateur d'utilisateur comme environnement de cet agent. Ce dernier interagit avec le simulateur pour but d'estimer la correspondance des récompenses en fonction des états. Nous utilisons pour cela un réseau de neurones profond qui prend en entrée le graphe encodé de l'agent et il produit pour chaque action la récompense correspondante. Comme le nombre d'actions est variable, il est impossible d'utiliser un réseau de neurones qui produit une récompense pour chaque action vu que les réseaux de neurones ont un nombre de sorties fixe. Par conséquent, il est nécessaire d'utiliser une architecture qui prend en entrée, en plus de l'état encodé, l'action candidate pour produire en sortie sa récompense.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/Conception/DM/time_dist.png}
 	\caption{Schéma du réseau DQN}
 \end{figure}\label{time_dist}
-L'algorithme utilisé pour l'apprentissage par renforcement est double DQN en rejouant l'expérience. En addition de l'utilisation des réseaux de neurones pour estimer la fonction Q, deux amélioration lui ont été ajoutées:
+L'algorithme utilisé pour l'apprentissage par renforcement est double DQN en rejouant l'expérience que nous détaillerons dans cette partie. En plus de l'utilisation des réseaux de neurones pour estimer la fonction Q, deux amélioration lui ont été ajoutées:
 \begin{itemize}
-	\item rejouer l'expérience: l'agent interagit avec le simulateur plusieurs fois en gardant dans une mémoire ses interactions. Après chaque k épisode\footnote{un épisode est un ensemble d'interactions agent-simulateur jusqu'à finir avec un succès ou échec} l'agent reprend la mémoire pour entraîner le réseau de neurones.
-	\item Double DQN: la fonction Q est donné par la formule $Q(s,a) = r + \alpha*max_j(Q(s',a_j))$ avec:
+	\item Rejouer l'expérience: l'agent interagit avec le simulateur plusieurs fois en gardant dans une mémoire ses interactions. Après chaque k épisodes\footnote{Un épisode est un ensemble d'interactions agent-simulateur jusqu'à l'aboutissement à un succès ou un échec} l'agent reprend la mémoire pour entraîner le réseau de neurones.
+	\item Double DQN: la fonction Q est donnée par la formule $Q(s,a) = r + \alpha \times max_j(Q(s',a_j))$ \cite{Mnih2015} avec:
 	\begin{itemize}
 		\item $s$: état de l'agent.
 		\item $a$: l'action qu'on veut estimer.
-		\item $R$: récompense immédiate.
-		\item $\alpha$: paramétré de réduction.
-		\item $s'$: nouvel état après avoir effectuer l'action $a$ de l'état $s$.
+		\item $r$: récompense immédiate.
+		\item $\alpha$: paramètre de réduction.
+		\item $s'$: nouvel état après avoir effectué l'action $a$ de l'état $s$.
 		\item $a_j$: les actions possibles à partir de l'état $s'$.
 	\end{itemize}
-	On remarque la récurrence dans cette formule qui nécessite la réutilisation du réseau pour estimer le terme $max_j (Q(s',a_j))$. Il a été démontré que l'utilisation d'un autre réseau qu'on fixe lors de l'apprentissage pour l'évaluation de la récompense dans ce terme améliore les résultats\cite{Mnih2015}. La formule devient donc: $Q(s,a) = r + \alpha*Q(s',argmax_{a_j}(s',a_j))$. Cette valeur est donc utilisé pour calculer l'erreur et appliquer l'algorithme de retro-propagation pour l'apprentissage automatique.
+	On remarque la récurrence dans cette formule qui nécessite la réutilisation du réseau pour estimer le terme $max_j (Q(s',a_j))$. Il a été démontré que l'utilisation d'un autre réseau qu'on fixe lors de l'apprentissage pour l'évaluation de la récompense dans ce terme améliore les résultats \cite{Mnih2015}. La formule devient donc: 
+	\[Q(s,a) = r + \alpha \times Q(s',argmax_{a_j}(s',a_j))\]
+	Cette valeur est donc utilisé comme cible du réseau DQN et permet de calculer l'erreur moyenne quadratique par rapport à sa prédiction. Ensuite l'algorithme de retro-propagation est appliqué pour l'apprentissage automatique.
 \end{itemize}
-Une autre architecture possible serait de relier l'encodeur de graphe directement avec le réseau DQN pendant l'apprentissage. Ainsi l'erreur de l'apprentissage pour l'encodeur est calculée à partir de la fonction de récompenses de l'apprentissage par renforcement. L'avantage de relier l'encodeur avec le réseau de DQN est de permettre à l'encodeur de contrôler quelle partie du graphe encodé à oublié. En effet, la taille fixe du vecteur dont on encode le graphe a une limite de nombre de triplets supportable. L'utilisation des cellules de réseaux de neurones récurrents comme les LSTMs ou GRUs qui ont des porte d'oublie rend cette architecture possible.
+Une autre architecture possible serait de relier l'encodeur de graphe directement avec le réseau DQN pendant l'apprentissage. Ainsi l'erreur de l'apprentissage pour l'encodeur est calculée à partir de la fonction de récompenses de l'apprentissage par renforcement. L'avantage de relier l'encodeur avec le réseau DQN est de permettre à l'encodeur de contrôler quelle partie du graphe encodé à oublier. En effet, la taille fixe du vecteur dont on encode le graphe a une limite de nombre de triplets supportable. L'utilisation des cellules de réseaux de neurones récurrents comme les LSTMs ou GRUs qui ont des portes d'oubli rend cette architecture possible. En effet, ce genre de RNNs ont la possibilité de garder en mémoire, leur état, des informations qu'ils ont reçues au début de la séquence de données en sacrifiant d'autres plus récentes. en d'autres termes, ils peuvent choisir quelles sont les informations à garder dont le DQN aura besoin pour estimer la fonction de récompense.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.88\linewidth]{images/Conception/DM/encoder_dqn.png}
 	\caption{Schéma du réseau DQN relié avec l'encodeur directement}
 \end{figure}\label{encoder_dqn}
 \subsubsection*{L'agent coordinateur}
-L'agent coordinateur utilise la même architecture que celle des agents feuilles. La différence se trouve au niveau de la sortie. Dans le cas des agents coordinateurs, ils essayent de prédire quelle agent fils peut répondre à la dernière action reçue.
+L'agent coordinateur utilise la même architecture que celle des agents feuilles. La différence se trouve au niveau de la sortie. Dans le cas des agents coordinateurs, ils essayent de prédire quel agent fils peut répondre à la dernière action reçue.
 \section{Module de génération du langage naturel}
-Le modèle utilisé pour la génération du texte est relativement simple. Il s'agit de préparer des modèles de phrases contenant des emplacements à remplir. Chaque action de l'agent lui correspond un ensemble de modèles et chaque paramètre de l'action lui correspond un ensemble d'expressions. La génération du texte se fait en choisissant d'abord pour chaque paramètre de l'action une expression aléatoirement. Ensuite, de même, un modèle de phrase est choisit aléatoirement. Enfin, les emplacements vides sont remplis avec les expressions des paramètres. La figure \ref{nlg_schema} illustre un exemple de la génération de texte en utilisant les modèles de phrases.
+Le modèle utilisé pour la génération du texte est relativement simple. Il s'agit de préparer des modèles de phrases contenant des emplacements à remplir. Chaque action de l'agent correspond à un ensemble de modèles et à chaque paramètre de l'action correspond un ensemble d'expressions. La génération du texte se fait en choisissant d'abord pour chaque paramètre de l'action une expression aléatoirement. Ensuite un modèle de phrase est choisi aléatoirement. Enfin, les emplacements vides sont remplis avec les expressions des paramètres. Le module de génération de texte traite aussi les éventuelles erreurs qui peuvent se produire comme la suppression d'un fichier inexistant ou la création d'un fichier qui existe déjà. Dans ce cas, l'agent doit informer l'utilisateur que l'action demandée ne peut pas être exécuté pour qu'il résolve le problème. Le traitement des erreurs est symilaire, La figure \ref{nlg_schema} illustre un exemple de génération de texte en utilisant les modèles de phrases.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Conception/NLG.png}
 	\caption{Schéma de fonctionnement du générateur de texte}\label{nlg_schema}
 \end{figure}
+Dans la figure \ref{nlg_schema} l'agent demande à l'utilisateur de lui donner le répertoire parent d'un fichier nommé "travail". Le générateur de texte utilise l'intention de l'agent "$Request$" pour extraire les modèles de phrases qui lui correspondent. En parallèle, il utilise les paramètres de l'action pour extraire leurs expressions. Par exemple, le paramètre contenant le nom du fichier peut être transformé en "\textit{travail}" ou "\textit{the file travail}". Ces expressions sont enfin combinées avec le modèle de la phrase choisi pour générer une phrase complète. Par exemple, "\textit{Please, tell me what is the \textbf{parent directory}} of \textbf{travail}" ou "\textit{Please, tell me what is the \textbf{directory} of \textbf{the file travail}}".
 \section{Conclusion}
 \paragraph{}
-À travers ce chapitre, et en nous inspirant des travaux existants, nous avons pu modéliser et conceptualiser tout les aspects du système que nous jugeons assez conforme au standard. Viennent s'ajouter les améliorations proposées pour enrichir le système de base retrouvé dans la littérature ainsi que pour faciliter l'extensibilité des fonctionnalités de bases avec un moindre effort d'intégration, due à une conception modulaire et facilement maintenable. 
-\par Dans le chapitre suivant nous allons passer à l'implémentation des différents modules, au développement d'une application dédiée et à une partie expérimentation pour tester les approches proposées ainsi que leurs améliorations et les comparer avec des standards existants.
+À travers ce chapitre, et en nous inspirant des travaux existants, nous avons pu modéliser et conceptualiser tout les aspects du système que nous jugeons assez conforme au standard. Viennent s'ajouter les améliorations proposées pour enrichir le système de base retrouvé dans la littérature ainsi que pour faciliter l'extensibilité des fonctionnalités de bases avec un moindre effort d'intégration. Ceci est le résultat d'une conception modulaire et facilement maintenable. 
+\par Dans le chapitre suivant nous allons passer à l'implémentation des différents modules, au développement d'une application dédiée et à une partie expérimentation pour tester les approches proposées. Nous discuterons leurs améliorations et les comparer avec des standards existants.
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %        Generated with the experimental alpha version of the TeX exporter of WebVOWL (version 1.1.3) %%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
