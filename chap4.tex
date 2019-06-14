@@ -636,7 +636,7 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 \subsection{Encodeur de graphe}
 \paragraph{}Dans la première méthode, l'entraînement de l'encodeur se fait avec une architecture encodeur-décodeur en passant les triplets du graphes comme entrés et sortis de cette architecture.
 \subsubsection{Implémentation}
-\paragraph{}Le réseau de neurones a été implémenté en utilisant la bibliothèque Keras de Python. Nous avons utilisé des cellules GRUs (Gated Reccurent Unit \cite{Cho2014}) comme unités récurrentes pour l'encodeur et le décodeur vu leur efficacité comparable aux LSTMs tout en utilisant un seul vecteur d'état, ce qui les rend moins exigeants en mémoire. Comme notre tâche consiste à encoder un graphe dans un vecteur, la taille de ce dernier est très importante. Intuitivement, plus cette taille est grande plus le nombre de triplets qu'on peut y encoder est grand. D'où, l'intérêt des cellules GRUs qui permettent d'utiliser de plus grands vecteurs d'état en moins d'espace mémoire que les LSTMs.
+\par Le réseau de neurones a été implémenté en utilisant la bibliothèque Keras de Python. Nous avons utilisé des cellules GRUs (Gated Reccurent Unit \cite{Cho2014}) comme unités récurrentes pour l'encodeur et le décodeur vu leur efficacité comparable aux LSTMs tout en utilisant un seul vecteur d'état, ce qui les rend moins exigeants en mémoire. Comme notre tâche consiste à encoder un graphe dans un vecteur, la taille de ce dernier est très importante. Intuitivement, plus cette taille est grande plus le nombre de triplets qu'on peut y encoder est grand. D'où, l'intérêt des cellules GRUs qui permettent d'utiliser de plus grands vecteurs d'état en moins d'espace mémoire que les LSTMs.
 \paragraph{}La génération aléatoire des graphes de taille $t$ triplets se fait en suivant les étapes suivantes:
 \begin{itemize}
 	\item choisir un nombre de n\oe{}uds $nn$ aléatoire entre $2$ et $t+1$.
@@ -644,7 +644,7 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 	\item tirer $nn$ identifiants de n\oe{}uds et $na$ identifiants d'arcs aléatoirement de l'ensemble des identifiants possibles.
 	\item créer les triplets en tirant pour chaque triplet deux n\oe{}uds et un arc aléatoirement des ensembles résultats de l'étape précédente. 
 \end{itemize}
-\paragraph{}Pendant l'apprentissage, le générateur choisit une taille pour le graphe inférieure à une taille maximale et crée un graphe en suivant les étapes sus-citées. Ce dernier est passé à l'encodeur-décodeur comme entré et sortie désirée.
+\par Pendant l'apprentissage, le générateur choisit une taille pour le graphe inférieure à une taille maximale et crée un graphe en suivant les étapes sus-citées. Ce dernier est passé à l'encodeur-décodeur comme entré et sortie désirée.
 \subsubsection{Résultats et discussion}
 \paragraph{}Pour estimer la capacité de l'encodeur du graphe, nous avons varié la taille maximale du graphe ainsi que le vecteur d'état du GRU. Les résultats sont présentés dans le figure suivante.
 \begin{figure}[H] 
@@ -652,16 +652,16 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 	\includegraphics[width=0.95\linewidth]{images/Realisation/DM/heatmap.png}
 	\caption{Variation de la précision en fonction de la taille maximale du graphe et la taille du vecteur d'état}\label{heatmap}
 \end{figure}
-\paragraph{}Nous remarquons évidemment que la précision diminue avec l'augmentation de la taille maximale du graphe. Cependant, l'augmentation de la taille du vecteur encodant le graphe n'améliore pas beaucoup les résultats. Ceci peut être dû à la nature combinatoire du problème. En effet, la taille du graphe augmente exponentiellement en fonction du nombre de triplets. Soit $nb$ et $t$ le nombre de triplets possibles et la fonction correspondant la taille du graphe avec le nombre de graphes possibles. $t$ est définie par la fonction de récurrence suivante:
+\par Nous remarquons évidemment que la précision diminue avec l'augmentation de la taille maximale du graphe. Cependant, l'augmentation de la taille du vecteur encodant le graphe n'améliore pas beaucoup les résultats. Ceci peut être dû à la nature combinatoire du problème. En effet, la taille du graphe augmente exponentiellement en fonction du nombre de triplets. Soit $nb$ et $t$ le nombre de triplets possibles et la fonction correspondant la taille du graphe avec le nombre de graphes possibles. $t$ est définie par la fonction de récurrence suivante:
 \[t(1) = nb\]\\
 \[t(n+1) = t(n) \times nb\]
-\paragraph{}La première équation montre que le nombre de graphes possibles est égale au nombre de triplets possibles lorsque le graphe se compose d'un seul triplet. Tandis que la deuxième vient du fait que les graphes de taille $n+1$ peuvent être obtenus en combinant chaque graphe de taille $n$ avec tous les triplets possibles. Le résultat des deux équations est:
+\par La première équation montre que le nombre de graphes possibles est égale au nombre de triplets possibles lorsque le graphe se compose d'un seul triplet. Tandis que la deuxième vient du fait que les graphes de taille $n+1$ peuvent être obtenus en combinant chaque graphe de taille $n$ avec tous les triplets possibles. Le résultat des deux équations est:
 \[t(n) = nb^n\]\\
-\paragraph{}Pour essayer de pallier à ce problème, le graphe d'état peut être divisé en plusieurs sous-graphes. De façon à ce que chaque sous-graphe est assez petit pour être encodé par l'un des encodeurs déjà entraînés. Ainsi la concaténation de ces vecteurs peut être utilisé comme entré pour le module suivant.
+\par Pour essayer de pallier à ce problème, le graphe d'état peut être divisé en plusieurs sous-graphes. De façon à ce que chaque sous-graphe est assez petit pour être encodé par l'un des encodeurs déjà entraînés. Ainsi la concaténation de ces vecteurs peut être utilisé comme entré pour le module suivant.
 \subsection{Apprentissage par renforcement}
 \paragraph{}Nous allons à présent présenter les deux méthodes citées dans la section \ref{DMReal}. La première consiste à utiliser le résultat de l'encodeur pour entraîner un réseau de neurones à estimer la récompense associée à chaque action possible. La deuxième, par contre, fait l'apprentissage des deux parties à la fois.
-\paragraph{}Nous utilisons un simulateur d'utilisateur pour communiquer avec l'agent de dialogue. Afin de simuler aussi les erreurs des modules précédents (reconnaissance automatique de la parole et compréhension du langage naturel), nous ajoutons un module qui insère du bruit dans les actions du simulateur. Sachant qu'une action utilisateur se compose de l'intention et des emplacements, ce dernier module prend donc deux valeurs de probabilités en paramètre; la probabilité de bruiter l'intention et celle de bruiter les emplacements. Dans la suite de ce travail nous allons varier ces deux valeurs ainsi que la taille du vecteur d'état afin d'arriver à un compromis entre la robustesse face aux erreurs, la réussite des tâches utilisateur et l'utilisation de la mémoire.
-\paragraph{}Nous allons évaluer les différents résultats en comparant leurs taux de succès qui est donné par le rapport entre le nombre de fois où l'agent arrive au but sur le nombre totale d'essais. Un succès nécessite d'arriver au but dans un nombre d'échange limite que nous avons estimer comme suit: 
+\par Nous utilisons un simulateur d'utilisateur pour communiquer avec l'agent de dialogue. Afin de simuler aussi les erreurs des modules précédents (reconnaissance automatique de la parole et compréhension du langage naturel), nous ajoutons un module qui insère du bruit dans les actions du simulateur. Sachant qu'une action utilisateur se compose de l'intention et des emplacements, ce dernier module prend donc deux valeurs de probabilités en paramètre; la probabilité de bruiter l'intention et celle de bruiter les emplacements. Dans la suite de ce travail nous allons varier ces deux valeurs ainsi que la taille du vecteur d'état afin d'arriver à un compromis entre la robustesse face aux erreurs, la réussite des tâches utilisateur et l'utilisation de la mémoire.
+\par Nous allons évaluer les différents résultats en comparant leurs taux de succès qui est donné par le rapport entre le nombre de fois où l'agent arrive au but sur le nombre totale d'essais. Un succès nécessite d'arriver au but dans un nombre d'échange limite que nous avons estimer comme suit: 
 \[limite = nb_{diff} \times 4 \times (1 + (pb_i + pb_e) \times 2) \]
 \begin{itemize}
 	\item limite: le nombre d'échanges maximales.
@@ -669,7 +669,7 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 	\item $pb_i$: la probabilité d'erreurs dans l'intention de l'utilisateur.
 	\item $pb_e$: la probabilité d'erreurs dans les emplacements de l'action.
 \end{itemize}
-\paragraph{}La première partie de l'équation, $nb_{diff} \times 4$, détermine une approximation du nombre d'actions nécessaire afin d'arriver au but; nous avons estimer qu'il faut un maximum de 4 échanges pour ajouter ou supprimer un fichier. La deuxième partie permet de prendre en compte les erreurs du simulateur. Sachant que le nombre d'action erronée moyen en $n$ échange est égale à $n \times (pb_i + pb_e)$, nous avons donc ajouter deux fois ce nombre. Ceci permet en premier lieu de ne pas compter les actions erronées dans la limite des échanges possibles, ainsi que d'ajouter des actions afin que l'agent puisse se retrouver dans la conversation après une erreur du simulateur.
+\par La première partie de l'équation, $nb_{diff} \times 4$, détermine une approximation du nombre d'actions nécessaire afin d'arriver au but; nous avons estimer qu'il faut un maximum de 4 échanges pour ajouter ou supprimer un fichier. La deuxième partie permet de prendre en compte les erreurs du simulateur. Sachant que le nombre d'action erronée moyen en $n$ échange est égale à $n \times (pb_i + pb_e)$, nous avons donc ajouter deux fois ce nombre. Ceci permet en premier lieu de ne pas compter les actions erronées dans la limite des échanges possibles, ainsi que d'ajouter des actions afin que l'agent puisse se retrouver dans la conversation après une erreur du simulateur.
 \subsubsection{Apprentissage avec DQN déconnecté}
 \paragraph{}Dans cette partie, nous utilisons un des encodeurs déjà entraînés dans la partie précédente. Nous avons donc choisi d'utiliser l'encodeur de taille 300 qui a été entraîné avec des graphes de taille maximale de 20. Nous avons varié le nombre de vecteurs utilisé ainsi que les probabilités d'erreurs du simulateur. Les résultats sont présentés dans le tableau \ref{table_results_dis}.
 \definecolor{LightCyan}{rgb}{0.7,1,1}
@@ -718,7 +718,7 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 \end{itemize}
 
 \subsubsection{Apprentissage avec DQN connecté}
-\paragraph{}Connecter le DQN avec l'encodeur devrait permettre de réduire la taille du vecteur d'état nécessaire. Comme la partie précédente, nous avons varié la taille du vecteur d'état ainsi que les probabilités des erreurs pour pouvoir par la suite comparer les deux approches proposées. 
+\paragraph{} Connecter le DQN avec l'encodeur devrait permettre de réduire la taille du vecteur d'état nécessaire. Comme la partie précédente, nous avons varié la taille du vecteur d'état ainsi que les probabilités des erreurs pour pouvoir par la suite comparer les deux approches proposées. 
 \begin{table}[H]
 	\begin{center}
 		
@@ -799,7 +799,7 @@ Les temps des échanges avec le simulateur des deux approches sont proches puisq
 	\includegraphics[width=0.95\linewidth]{images/Realisation/schema_app.png}
 	\caption{Schéma générale de l'application PCS2}\label{schema_app}
 \end{figure}
-\paragraph{}L'application contient principalement deux parties: une partie frontend, ce que l'utilisateur peut interagir avec, et une partie backend qui contient tous les modules que nous avons traités au cours de ce travail. Cette dernière partie se trouve dans un serveur qui répond aux requêtes de l'utilisateur. Les requêtes de l'utilisateur contiennent les données audios collecté par l'interface ainsi que les données du système sur lesquelles l'assistant peut agir. Quant à la réponse du backend, elle est sous forme d'une action qui peut être exécuté par le côté client de l'application. Nous n'avons cependant pas encore traité les cas de permissions et les limites de ce que peut manipuler l'assistant. Néanmoins, nous avons limité l'espace des actions de l'assistant pour qu'il ne puisse agir que sur une arborescence de fichier teste.
+\par L'application contient principalement deux parties: une partie frontend, ce que l'utilisateur peut interagir avec, et une partie backend qui contient tous les modules que nous avons traités au cours de ce travail. Cette dernière partie se trouve dans un serveur qui répond aux requêtes de l'utilisateur. Les requêtes de l'utilisateur contiennent les données audios collecté par l'interface ainsi que les données du système sur lesquelles l'assistant peut agir. Quant à la réponse du backend, elle est sous forme d'une action qui peut être exécuté par le côté client de l'application. Nous n'avons cependant pas encore traité les cas de permissions et les limites de ce que peut manipuler l'assistant. Néanmoins, nous avons limité l'espace des actions de l'assistant pour qu'il ne puisse agir que sur une arborescence de fichier teste.
 \subsection{Backend}
 \paragraph{}Pour implémenter le backend, nous avons utilisé le framework Flask qui permet d'écrire en Python le côté serveur d'une application. Les communications client-serveur de notre application se font comme suit:
 \begin{itemize}
@@ -822,7 +822,7 @@ Pour la réalisation de l'interface de l'application nous avons opté pour une i
 	\caption{Interface principale de Bethano}
 \end{figure} 
 
-\paragraph{}
+\par 
 L'application se compose de quatre parties disposées sur une seule page web dynamiquement mise à jour au fur et a mesure du dialogue :
 
 \begin{itemize}
