@@ -1,5 +1,5 @@
 % !TeX program = lualatex
-\documentclass[12pt]{report}
+\documentclass[12pt]{memoir}
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
 \usepackage{fontspec}
@@ -38,8 +38,16 @@
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 
+\usepackage{fancyhdr}
+\pagestyle{fancy}   
+\fancyhead{}
+\fancyhead[C]{\leftmark}
+
+
 \usepackage{tikz}  
-\usepackage{helvet}  
+\usepackage{helvet}
+\usepackage[bottom]{footmisc}
+  
 \usetikzlibrary{decorations.markings,decorations.shapes,decorations,arrows,automata,backgrounds,petri,shapes.geometric}  
 \usepackage{svg}
 \usepackage{listings}
@@ -190,12 +198,15 @@
 \textcolor{blue}{To explain more deeply}
 \bibliographystyle{plain}
 
-%\input{chap1.tex}
+
+\input{other/intro}
+
+%\input{chapters/chap2.tex}
+\newpage
+%\input{chapters/chap2.tex}
 %\newpage
-%\input{chap2.tex}
-%\newpage
-\input{chap3.tex}
-%\input{chap4.tex}
+\input{chapters/chap3.tex}
+%\input{chapters/chap4.tex}
 \listoffigures
 
 \bibliography{ref}

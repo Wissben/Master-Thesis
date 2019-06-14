@@ -3,40 +3,44 @@
 \section{Introduction}
 %Of course talk here about what the chapter is about
 \paragraph{}
-Durant ce chapitre, nous allons présenter en détail les étapes de conception de notre système, tout d'abord une architecture générale est introduite puis décortiquée, ensuite chaque module du système sera détaillé du point de vue des composants qui le constituent en donnant un maximum de détails tout en restant assez bref et concis. Une conclusion viendra clôturer ce chapitre pour ensuite introduire le suivant.
+Dans ce chapitre, nous allons présenter en détail les étapes de conception de notre système Bethano. De prime abord une architecture générale est introduite puis décortiquée. Ensuite chaque module du système sera détaillé du point de vue des composants qui le constituent. Une conclusion viendra ensuite clôturer ce chapitre pour ensuite.
 \section{Architecture du système}
 %Try to be as precise as possible while letting room for more details to the next sections
+\paragraph{}
+Comme montré dans la figure ~\ref{spaArch} et comme cité dans le chapitre précédent (voir \ref{spaSchemSection}) le système Bethano se présente comme l'interconnexion de cinq parties dont une interface \footnote{Par interface nous entendons le sens abstrait du terme et non obligatoirement le sens interface graphique.} et quatre modules internes communiquant entre eux. Chaque module forme ainsi un maillon d'une chaîne qui représente une partie du cycle de vie du système. L'architecture de Bethano est un pipeline (chaîne de traitement) de processus qui s'exécutent de manière indépendante mais qui font circuler un flux de données entre eux dans un format préalablement établi (voir ~\ref{fig:spaDiagram}). Nous pouvons séparer ces parties en deux catégories : la partie utilisateur et la partie interne du système que nous présentons ci-dessous.
+
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.85\linewidth]{images/SPA_architecture.png}
-	\caption{Architecture générale de notre système}
+	\includegraphics[width=\linewidth]{images/SPA_architecture.png}
+	\caption{Architecture générale du système Bethano}
 	\label{spaArch}
 \end{figure}
-\paragraph{}
-Comme montré dans la figure ci dessus (voir ~\ref{spaArch}) et comme cité dans le chapitre précédent (voir \ref{spaSchemSection}) le système se présente comme l'interconnexion de cinq parties dont une interface \footnote{Ici nous par interface nous entendons le sens abstrait du terme et non obligatoirement le sens interface graphique} et quatre modules internes communiquant entre eux, chaque module forme ainsi un maillon d'une chaîne qui représente une partie du cycle de vie du système. L'architecture du système est une pipeline (chaîne de traitement) de processus qui s'exécutent de manière indépendante mais qui font circuler un flux de données entre eux dans un format préalablement établi (voir ~\ref{fig:spaDiagram}). Nous pouvons séparer ces parties en deux catégories :
+
+
 	\subsection{Partie utilisateur}
 %	What the users sees as input/output and the interfaces that are available for him
 	\paragraph{}
-	Cette couche représente ce que l'utilisateur peut voir comme entrée/sortie et les interfaces qui lui sont accessibles, puisque l'assistant est un processus qui communique majoritairement avec l'utilisateur à travers des échanges verbaux, nous avons pensé à implémenter l'interface du système comme un processus qui s'exécute en arrière plan et qui attend d'être activer (pour le moment par un événement physique, c.à.d clique sur un bouton/icône ou raccourci clavier), l'assistant pourra ensuite répondre en affichant un texte à l'écran qui sera vocalement synthétisé et envoyé à l'utilisateur via l'interface de sortie de son choix (afficher le texte et sa transcription vocale pourrait palier à certains manques comme l'absence d'un périphérique de sortie audio).
+	Cette partie représente ce que l'utilisateur peut voir comme entrée/sortie et les interfaces qui lui sont accessibles. Puisque l'assistant est un processus qui communique majoritairement avec l'utilisateur à travers des échanges verbaux, nous avons pensé à implémenter l'interface du système comme un processus qui s'exécute en arrière plan et qui attend d'être activé (pour le moment par un événement physique, c.à.d un clic sur un bouton/icône ou raccourci clavier). L'assistant pourra ensuite répondre en affichant un texte à l'écran qui sera vocalement synthétisé et envoyé à l'utilisateur via l'interface de sortie de son choix. (Afficher le texte et sa transcription vocale pourrait palier à certains manques comme l'absence d'un périphérique de sortie audio.)
 	\subsection{Partie interne du système}
 	
 %	What the users doesn't see and what are the main components of the system
 	\paragraph{}
 	\label{system_layer}
-	Cette couche quant à elle représente ce que l'utilisateur ne voit pas et fait donc partie du fonctionnement interne du système, elle regroupe les quatre grandes étapes d'un cycle de vie pour une commande reçu de la couche utilisateur. Comme mentionné dans le chapitre précédent (voir \ref{spaLifeCycle}), la requête passe par un module de reconnaissance de la parole, qui traduira en texte le signal audio correspondant à cette dernière, le module suivant va extraire l'intention de l'utilisateur et ses arguments (par exemple \textit{"open the home folder"} pourrait donner  une intention dy type  \textit{open\_file\_desire[file\_name="home",parent\_directory="?"]}), le gestionnaire de dialogue gardera trace de l'ensemble des échanges effectués entre l'utilisateur et l'assistant et essayera d'atteindre le but final à travers la requête (récente ou ancienne), pour ce faire il aura besoin d'interagir avec ce qu'on a appelé un environnement d'exécution, qui peut être la machine où l'assistant réside ou bien une API \footnote{Application programming interface ou interface de programmation applicative } qui aura accès à un service a distance (sur internet par exemple) ou locale (dans un réseau domestique). Finalement une action spéciale qui servira à informer l'utilisateur sera envoyé au module suivant pour être transformée en son équivalant dans un langage naturel, puis le texte sera vocalement synthétisé et envoyé vers l'interface de sortie de l'application.
-	
+	Cette partie quant à elle représente ce que l'utilisateur ne voit pas et fait donc partie du fonctionnement interne du système. Elle regroupe les quatre grandes étapes d'un cycle de vie pour une commande reçue de la couche utilisateur. Comme mentionné dans le chapitre précédent (voir \ref{spaLifeCycle}), la requête passe par un module de reconnaissance de la parole, qui traduira en texte le signal audio correspondant à cette dernière. Le module suivant, à savoir le module de compréhension du langage naturel, va extraire l'intention de l'utilisateur et ses arguments (par exemple \textit{"open the home folder"} pourrait donner  une intention dy type  \textit{open\_file\_desire[file\_name="home",parent\_directory="?"]}). Le gestionnaire de dialogue gardera trace de l'ensemble des échanges effectués entre l'utilisateur et l'assistant et essayera d'atteindre le but final de la requête (récente ou ancienne). Pour ce faire, il aura besoin d'interagir avec ce qu'on a appelé un environnement d'exécution, qui peut être la machine où l'assistant réside ou bien une API \footnote{Application Programming Interface ou interface de programmation applicative.} qui aura accès à un service à distance (sur internet par exemple) ou local (dans un réseau domestique). Finalement, une action spéciale qui servira à informer l'utilisateur sera envoyée au module suivant (c.à.d le module de génération du langage naturel) pour être transformée en son équivalant dans un langage naturel, puis le texte sera vocalement synthétisé et envoyé vers l'interface de sortie de l'application.
+
 	\par
-	Nous allons maintenant détailler la conception des différents modules en précisant à chaque fois le ou les procédés de sa mise en œuvre. 
+	Nous allons maintenant détailler la conception des différents modules en précisant à chaque fois le ou les procédés de sa mise en \oe{}uvre. 
 \section{Module de reconnaissance automatique de la parole}
 \paragraph{}
-Premier module du système, il joue un rôle clé dans la véridicité du dialogue entre l'utilisateur et la machine, en effet il doit être assez robuste et précis dans la transcription de la requête en entrée afin de minimiser les erreurs et les ambiguïtés qui peuvent survenir dans le reste de la pipeline. Dans cette optique, nous avons décidé de ne pas développer entièrement un sous-système en partant de zéro, par faute de temps et par soucis de précision nous avons opté pour l'exploitation d'un outil open-source nommé DeepSpeech \cite{deepspeech_paper}, naturellement du fait que ce soit un projet open-source nous avons pu avoir accès à différentes informations concernant le modèle d'apprentissage, d'inférence et la nature des données utilisées pour l'apprentissage les tests.
-	\subsection{Architecture du module}
+\label{asr_probs}
+Premier module du système Bethano, le module de reconnaissance automatique de la parole (Automatic Speech Recognition, ASR) joue un rôle clé dans le dialogue entre l'utilisateur et la machine. En effet, il doit être assez robuste et précis dans la transcription de la requête en entrée afin de minimiser les erreurs et les ambiguïtés qui peuvent survenir dans le reste du pipeline. Dans cette optique, nous avons décidé de ne pas développer entièrement un sous-système en partant de zéro; faute de temps et par soucis de précision nous avons opté pour l'exploitation d'un outil open-source nommé DeepSpeech \cite{deepspeech_paper}. Naturellement, du fait que ce soit un projet open-source nous, avons pu avoir accès à différentes informations concernant le modèle d'apprentissage, d'inférence et la nature des données utilisées pour l'apprentissage les tests.
+	\subsection{Architecture du module ASR}
 	\paragraph{}
-	Le module possède une architecture en pipeline dont chaque composant exécute un traitement sur la donnée reçu par son prédécesseur
+	Le module possède une architecture en pipeline dont chaque composant exécute un traitement sur la donnée reçu par son prédécesseur.
 	\begin{figure}[H] 
 		\centering
 		\includegraphics[width=0.88\linewidth]{images/Conception/ASR/schema.png}
-		\caption{Architecture du module de reconnaissance de la parole}
+		\caption{Architecture du module de reconnaissance de la parole (ASR)}
 	\end{figure}
 	\subsection{Modèle acoustique}
 		\subsubsection*{Type du modèle}
@@ -44,8 +48,8 @@ Premier module du système, il joue un rôle clé dans la véridicité du dialog
 		Le modèle d'apprentissage (qui est principalement le modèle acoustique à l'exception d'une partie consacré au modèle linguistique) possède une architecture en réseau de neurones avec apprentissage de bout-en-bout composé de trois parties : 
 		\begin{itemize}
 			\item Deux couches de convolution spatiale : pour capturer les patrons dans la séquence du spectrogramme du signal audio.
-			\item Sept couches de récurrence (Réseaux de neurones récurrents) pour analyser la séquence de patrons (ou caractéristiques) engendré par les couches de convolutions. 
-			\item Une couche de prédiction utilisant un réseau de neurone complètement connecté pour prédire le caractère correspondant à la fenêtre d'observation du spectrogramme du signal audio. La fonction d'erreur prend en compte la similarité du caractère produit avec le véritable caractère ainsi que la vraisemblance de la séquence produite par rapport à un modèle de langue basé sur les N-grammes (voir \ref{n-grams})
+			\item Sept couches de récurrence (Réseaux de neurones récurrents) pour analyser la séquence de patrons (ou caractéristiques) engendrée par les couches de convolutions. 
+			\item Une couche de prédiction utilisant un réseau de neurones complètement connecté pour prédire le caractère correspondant à la fenêtre d'observation du spectrogramme du signal audio. La fonction d'erreur prend en compte la similarité du caractère produit avec le véritable caractère ainsi que la vraisemblance de la séquence produite par rapport à un modèle de langue basé sur les N-grammes (voir \ref{n-grams})
 		\end{itemize}
 		\begin{figure}[H] 
 			\centering
@@ -57,18 +61,19 @@ Premier module du système, il joue un rôle clé dans la véridicité du dialog
 		\subsubsection*{Données d'apprentissage}
 %		audio files and their transcriptions
 		\paragraph{}
-		Pour entraîner le modèle acoustique, Mozilla à lancé le projet Common Voice  \footnote{\url{https://voice.mozilla.org/fr}} une plateforme enligne pour récolter des échantillons audios avec leurs transcriptions textuelles, chaque bacth (lot) de données reçu est alors manuellement validé par l'équipe de Mozilla pour l'inclure dans la banque de données d'exemples principale. À ce jour pour la langue anglaise, la plateforme à récolté plus de 22Go de données, soit 803 heures d'enregistrements correspondant à plus de 30 000 voix différentes dont 582 heures ont été validées. Cependant, ce volume de données est relativement petit comparé à celui déjà utilisé pour l'apprentissage initial, en effet plusieurs sources ont été combinées pour construire cet ensemble de données, dans \cite{deepspeech_paper} il a été mentionné que trois ensembles d'apprentissage existants ont étés choisis dont WSJ (Wall Stret Journal) \footnote{\url{http://www.cstr.ed.ac.uk/corpora/MC-WSJ-AV/}}, Switchboard \footnote{\url{https://catalog.ldc.upenn.edu/LDC97S62}} et Fisher \footnote{\url{https://catalog.ldc.upenn.edu/LDC2004S13}}, qui à eux trois cumulent 2380 heures d'enregistrements audios en anglais et plus de 27 000 voix différentes, vient s'ajouter à cela l'ensemble Baidu \footnote{\url{https://ai.baidu.com/broad/introduction}} avec 5000 heures d'enregistrements et 9600 locuteurs.
+		Pour entraîner le modèle acoustique, Mozilla a lancé le projet Common Voice \footnote{\url{https://voice.mozilla.org/fr}}, une plateforme en ligne pour récolter des échantillons audios avec leurs transcriptions textuelles. Chaque batch (lot) de données reçu est alors manuellement validé par l'équipe de Mozilla pour l'inclure dans la banque de données d'exemples principale. À ce jour, pour la langue anglaise, la plateforme a récolté plus de 22Go de données, soit 803 heures d'enregistrements correspondant à plus de 30 000 voix différentes dont 582 heures ont été validées. Cependant, ce volume de données est relativement petit comparé à celui déjà utilisé pour l'apprentissage initial. En effet, plusieurs sources ont été combinées pour construire cet ensemble de données. Dans \cite{deepspeech_paper} il a été mentionné que trois ensembles d'apprentissage existants ont étés choisis dont WSJ (Wall Stret Journal) \footnote{\url{http://www.cstr.ed.ac.uk/corpora/MC-WSJ-AV/}}, Switchboard \footnote{\url{https://catalog.ldc.upenn.edu/LDC97S62}} et Fisher \footnote{\url{https://catalog.ldc.upenn.edu/LDC2004S13}}, qui à eux trois cumulent 2380 heures d'enregistrements audios en anglais et plus de 27 000 voix différentes. Vient s'ajouter à cela l'ensemble Baidu \footnote{\url{https://ai.baidu.com/broad/introduction}} avec 5000 heures d'enregistrements et 9600 locuteurs.
 		
 	\subsection{Modèle de la langue}
 		\subsubsection*{Type du modèle}
 		\paragraph{}
-		Pour ce qui est du type du modèle de langue, c'est un modèle basé sur les N-grammes (3-grammes pour être plus précis) qui est utilisé, en effet il permet de façon assez simple et intuitive de capturer l'enchaînement des mots dans une langue donnée, rendant ainsi la transcription finale assez proche de la façon dont les mots sont distribués dans le corpus d'apprentissage.
+		
+		Pour ce qui est du type du modèle de langue, c'est un modèle basé sur les N-grammes (3-grammes pour être plus précis) qui est utilisé. Il permet de façon assez simple et intuitive de capturer l'enchaînement des mots dans une langue donnée, rendant ainsi la transcription finale assez proche de la façon dont les mots sont distribués dans le corpus d'apprentissage.
 		
 		\subsubsection*{Données d'apprentissage}
 		\paragraph{}
-		À l'origine, DeepSpeech utilise un modèle de langue dont la source n'est pas dévoilée par les chercheurs dans \cite{deepspeech_paper}, mais son volume est approximativement de 220 million de phrases avec 495 000 mots différents. Cependant puisque ce corpus nous reste inconnu et qu'il a probablement été construit pour reconnaître des séquence de mots en anglais assez générales, nous avons décidé de construire notre propre modèle de langue en récoltant des données depuis des dépôts sur le site \href{https://github.com/}{Github}, plus précisément les fichiers README.md des dépôts qui font office de manuels d'utilisation d'un projet hébergé sur le site, ce type de fichier renferme généralement des instructions de manipulation de fichiers, de lancement de commandes ..., ce qui offre un bon corpus pour le modèle de langue, car en effet notre système se concentre plus sur l'aspect de manipulation d'un ordinateur, donc la probabilité de trouver certaines séquences de mots qui appartiennent au domaine du Tech est en théorie plus élevée. La procédure suivi est la suivante : 
+		À l'origine, DeepSpeech utilise un modèle de langue dont la source n'est pas dévoilée par les chercheurs dans \cite{deepspeech_paper}, mais son volume est approximativement de 220 million de phrases avec 495 000 mots différents. Cependant, puisque ce corpus nous reste inconnu et qu'il a probablement été construit pour reconnaître des séquence de mots en anglais assez générales, nous avons décidé de construire notre propre modèle de langue en récoltant des données depuis des dépôts sur le site \href{https://github.com/}{Github}, plus précisément les fichiers README.md des dépôts qui font office de manuels d'utilisation d'un projet hébergé sur le site. Ce type de fichiers renferme généralement des instructions de manipulation de fichiers, de lancement de commandes, etc; ce qui offre un bon corpus pour le modèle de langue. En effet notre système se concentre plus sur l'aspect de manipulation d'un ordinateur, donc la probabilité de trouver certaines séquences de mots qui appartiennent au domaine technique	 est en théorie plus élevée. La procédure suivi est la suivante : 
 		\begin{figure}[H] 
-			\label{lm_gathering}
+			\label{fig:lm_gathering}
 			\centering
 			\includegraphics[width=0.88\linewidth]{images/Conception/ASR/lm_gathering.png}
 			\caption{Processus de génération du corpus pour le modèle de langue}
@@ -82,55 +87,65 @@ Premier module du système, il joue un rôle clé dans la véridicité du dialog
 				La liste des noms de dépôts est disponible dans un fichier \footnote{\url{https://data.world/vmarkovtsev/github-readme-files/file/top_broken.tsv}} en free open acces (accès ouvert et libre) au format \textbf{.csv} dont les colonnes sont \textit{Nom\_Utilisateur} et \textit{Nom\_Dépot} 
 				\item En lisant une base de 16 millions de fichiers différents dont la taille totale atteint 4.5 Go  
 			\end{itemize}
-			\item Les deux sources de données envoient ensuite les fichiers récoltés au nettoyeur de fichiers pour en extraire seulement les parties qui ont du sens dans le langage naturel (c.à.d paragraphes, titres, instructions ...).
-			\item Le corpus final est ensuite construit à partir des paragraphes extraits à l'étape précédente après les avoir segmenté en phrases (en utilisant un modèle de segmentation prédéfini) donnant un ensemble de phrases dans format suivant \begin{lstlisting}[language=xml]
-			<s>Phrase1</s>
-			<s>Phrase2</s>
+			\item Les deux sources de données envoient ensuite les fichiers récoltés au nettoyeur de fichiers pour en extraire seulement les parties qui ont du sens dans le langage naturel (paragraphes, titres, instructions, etc.)
+			\item Le corpus final est ensuite construit à partir des paragraphes extraits à l'étape précédente après les avoir segmentées en phrases (en utilisant un modèle de segmentation prédéfini) donnant un ensemble de phrases dans format le suivant \begin{lstlisting}[language=xml]
+			<s>select and click edit</s>
+			<s>browse to demo on your web browser</s>
 			...
-			<s>PhraseN</s>\end{lstlisting}
+			<s>you can specify these values in a file that file must be hom</s>\end{lstlisting}
 		\end{itemize}
-		
+	
 
 \section{Module de compréhension automatique du langage naturel}
 \paragraph{}
-Second module du système, son rôle et de faire office de couche d'abstraction entre la requête de l'utilisateur (formulée dans un langage naturel) et le fonctionnement interne du système qui communique à travers un langage plus formel, on parle ici de la construction d'une représentation sémantique de la requête. Pour ce faire nous avons opté pour l'approche par apprentissage automatique, compte tenu des bons résultats obtenus par certaines architectures \cite{intent_slots},\cite{intent_classification} et cela malgré le petit volume des données d'apprentissage, cette option nous à paru plus abordable que la construction d'un analyseur basé règles, souvent assez rigide.
+Second module du système, le module de compréhension automatique du langage naturel (Natural Langage Understanding, NLU) à pour rôle de faire office de couche d'abstraction entre la requête de l'utilisateur (formulée dans un langage naturel) et le fonctionnement interne du système qui communique à travers un langage plus formel. On parle ici de la construction d'une représentation sémantique de la requête. Pour ce faire nous avons opté pour l'approche par apprentissage automatique, compte tenu des bons résultats obtenus par certaines architectures ( \cite{intent_slots},\cite{intent_classification}) et cela malgré le petit volume des données d'apprentissage. Cette option nous a paru plus abordable que la construction d'un analyseur basé règles, souvent assez rigide et dont l'exhaustivité n'est pas évidente à obtenir.
 	\subsection{Architecture du module}
 	\begin{figure}[H] 
 		\label{nlu_arch}
 		\centering
-		\includegraphics[width=0.88\linewidth]{images/Conception/NLU/nlu_module_arch.png}
-		\caption{Architecture du module compréhension automatique du langage naturel}
+		\includegraphics[width=\linewidth]{images/Conception/NLU/nlu_module_arch.png}
+		\caption{Architecture du module de compréhension automatique du langage naturel (NLU)}
 	\end{figure}
 	\paragraph{}
-	Comme précédemment cité (voir \ref{system_layer}), le module possède une architecture en pipeline qui reçoit en entrée le texte brut de la requête, sa codification varie selon les approches que nous avons exploré et qui seront plus explicitées dans le chapitre suivant Réalisation et Expérimentions, pour mieux capturer l'aspect sémantique des mots dans le texte, nous avons décidé d'utiliser un modèle pré-entraîné par Google de Word2Vec (entraîné sur 100 milliard de mots) pour produire un vecteur de taille fixe pour chaque mots, pour encoder l'information syntaxique de la requête nous avons concaténé au vecteur de prolongement de chaque mot de la requête (Word Embedding Vector) le vecteur codifiant son étiquette morphosyntaxique. Après avoir codifié la séquence de mots, elle est envoyée aux modèles de classification d'intentions et d'extraction d'entités \footnote{Par entité nous entendons les arguments de l'intention}, qui sont en fait un seul modèle joint dont l'architecture est détailler dans \ref{joint_model}. Ces deux informations sont ensuite décodées et passées au constructeur de trame sémantique qui structurera ces dernières en une seule entité sémantique dans le format suivant : 
-	donnant le format suivant \begin{lstlisting}[language=json]
+	\label{encoding}
+	Comme précédemment cité (voir la \ref{system_layer}), le module NLU possède une architecture en pipeline qui reçoit en entrée le texte brut de la requête. Sa codification varie selon les approches que nous avons explorées et qui seront plus explicitées dans le chapitre suivant Réalisation et résultats. Pour mieux capturer l'aspect sémantique des mots dans le texte, nous avons décidé d'utiliser le modèle Word2Vec pré-entraîné par Google (entraîné sur 100 milliard de mots) pour produire un vecteur de taille fixe pour chaque mot. Pour encoder l'information syntaxique de la requête nous avons concaténé au vecteur de prolongement de chaque mot de la requête (Word Embedding Vector) le vecteur codifiant son étiquette morphosyntaxique. Après avoir codifié la séquence de mots, elle est envoyée aux modèles de classification d'intentions et d'extraction d'entités \footnote{Par entité nous entendons les arguments de l'intention.}, qui sont en fait un seul modèle joint dont l'architecture est détaillée dans la section \ref{joint_model}. Ces deux informations sont ensuite décodées et passées au constructeur de trame sémantique qui structurera ces dernières en une seule entité sémantique dans le format suivant : 
+	\newpage
+	\begin{lstlisting}[language=json]
 	{
 		intent  : "open_file_desire",
 		entities : [
 			{	
 				entity	: "string",
 				name	: "file_name",
-				value	: "tes.py",
+				value	: "test.py",
 				start	: "31",
 				end		: "37",
 			}
 		]
 	}
 	\end{lstlisting}
-	
+	\par
+	Une trame sémantique se compose de deux parties :
+	\begin{itemize}
+		\item \textbf{Partie intentions} : l'intention extrait à partir de la requête. Elle se trouvera dans l'entrée $"intent"$ de la trame.
+		\item \textbf{Partie arguments} : aussi appelées entités du domaine, ces arguments sont extrait depuis le texte de la requêtes. L'entrée $entities$ contient une liste d'arguments. chaque élément de la liste renseigne sur le type, le nom, la valeur et l'emplacement d'une entité.
+	\end{itemize}
 %	\subsection{Analyse sémantique basée sur les grammaires de dépendances}
 	\subsection{Analyse sémantique avec apprentissage automatique}
-		\subsubsection{Modèle(s) utilisé}
+		\subsubsection{Modèle(s) utilisé(s)}
 		\paragraph{}\label{joint_model}
-		Comme vu dans le chapitre précédent (voir \ref{nlu_chap2}) l'architecture adoptée est une architecture mono-entrée/multi-sorties dont l'entrée est une séquence de mots codifiés et les sorties sont une séquence d'étiquettes et une classe associé au texte. Nous pouvons distinguer les deux parties qui sont l'encodage et le décodage de la séquence, l'encodage sert à la fois à l'attribution de la classe (l'intention) et à l'initialisation de la séquence de décodage (pour l'attribution d'une sétiquette à chaque mot).
+		Comme vu dans le chapitre précédent (voir \ref{nlu_chap2}) l'architecture adoptée est une architecture mono-entrée/multi-sorties dont l'entrée est une séquence de mots codifiés et les sorties sont une séquence d'étiquettes et ainsi qu'une classe associée au texte. Nous pouvons distinguer les deux parties qui sont l'encodage et le décodage de la séquence. 
+		\par L'encodage sert à la fois à l'attribution de la classe (l'intention) et à l'initialisation de la séquence de décodage (pour l'attribution d'une étiquette à chaque mot).
+		Il se fait en utilisant un réseau de neurones récurrent de type B-LSTM (Bidirectionall Long Short Term Memory) pour mieux capturer le contexte droit (respectivement gauche) de chaque entrée selon le sens de traitement des données dans le réseau B-LSTM. Le dernier vecteur en sortie est ensuite utilisé comme vecteur d'entrée pour un réseau de neurones Fully Connected (Complètement connecté) dont la dernière couche est une couche de prédiction sur une distribution de probabilités des intentions possibles.
 		\par
-		L'encodage se fait en utilisant un réseau de neurones récurent de type BLSTM (Bidirectionnel Long Short Term Memory) pour mieux capturer le contexte droit (respectivement gauche) de chaque entrée, le dernier vecteur en sortie est ensuite utilisé comme vecteur d'entrée pour un réseau de neurones Fully Connected (Complètement connecté) dont la dernière couche est une couche de prédiction sur une distribution de probabilités des intentions possibles. Ce dernier vecteur sert aussi de d'état initial au décodeur qui est aussi un réseau de neurones récurent de type BLSTM, à chaque étape de l'inférence une étiquette est produite en sortie pour chaque position du texte en entrée (les longueur des séquences d'entrée et de sortie sont donc égales) en utilisant un autre réseau de neurone Fully Connected sur chaque vecteur d'état de sortie des cellules LSTM du décodeur (voir ~\ref{fig:lstmslots})
+		Le décodeur est aussi un réseau de neurones récurent de type B-LSTM. Il prend en entrée le vecteur précédemment retourné par l'encodeur, ainsi, à chaque étape de l'inférence une étiquette est produite en sortie pour chaque position du texte en entrée (les longueurs des séquences d'entrée et de sortie sont donc identiques) en utilisant un autre réseau de neurones Fully Connected sur chaque vecteur d'état de sortie des cellules LSTM du décodeur (voir la figure ~\ref{fig:lstmslots}).
 		\subsubsection{Les données d'apprentissage}
 		\paragraph{}
-		Ne disposant pas d'un ensemble d'apprentissage pré-existant pour les intentions que nous avons développé, nous avons tenté d'en construire un nous même en l'enrichissant avec quelque modifications. Dans \cite{rasa_nlu} il a été noté que pour une tâche assez simple (comme pour notre cas l'exploration des fichiers dans un premier temps) une grande quantité de données n'est pas nécessaire (une cinquantaine d'exemples par intention approximativement) si les exemples ne sont pas facilement confondus, surtout si l'espace des possibilité pour les requête est assez réduit et peut facilement être expliciter. En jouant sur l'ordre des mots nous avons pu générer pour les XX intentions YYY patrons d'exemple au total (TOTAL PEUT ENCORE ÊTRE CHANGÉ 361 pour l'instant), un patron d'exemple une structure contenant des placeholders (compartiment) pouvant être rempli avec des valeurs généré programmatiquement, par exemple : 
+		\label{nlu_dataset}
+		Ne disposant pas d'un ensemble d'apprentissage pré-existant pour les intentions que nous avons développées, nous avons tenté d'en construire un nous-mêmes en l'enrichissant avec quelque modifications. Dans \cite{rasa_nlu} il a été noté que pour une tâche assez simple (comme pour notre cas l'exploration des fichiers dans un premier temps) il n'est pas nécessaire de disposer d'une grande quantité de données (une cinquantaine d'exemples par intention approximativement) si les exemples ne sont pas facilement confondus, et surtout si l'espace des possibilité pour les requête est assez réduit et peut facilement être expliciter. En jouant sur l'ordre des mots nous avons pu générer pour les 15 intentions, 4157 patrons d'exemple au total dont 870 sont dépourvus d'arguments. Un patron d'exemple est une structure contenant des placeholders (compartiments) pouvant être remplis avec des valeurs générées programmatiquement. Par exemple : 
 		\begin{lstlisting}[language=json]
 		delete the {file_name:} file under {parent_directory:}\end{lstlisting}
-		Ces placeholders servent à la fois à générer plus d'exemples mais aussi à étiqueter le texte en chosifiant les valeurs de ces variables comme valeur de l'étiquette, un exemple d'un entrée de l'ensemble d'apprentissage avant affectation des variables est le suivant : 
+		Ces placeholders servent à la fois à générer plus d'exemples mais aussi à étiqueter le texte en chosifiant les valeurs de ces variables comme valeur de l'étiquette. Un exemple d'une entrée de l'ensemble d'apprentissage avant affectation des variables est le suivant : 
 		\begin{lstlisting}[language=json]
 		
 		{
@@ -139,19 +154,29 @@ Second module du système, son rôle et de faire office de couche d'abstraction 
 			"intent": "open_file_desire"
 		},
 		\end{lstlisting}
-		Pour remplir l'ensemble des placeholders, nous commençons d'abord par scanner le répertoire de la machine avec une profondeur max égale à 5,
-		Les noms des répertoires sont donc nettoyé à l'aide d'expressions régulières et transformés en un format universel établi à l'avance \textbf{nom\_du\_fichier} en choisissant "\_" comme séparateur, en bouclant sur ces noms de répertoire nous pourrons donc construire plusieurs exemples comme une entré dans un dictionnaire dont le format est le suivant : 
+		Pour remplir l'ensemble des placeholders, nous commençons d'abord par scanner le répertoire de la machine avec une profondeur max (c.à.d les niveaux de répertoires et sous-répertoires) égale à 5. Nous avons aussi ajouté une liste des noms de fichiers et répertoires les plus populaires disponible dans \cite{most_common}.
+		Les noms des répertoires sont ensuite nettoyés à l'aide d'expressions régulières et transformés en un format universel établi à l'avance \textbf{nom\_du\_fichier} en choisissant "\_" (le tiret du 8) comme séparateur. En bouclant sur ces noms de répertoire nous pourrons donc construire plusieurs exemples comme une entrée dans un dictionnaire dont le format est le suivant : 
 		\begin{lstlisting}[language=json]
 		{
 			'id': 79372,
-			'intent': 'close_file_desire',
+			'intent': 'delete_file_desire',
 			'postags': ['NN', 'VB', 'DT', 'NN', 'VBN', 'NN', 'NNS'],
-			'tags': 'NUL NUL NUL NUL NUL file_name file_name',
-			'text': 'please close the file named platform notifications'
+			'tags': 'NUL NUL NUL NUL NUL ALTER.file_name ALTER.file_name',
+			'text': 'please remove the file named platform notifications'
 		}
 		\end{lstlisting}
+		\par
+		\newpage
+		Une entrée est divisée en cinq champs :
+		\begin{itemize}
+			\item \textbf{id} : un entier qui sert d'identificateur pour l'instance.
+			\item \textbf{intent} : l'intention (non encore codifiée) attribuée à l'instance.
+			\item \textbf{tags} : les étiquettes de chaque mots de la requête, une étiquette peut être soit $NUL$ (ce n'est pas un argument) ou bien le nom de l'entité (argument) que représente le mot à la position étiquetée. La liste complète des intentions avec leurs arguments se trouve dans le tableau \ref{tab:all_intents} du chapitre Réalisation et résultats.
+			\item \textbf{postags} : la liste des étiquettes morphosyntaxiques de chaque mots de la requête. L'ensemble des étiquettes utilisées est celui du Penn Treebank \cite{penn_treebank}.
+			\item \textbf{text} : le texte de la requête nettoyé et dont les mots sont séparés uniquement par un espace.
+		\end{itemize}
 \section{Module de gestion du dialogue}
-Le but de ce module est de décider quelle action à prendre à chaque instant du dialogue. D'abord nous allons présenter l'architecture globale de ce module notamment la représentation des informations reçues et la politique d'action. Ensuite, nous allons détailler la conception de chaque partie.
+Le but de ce module est de décider quelle action prendre à chaque instant du dialogue. De prime abord nous allons présenter l'architecture globale de ce module notamment la représentation des informations reçues et la politique d'actions. Ensuite, nous allons détailler la conception de chaque partie.
 \subsection{Architecture du module}
 Comme nous avons déjà vu, l'architecture typique des gestionnaires de dialogue se compose de deux parties principales: 
 \begin{itemize}
@@ -349,7 +374,7 @@ En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir 
 \end{itemize}
 Pour résumer le fonctionnement du simulateur, à l'arrivé d'une nouvelle action agent, celle-ci met à jour l'état du simulateur. L'état du simulateur se compose de deux parties: un simulateur d'arborescence de fichiers qui simule l'état de l'arborescence courant, et des variables d'état qui contiennent d'autres informations comme l'état des sous-buts, le fichier en cours de traitement, les informations reçues de l'agent, le répertoire courant, etc. Après la mise à jour de l'état, si l'action de l'agent nécessite une réponse immédiate, comme la demande d'une information ou la permission d'exécuter une action, celle-ci est traité directement, sinon le simulateur initie le traitement d'une nouvelle sous-tâche. C'est à dire, Si un but intermédiaire existe, une action qui le traite est générée; sinon, une action qui traite le but final est générée.
 \subsection{Modèles d'apprentissage}\label{DQL}
-Comme on l'a déjà cité dans le chapitre précédent, il existe plusieurs algorithmes d'apprentissage par renforcement comme Q-Learning ou State-Action-Reward-State-Action (SARSA)\cite{Rummery1994}. Cependant ces algorithmes, en essayant d'estimer la fonction Q de récompense, traitent le problème comme un tableau état/action et essayent d'estimer pour chaque état et action la récompense résultante. Ceci implique que ces algorithmes ne peuvent pas estimer la fonction de récompense pour des états qu'ils n'ont pas vus pendant l'apprentissage. Pour pallier à ce problème, Deep Q Learning (DQL)\cite{Mnih2015} utilise un réseau de neurones comme estimateur de la fonction Q, ce qui lui permet d'avoir une notion de similarité entre les états. Ainsi, il peut estimer la récompense pour des états jamais vus auparavant.
+Comme on l'a déjà cité dans le chapitre précédent, il existe plusieurs algorithmes d'apprentissage par renforcement comme Q-Learning ou State-Action- Reward-State-Action (SARSA) \cite{Rummery1994}. Cependant ces algorithmes, en essayant d'estimer la fonction Q de récompense, traitent le problème comme un tableau état/action et essayent d'estimer pour chaque état et action la récompense résultante. Ceci implique que ces algorithmes ne peuvent pas estimer la fonction de récompense pour des états qu'ils n'ont pas vus pendant l'apprentissage. Pour pallier à ce problème, Deep Q Learning (DQL)\cite{Mnih2015} utilise un réseau de neurones comme estimateur de la fonction Q, ce qui lui permet d'avoir une notion de similarité entre les états. Ainsi, il peut estimer la récompense pour des états jamais vus auparavant.
 \subsubsection*{Encodeur de graphe}
 La flexibilité des graphes les rend difficiles à introduire dans un réseau de neurones vu que ce dernier n'accepte que des entrées de tailles fixes. Des méthodes ont été utilisées pour introduire les graphes dans des réseaux de neurones notamment les convolutions sur les graphes avec Graph Convolution Networks (GCN)\cite{KipfW17} qui s'avèrent être des variantes des Gated Graph Neural Networks (GGNN)\cite{Li2016GatedGS}. Ces derniers utilisent des réseaux de neurones récurrents (RNNs) entre chaque deux n\oe{}uds reliés par un arc pour transférer l'information d'un n\oe{}ud à un autre. C'est à dire que le RNN prend en entrée les vecteurs encodant un n\oe{}ud et un de ses arc pour essayer de propager l'information contenue dans ces vecteurs au n\oe{}ud destination. Ce dernier met à jour le vecteur l'encodant en sommant les résultats du RNN provenant des différents n\oe{}uds voisins. Ce qui résulte en des vecteurs ayant un encodage qui tient en compte le voisinage du noeud. Cette étape est répétée k fois pour que chaque n\oe{}ud aie des informations des n\oe{}uds qui sont à un maximum de k pas de distance, avec k un paramètre empirique. Enfin, la somme des vecteurs d'états des différents n\oe{}uds est effectuée pour produire un vecteur fixe encodant tout le graphe qui peut être relié au reste du réseau de neurones pour l'apprentissage.
 \begin{figure}[H] 
@@ -373,9 +398,9 @@ Comme le montre la figure \ref{encoder_seq}, lorsque un sous-graphe arrive, celu
 	\caption{Schéma de l'apprentissage d'un encodeur séquentiel de graphe}
 	
 \end{figure}\label{encoder_seq_train}
-\subsubsection*{Les agents feuilles}
-Comme nous l'avons cité précédemment, les agents feuilles sont les agents responsables de répondre aux intentions de l'utilisateur. Pour faire l'apprentissage par renforcement d'un agent feuille, nous utilisons le simulateur d'utilisateur comme environnement de cet agent. Ce dernier interagit avec le simulateur pour but d'estimer la correspondance des récompenses en fonction des états. Nous utilisons pour cela un réseau de neurones profond qui prend en entrée le graphe encodé de l'agent et il produit pour chaque action la récompense correspondante. Comme le nombre d'actions est variable, il est impossible d'utiliser un réseau de neurones qui produit une récompense pour chaque action vu que les réseaux de neurones ont un nombre de sorties fixe. Par conséquent, il est nécessaire d'utiliser une architecture qui prend en entrée, en plus de l'état encodé, l'action candidate pour produire en sortie sa récompense.
-\begin{figure}[H] 
+\subsubsection{Les agents feuilles}
+Comme nous l'avons cité précédemment, les agents feuilles sont les agents responsables de répondre aux intentions de l'utilisateur. Pour faire l'apprentissage par renforcement d'un agent feuille, nous utilisons le simulateur d'utilisateur comme environnement de cet agent. Ce dernier interagit avec le simulateur pour but d'estimer la correspondance des récompenses en fonction des états. Nous utilisons pour cela un réseau de neurones profond qui prend en entrée le graphe encodé de l'agent et il produit pour chaque action la récompense correspondante. Comme le nombre d'actions est variable, il est impossible d'utiliser un réseau de neurones qui produit une récompense pour chaque action vu que les réseaux de neurones ont un nombre de sorties fixe. Par conséquent, il est nécessaire d'utiliser une architecture qui prend en entrée, en plus de l'état encodé, l'action candidate pour produire en sortie sa récompense.\newpage
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/Conception/DM/time_dist.png}
 	\caption{Schéma du réseau DQN}
@@ -405,13 +430,13 @@ Une autre architecture possible serait de relier l'encodeur de graphe directemen
 \subsubsection*{L'agent coordinateur}
 L'agent coordinateur utilise la même architecture que celle des agents feuilles. La différence se trouve au niveau de la sortie. Dans le cas des agents coordinateurs, ils essayent de prédire quel agent fils peut répondre à la dernière action reçue.
 \section{Module de génération du langage naturel}
-Le modèle utilisé pour la génération du texte est relativement simple. Il s'agit de préparer des modèles de phrases contenant des emplacements à remplir. Chaque action de l'agent correspond à un ensemble de modèles et à chaque paramètre de l'action correspond un ensemble d'expressions. La génération du texte se fait en choisissant d'abord pour chaque paramètre de l'action une expression aléatoirement. Ensuite un modèle de phrase est choisi aléatoirement. Enfin, les emplacements vides sont remplis avec les expressions des paramètres. Le module de génération de texte traite aussi les éventuelles erreurs qui peuvent se produire comme la suppression d'un fichier inexistant ou la création d'un fichier qui existe déjà. Dans ce cas, l'agent doit informer l'utilisateur que l'action demandée ne peut pas être exécuté pour qu'il résolve le problème. Le traitement des erreurs est symilaire, La figure \ref{nlg_schema} illustre un exemple de génération de texte en utilisant les modèles de phrases.
+Le modèle utilisé pour la génération du texte est relativement simple. Il s'agit de préparer des modèles de phrases contenant des emplacements à remplir. Chaque action de l'agent correspond à un ensemble de modèles et à chaque paramètre de l'action correspond un ensemble d'expressions. La génération du texte se fait en choisissant d'abord pour chaque paramètre de l'action une expression aléatoirement. Ensuite un modèle de phrase est choisi aléatoirement. Enfin, les emplacements vides sont remplis avec les expressions des paramètres. Le module de génération de texte traite aussi les éventuelles erreurs qui peuvent se produire comme la suppression d'un fichier inexistant ou la création d'un fichier qui existe déjà. Dans ce cas, l'agent doit informer l'utilisateur que l'action demandée ne peut pas être exécuté pour qu'il résolve le problème. Le traitement des erreurs est similaire au traitement des actions, le générateur de texte utilise le nom de l'erreur comme l'intention de l'agent et ses paramètres comme les paramètres de l'action.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Conception/NLG.png}
 	\caption{Schéma de fonctionnement du générateur de texte}\label{nlg_schema}
 \end{figure}
-Dans la figure \ref{nlg_schema} l'agent demande à l'utilisateur de lui donner le répertoire parent d'un fichier nommé "travail". Le générateur de texte utilise l'intention de l'agent "$Request$" pour extraire les modèles de phrases qui lui correspondent. En parallèle, il utilise les paramètres de l'action pour extraire leurs expressions. Par exemple, le paramètre contenant le nom du fichier peut être transformé en "\textit{travail}" ou "\textit{the file travail}". Ces expressions sont enfin combinées avec le modèle de la phrase choisi pour générer une phrase complète. Par exemple, "\textit{Please, tell me what is the \textbf{parent directory}} of \textbf{travail}" ou "\textit{Please, tell me what is the \textbf{directory} of \textbf{the file travail}}".
+Dans la figure \ref{nlg_schema} un exemple de génération de texte en utilisant les modèles de phrases est présenté où l'agent demande à l'utilisateur de lui donner le répertoire parent d'un fichier nommé "travail". Le générateur de texte utilise l'intention de l'agent "$Request$" pour extraire les modèles de phrases qui lui correspondent. En parallèle, il utilise les paramètres de l'action pour extraire leurs expressions. Par exemple, le nom du fichier peut être transformé en "\textit{travail}" ou "\textit{the file travail}". Ces expressions sont enfin combinées avec le modèle de la phrase choisi pour générer une phrase complète. Par exemple, "\textit{Please, tell me what is the \textbf{parent directory}} of \textbf{travail}" ou "\textit{Please, tell me what is the \textbf{directory} of \textbf{the file travail}}".
 \section{Conclusion}
 \paragraph{}
 À travers ce chapitre, et en nous inspirant des travaux existants, nous avons pu modéliser et conceptualiser tout les aspects du système que nous jugeons assez conforme au standard. Viennent s'ajouter les améliorations proposées pour enrichir le système de base retrouvé dans la littérature ainsi que pour faciliter l'extensibilité des fonctionnalités de bases avec un moindre effort d'intégration. Ceci est le résultat d'une conception modulaire et facilement maintenable. 
