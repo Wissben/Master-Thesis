@@ -612,31 +612,31 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 		\item \textbf{L'utilisation de l'étiquetage morphosyntaxique} : Pour finir, l'ajout de l'information sur la syntaxe de la requête semble aider le modèle à construire une meilleure représentation interne de la requête. Il ne voit pas un mot seulement à un instant $t$, mais plutôt la paire (mot,rôle du mot dans la phrase). Cet ajout est conforme à notre explication théorique dans la section \ref{encoding}
 	\end{itemize}
 \section{Ontologie et manipulation du graphe d'état}
-\paragraph{}Les ontologies déjà présentées dans les sections \ref{onto1} et \ref{onto2} ont été créées en utilisant Protégé. Elles ont été ensuite exportées en format Turtle\footnote{Turtle est une syntaxe pour l'écriture des triplets d'un graphe de connaissance avec RDF} afin de les exploiter dans la suite de ce travail en utilisant la bibliothèque RDFLib de Python.
-\paragraph{}Les n\oe{}uds et les relations du graphe sont identifiés par un identifiant entier pour faciliter leur utilisation avec les réseaux de neurones. Une phase de transformation des URIs\footnote{Les URIs identifient de manière unique les ressources dans le web sémantique et sont également utilisés pour identifier les concepts et les relations dans les ontologies} en identifiants entiers s'avère nécessaire. L'ontologie comprend 61 n\oe{}uds et 13 relations. Contrairement au nombre de relations, le nombre de concepts augmente au cours du dialogue; de nouveaux n\oe{}uds sont introduits après chaque échange. D'où, la nécessité de garder un ensemble d'identifiants non utilisés pour les associer pendant le dialogue. Le tableau suivant résume l'association des identifiants au n\oe{}uds et relations des graphes.
+\paragraph{}Les ontologies déjà présentées dans les sections \ref{onto1} et \ref{onto2} ont été créées en utilisant Protégé. Elles ont été ensuite exportées en format Turtle\footnote{Turtle est une syntaxe pour l'écriture des triplets d'un graphe de connaissance avec RDF} afin de les exploiter dans la suite de ce travail en utilisant la bibliothèque RDFLib de Python.\\[6pt]
+Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour faciliter leur utilisation avec les réseaux de neurones. Une phase de transformation des URIs\footnote{Les URIs identifient de manière unique les ressources dans le web sémantique et sont également utilisés pour identifier les concepts et les relations dans les ontologies} en identifiants entiers s'avère nécessaire. L'ontologie comprend 61 n\oe{}uds et 13 relations. Contrairement au nombre de relations, le nombre de concepts augmente au cours du dialogue; de nouveaux n\oe{}uds sont introduits après chaque échange. Ceci nécessite de garder un ensemble d'identifiants non utilisés pour les associer pendant le dialogue. Le tableau suivant résume l'association des identifiants aux n\oe{}uds et relations des graphes.
 \begin{table}[H]
 	\begin{center}
 		
 		\begin{tabular}{|l|c|}
 			\hline
-			\textbf{Ressource} & \textbf{Interval d'identifiants}\\
+			\textbf{Ressource} & \textbf{Intervalles d'identifiants}\\
 			\hline
 			N\oe{}uds de l'ontologie & [1-61]\\
 			\hline
 			Relations de l'ontologie & [1-13]\\
 			\hline
-			N\oe{}uds créés pendant le dialogue & [62-256]\\
+			N\oe{}uds créés pendant un dialogue & [62-256]\\
 			\hline
 		\end{tabular}
 		\caption{Tableau des identifiants}\label{table_ids}
 	\end{center}
 \end{table}
 \section{L'agent de dialogue}\label{DMReal}
-\paragraph{}Nous avons proposé dans la partie conception\ref{DQL} deux architectures pour entraîner l'agent de dialogue. La première se compose de deux parties, un module pour encoder le graphe d'état et un autre pour décider l'action à prendre. Chaqu'un est entraîné séparément. Les deux modules étant des réseaux de neurones, nous avons pensé à une deuxième architecture en les connectant pendant la phase d'apprentissage. Cette connexion permet à l'encodeur de graphe de choisir les parties du dialogue, représenté par le graphe d'état, à mémoriser afin de mieux estimer la fonction de récompenses.
+\paragraph{}Nous avons proposé dans la partie conception \ref{DQL} deux architectures pour entraîner l'agent de dialogue. La première se compose de deux parties, un module pour encoder le graphe d'état et un autre pour décider l'action à prendre. Chacun est entraîné séparément. Les deux modules étant des réseaux de neurones, nous avons pensé à une deuxième architecture en les connectant pendant la phase d'apprentissage. Cette connexion permet à l'encodeur de graphe de choisir les parties du dialogue, représentées par le graphe d'état, à mémoriser afin de mieux estimer la fonction de récompense.
 \subsection{Encodeur de graphe}
-\paragraph{}Dans la première méthode, l'entraînement de l'encodeur se fait avec une architecture encodeur-décodeur en passant les triplets du graphes comme entrés et sortis de cette architecture.
+\paragraph{}Dans la première méthode, l'entraînement de l'encodeur se fait avec une architecture encodeur-décodeur en passant les triplets du graphes comme entrées et sorties de cette architecture.
 \subsubsection{Implémentation}
-\par Le réseau de neurones a été implémenté en utilisant la bibliothèque Keras de Python. Nous avons utilisé des cellules GRUs (Gated Reccurent Unit \cite{Cho2014}) comme unités récurrentes pour l'encodeur et le décodeur vu leur efficacité comparable aux LSTMs tout en utilisant un seul vecteur d'état, ce qui les rend moins exigeants en mémoire. Comme notre tâche consiste à encoder un graphe dans un vecteur, la taille de ce dernier est très importante. Intuitivement, plus cette taille est grande plus le nombre de triplets qu'on peut y encoder est grand. D'où, l'intérêt des cellules GRUs qui permettent d'utiliser de plus grands vecteurs d'état en moins d'espace mémoire que les LSTMs.
+\par Le réseau de neurones a été implémenté en utilisant la bibliothèque Keras de Python. Nous avons utilisé des cellules GRUs (Gated Reccurent Units \cite{Cho2014}) comme unités récurrentes pour l'encodeur et le décodeur vu leur efficacité comparable aux LSTMs tout en utilisant un seul vecteur d'état, ce qui les rend moins exigeants en mémoire. Comme notre tâche consiste à encoder un graphe dans un vecteur, la taille de ce dernier est très importante. Intuitivement, plus cette taille est grande plus le nombre de triplets qu'on peut y encoder est grand. D'où, l'intérêt des cellules GRUs qui permettent d'utiliser de plus grands vecteurs d'état en moins d'espace mémoire que les LSTMs.
 \paragraph{}La génération aléatoire des graphes de taille $t$ triplets se fait en suivant les étapes suivantes:
 \begin{itemize}
 	\item choisir un nombre de n\oe{}uds $nn$ aléatoire entre $2$ et $t+1$.
@@ -644,7 +644,7 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 	\item tirer $nn$ identifiants de n\oe{}uds et $na$ identifiants d'arcs aléatoirement de l'ensemble des identifiants possibles.
 	\item créer les triplets en tirant pour chaque triplet deux n\oe{}uds et un arc aléatoirement des ensembles résultats de l'étape précédente. 
 \end{itemize}
-\par Pendant l'apprentissage, le générateur choisit une taille pour le graphe inférieure à une taille maximale et crée un graphe en suivant les étapes sus-citées. Ce dernier est passé à l'encodeur-décodeur comme entré et sortie désirée.
+\par Pendant l'apprentissage, le générateur choisit une taille pour le graphe inférieure à une taille maximale et crée un graphe en suivant les étapes sus-citées. Ce dernier est passé à l'encodeur-décodeur comme entrée et sortie désirée.
 \subsubsection{Résultats et discussion}
 \paragraph{}Pour estimer la capacité de l'encodeur du graphe, nous avons varié la taille maximale du graphe ainsi que le vecteur d'état du GRU. Les résultats sont présentés dans le figure suivante.
 \begin{figure}[H] 
@@ -657,28 +657,28 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 \[t(n+1) = t(n) \times nb\]
 \par La première équation montre que le nombre de graphes possibles est égale au nombre de triplets possibles lorsque le graphe se compose d'un seul triplet. Tandis que la deuxième vient du fait que les graphes de taille $n+1$ peuvent être obtenus en combinant chaque graphe de taille $n$ avec tous les triplets possibles. Le résultat des deux équations est:
 \[t(n) = nb^n\]\\
-\par Pour essayer de pallier à ce problème, le graphe d'état peut être divisé en plusieurs sous-graphes. De façon à ce que chaque sous-graphe est assez petit pour être encodé par l'un des encodeurs déjà entraînés. Ainsi la concaténation de ces vecteurs peut être utilisé comme entré pour le module suivant.
+\par Pour essayer de pallier à ce problème, le graphe d'état peut être divisé en plusieurs sous-graphes. De façon à ce que chaque sous-graphe soit assez petit pour être encodé par l'un des encodeurs déjà entraînés. Ainsi la concaténation de ces vecteurs peut être utilisée comme entrée pour le module suivant.
 \subsection{Apprentissage par renforcement}
 \paragraph{}Nous allons à présent présenter les deux méthodes citées dans la section \ref{DMReal}. La première consiste à utiliser le résultat de l'encodeur pour entraîner un réseau de neurones à estimer la récompense associée à chaque action possible. La deuxième, par contre, fait l'apprentissage des deux parties à la fois.
 \par Nous utilisons un simulateur d'utilisateur pour communiquer avec l'agent de dialogue. Afin de simuler aussi les erreurs des modules précédents (reconnaissance automatique de la parole et compréhension du langage naturel), nous ajoutons un module qui insère du bruit dans les actions du simulateur. Sachant qu'une action utilisateur se compose de l'intention et des emplacements, ce dernier module prend donc deux valeurs de probabilités en paramètre; la probabilité de bruiter l'intention et celle de bruiter les emplacements. Dans la suite de ce travail nous allons varier ces deux valeurs ainsi que la taille du vecteur d'état afin d'arriver à un compromis entre la robustesse face aux erreurs, la réussite des tâches utilisateur et l'utilisation de la mémoire.
-\par Nous allons évaluer les différents résultats en comparant leurs taux de succès qui est donné par le rapport entre le nombre de fois où l'agent arrive au but sur le nombre totale d'essais. Un succès nécessite d'arriver au but dans un nombre d'échange limite que nous avons estimer comme suit: 
+\par Nous allons évaluer les différents résultats en comparant leur taux de succès qui est donné par le rapport entre le nombre de fois où l'agent arrive au but sur le nombre total d'essais. Un succès nécessite d'arriver au but dans un nombre d'échanges limite que nous avons estimé comme suit: 
 \[limite = nb_{diff} \times 4 \times (1 + (pb_i + pb_e) \times 2) \]
 \begin{itemize}
-	\item limite: le nombre d'échanges maximales.
+	\item limite: le nombre d'échanges maximal.
 	\item $nb_{diff}$: le nombre de fichiers dans l'arborescence de départ en plus ou en moins par rapport à l'arborescence but.
 	\item $pb_i$: la probabilité d'erreurs dans l'intention de l'utilisateur.
 	\item $pb_e$: la probabilité d'erreurs dans les emplacements de l'action.
 \end{itemize}
-\par La première partie de l'équation, $nb_{diff} \times 4$, détermine une approximation du nombre d'actions nécessaire afin d'arriver au but; nous avons estimer qu'il faut un maximum de 4 échanges pour ajouter ou supprimer un fichier. La deuxième partie permet de prendre en compte les erreurs du simulateur. Sachant que le nombre d'action erronée moyen en $n$ échange est égale à $n \times (pb_i + pb_e)$, nous avons donc ajouter deux fois ce nombre. Ceci permet en premier lieu de ne pas compter les actions erronées dans la limite des échanges possibles, ainsi que d'ajouter des actions afin que l'agent puisse se retrouver dans la conversation après une erreur du simulateur.
+\par La première partie de l'équation, $nb_{diff} \times 4$, détermine une approximation du nombre d'actions nécessaire afin d'arriver au but; nous avons estimé qu'il faut un maximum de 4 échanges pour ajouter ou supprimer un fichier. La deuxième partie permet de prendre en compte les erreurs du simulateur. Sachant que le nombre moyen d'actions erronées en $n$ échanges est égal à $n \times (pb_i + pb_e)$, nous avons donc ajouté deux fois ce nombre. Ceci permet en premier lieu de ne pas compter les actions erronées dans la limite des échanges possibles, ainsi que d'ajouter des actions afin que l'agent puisse se retrouver dans la conversation après une erreur du simulateur.
 \subsubsection{Apprentissage avec DQN déconnecté}
-\paragraph{}Dans cette partie, nous utilisons un des encodeurs déjà entraînés dans la partie précédente. Nous avons donc choisi d'utiliser l'encodeur de taille 300 qui a été entraîné avec des graphes de taille maximale de 20. Nous avons varié le nombre de vecteurs utilisé ainsi que les probabilités d'erreurs du simulateur. Les résultats sont présentés dans le tableau \ref{table_results_dis}.
+\paragraph{}Dans cette partie, nous utilisons un des encodeurs déjà entraînés dans la partie précédente. Nous avons donc choisi d'utiliser l'encodeur de taille 300 qui a été entraîné avec des graphes de taille maximale de 20. Nous avons varié le nombre de vecteurs utilisés ainsi que les probabilités d'erreurs du simulateur. Les résultats sont présentés dans le tableau \ref{table_results_dis}.
 \definecolor{LightCyan}{rgb}{0.7,1,1}
 \begin{table}[H]
 	\begin{center}
 		
-		\begin{tabular}{|l|c|c|c|}
+		\begin{tabular}{|c|c|c|c|}
 			\hline
-			\textbf{Nombre de vecteurs} & \textbf{probabilité 1} & \textbf{probabilité 2} & \textbf{taux de réussite maximale}\\
+			\textbf{Nombre de vecteurs} & \textbf{probabilité pb\textsubscript{i}} & \textbf{probabilité pb\textsubscript{e}} & \textbf{taux de réussite maximal}\\
 			\hline
 			4 & 0.25 & 0.3 & 0.25\\
 			\hline
@@ -707,24 +707,25 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 			6 & 0 & 0 & 0.7\\
 			\hline
 		\end{tabular}
-		\caption{Taux de réussite en fonction des probabilités d'erreurs et du nombre de vecteurs d'état. Avec les probabilités 1 et 2: les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_dis}
+		\caption{Taux de réussite en fonction des probabilités d'erreurs et du nombre de vecteurs d'état. Avec les probabilités pb\textsubscript{i} et pb\textsubscript{e}: les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_dis}
 	\end{center}
 \end{table}
+Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 \begin{itemize}
-	\item Le tableau montre qu'évidemment avec moins de probabilités d'erreurs, le réseau arrive mieux à reconnaître les motifs dans le vecteur d'état et leurs relations avec les récompenses du simulateur. Cependant, l'augmentation de la taille du vecteur n'améliore que légèrement les résultats; en moyenne: \textbf{53.4\%} taux de réussite pour quatre vecteurs, \textbf{53.75\%} pour cinq vecteurs et \textbf{57.5\%} pour six vecteurs.
-	\item Le meilleur résultat a été obtenu en utilisant quatre vecteurs et sans erreurs avec un taux de réussite de \textbf{72\%}. En pratique, ce modèle ne s'adapte pas aux erreurs des modules précédent. Par conséquence, il se perd lorsqu'une erreur se produit et n'arrive pas a se resituer dans la conversation.
-	\item Avec des probabilités d'erreurs très élevées, le réseau n'arrive pas à apprendre et ne dépasse pas 28\% taux de réussite.
-	\item Les résultats les plus prometteurs dans ce cas sont celles qui sont entraînées avec des probabilités d'erreurs proche de la réalité avec des taux de réussite acceptable. Dans ce cas, un taux de réussite de \textbf{69\%} avec des probabilités d'erreurs de \textbf{1\%} et \textbf{10\%} sur les intentions et les emplacements respectivement.
+	\item Évidemment avec moins de probabilités d'erreurs, le réseau arrive à mieux reconnaître les motifs dans le vecteur d'état et leurs relations avec les récompenses du simulateur. Cependant, l'augmentation de la taille du vecteur n'améliore que légèrement les résultats; en calculons la moyenne des taux de réussite pour chaque nombre de vecteurs, les résultats sont comme suit: \textbf{53.4\%} de taux de réussite pour quatre vecteurs, \textbf{53.75\%} pour cinq vecteurs et \textbf{57.5\%} pour six vecteurs.
+	\item Le meilleur résultat a été obtenu en utilisant quatre vecteurs et sans erreurs avec un taux de réussite de \textbf{72\%}. En pratique, ce modèle ne s'adapte pas aux erreurs des modules précédents. Par conséquent, il se perd lorsqu'une erreur se produit et il n'arrive pas à se resituer dans la conversation.
+	\item Avec des probabilités d'erreurs très élevées, le réseau n'arrive pas à apprendre et ne dépasse pas 28\% de taux de réussite.
+	\item Les résultats les plus prometteurs dans ce cas sont celles qui sont entraînées avec des probabilités d'erreurs proches de la réalité avec des taux de réussite acceptables. Dans ce cas, nous avons obtenu un taux de réussite de \textbf{69\%} avec des probabilités d'erreurs de \textbf{1\%} et \textbf{10\%} sur les intentions et les emplacements respectivement.
 \end{itemize}
 
 \subsubsection{Apprentissage avec DQN connecté}
-\paragraph{} Connecter le DQN avec l'encodeur devrait permettre de réduire la taille du vecteur d'état nécessaire. Comme la partie précédente, nous avons varié la taille du vecteur d'état ainsi que les probabilités des erreurs pour pouvoir par la suite comparer les deux approches proposées. 
+\paragraph{} Connecter le DQN avec l'encodeur devrait permettre de réduire la taille du vecteur d'état nécessaire. Comme pour la partie précédente, nous avons varié la taille du vecteur d'état ainsi que les probabilités des erreurs pour pouvoir par la suite comparer les deux approches proposées. 
 \begin{table}[H]
 	\begin{center}
 		
-		\begin{tabular}{|l|c|c|c|}
+		\begin{tabular}{|c|c|c|c|}
 			\hline
-			\textbf{Taille du vecteur d'état} & \textbf{probabilité 1} & \textbf{probabilité 2} & \textbf{taux de réussite maximale}\\
+			\textbf{Nombre de vecteurs} & \textbf{probabilité pb\textsubscript{i}} & \textbf{probabilité pb\textsubscript{e}} & \textbf{taux de réussite maximal}\\
 			\hline
 			50 & 0.25 & 0.3 & 0.69\\
 			\hline
@@ -760,46 +761,46 @@ Pour ce module, une approche assez classique à été utilisée, l'ensemble de t
 			200 & 0 & 0 & 0.86\\
 			\hline
 		\end{tabular}
-		\caption{Taux de réussite en fonction des probabilités d'erreurs et de la taille du vecteur d'état. Avec les probabilités 1 et 2: les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_con}
+		\caption{Taux de réussite en fonction des probabilités d'erreurs et de la taille du vecteur d'état. Avec les probabilités pb\textsubscript{i} et pb\textsubscript{e}: les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_con}
 	\end{center}
 \end{table}
 \begin{itemize}
-	\item Comme dans la méthode précédente, l'augmentation des probabilités d'erreurs diminue le taux de réussite en générale.
-	\item Le meilleur taux de réussite est toujours en faisant un apprentissage sans erreurs avec un pourcentage de \textbf{93} de réussite.
-	\item Pour des probabilités d'erreurs élevé, le taux de réussite diminue considérablement par rapport aux autres valeurs de probabilités.
-	\item Le réseau arrive à reconnaître les motifs encodé aussi bien pour de petites tailles du vecteur d'état que pour de grandes tailles. Cette méthode permet effectivement de réduire la taille du vecteur encodant le graphe d'état par rapport à sa prédécesseur.	
+	\item Comme pour la méthode précédente, l'augmentation des probabilités d'erreurs diminue le taux de réussite en général.
+	\item Le meilleur taux de réussite est toujours obtenu en faisant un apprentissage sans erreurs ce qui a donné \textbf{93\%} de réussite.
+	\item Pour des probabilités d'erreurs élevées, le taux de réussite diminue considérablement par rapport aux autres valeurs de probabilités.
+	\item Le réseau arrive à reconnaître les motifs encodés aussi bien pour de petites tailles du vecteur d'état que pour de grandes tailles. Cette méthode permet effectivement de réduire la taille du vecteur encodant le graphe d'état par rapport à son prédécesseur.	
 \end{itemize}
 
 \subsubsection{Comparaison des approches et discussion}
-\paragraph{}En comparant les deux méthodes, il est évident que la deuxième méthode est beaucoup plus efficace. Dans cette partie nous allons donner de potentielle explication aux résultats trouvés en analysant les forces et faiblesses de chaque méthode. Nous allons analyser les méthodes par rapport à trois aspects: le taux de réussite, la vitesse d'apprentissage et la courbe d'apprentissage.
+\paragraph{}En comparant les deux méthodes, apprentissage avec DQN déconnecté et apprentissage avec DQN connecté, il est évident que la deuxième méthode est beaucoup plus efficace. Dans cette partie nous allons donner de potentielle explications aux résultats trouvés en analysant les forces et faiblesses de chaque méthode. Nous allons analyser les méthodes par rapport à trois aspects: le taux de réussite, la vitesse d'apprentissage et la courbe d'apprentissage.
 \subsubsection{Taux de réussite}\label{success_rate}
-\paragraph{}Il est clair que connecter l'encodeur avec le réseau DQN a donné de meilleurs résultats. Ce qui peut être dû à:
+\paragraph{}Il est clair que connecter l'encodeur avec le réseau DQN a donné de meilleurs résultats. Ceci peut être dû aux facteurs suivants:
 \begin{itemize}
-	\item La difficulté de comprendre les motifs encodé séparément: En effet, la deuxième méthode permet au réseau de neurones d'apprendre à générer des motifs qui correspondent aux poids du réseau DQN.
-	\item Deux états de dialogue lointains peuvent être encodés dans des vecteurs très proches en utilisant un encodeur séparé: Par exemple, il se peut que deux graphes soient similaires sauf pour un n\oe{}ud d'action qui est dans un graphe de type \textbf{Create\_node} et dans l'autre graphe \textbf{Delete\_node}. Dans ce cas si l'encodeur les encode dans des vecteurs proches, le DQN aura des difficultés à distinguer les deux états. Par contre, en connectant l'encodeur avec le DQN, il peut observer les récompense pour avoir l'information que certains n\oe{}uds sont plus importants que d'autres, les n\oe{}uds d'action par exemple, et qu'ils peuvent changer complètement l'état du vecteur.
-	\item Les erreurs provenant de l'encodeur: il est vrai que la précision de l'encodeur obtenue était de \textbf{99\%}. Cependant, en empilant 6 vecteurs encodés avec le même taux d'erreurs et sachant que la probabilité d'erreur dans un vecteur est indépendante des autres, cette précision diminue à \textbf{96\%}.
+	\item La difficulté de comprendre les motifs encodés séparément: En effet, la deuxième méthode permet au réseau de neurones d'apprendre à générer des motifs qui correspondent aux poids du réseau DQN.
+	\item Deux états de dialogue lointains peuvent être encodés dans des vecteurs très proches en utilisant un encodeur séparé. Par exemple, il se peut que deux graphes soient similaires sauf pour un n\oe{}ud d'action qui est dans un graphe de type \textbf{Create\_node} et dans l'autre graphe \textbf{Delete\_node}. Dans ce cas, si l'encodeur les encode dans des vecteurs proches, le DQN aura des difficultés à distinguer les deux états. Par contre, en connectant l'encodeur avec le DQN, il peut observer les récompenses pour avoir l'information que certains n\oe{}uds sont plus importants que d'autres, les n\oe{}uds d'action par exemple, et qu'ils peuvent changer complètement l'état du vecteur.
+	\item Les erreurs provenant de l'encodeur: bien que la précision de l'encodeur obtenue était de \textbf{99\%}, en empilant 6 vecteurs encodés avec le même taux d'erreurs pour chacun et sachant que la probabilité d'erreur dans un vecteur est indépendante des autres, cette précision diminue à \textbf{96\%}.
 \end{itemize}
 \subsubsection{Vitesse d'apprentissage}
 \paragraph{}Nous avons comparé les vitesses d'apprentissage des deux approches. En utilisant le réseau DQN séparé, ce dernier apprend avec une moyenne de \textbf{1013.15 instances/seconde}. De l'autre côté, le réseau connecté ne fait que \textbf{197.61 instances/seconde}. La raison derrière la lenteur de la deuxième approche revient à la nécéssité de refaire l'encodage de tout le graphe d'état de l'instance sauvegardée pendant les échanges avec le simulateur. Tandis que dans la deuxième approche, on ne sauvegarde que le vecteur déjà encodé.\\\\
 Les temps des échanges avec le simulateur des deux approches sont proches puisqu'ils se comportent de la même manière dans ce cas. Les deux méthodes n'encodent que les nouveaux triplets arrivant dans le vecteur d'état précédent. 
 \subsubsection{Courbe d'apprentissage}
-\paragraph{}Enfin, nous comparons à présent les courbes d'apprentissage des deux méthodes. Celles-ci comporte le taux de réussite par le nombre d'épisodes\footnote{Un épisode est un ensemble d'échanges agent-simulateur qui aboutit à un succès ou un échec}. La figure \ref{courbes} contient quatre courbes: deux courbes pour chaque méthode, avec et sans erreurs.
+\paragraph{}Enfin, nous comparons à présent les courbes d'apprentissage des deux méthodes. Celles-ci montrent le taux de réussite par rapport au nombre d'épisodes\footnote{Un épisode est un ensemble d'échanges agent-simulateur qui aboutit à un succès ou un échec}. La figure \ref{courbes} contient quatre courbes: deux courbes pour chaque méthode, avec et sans erreurs.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Realisation/DM/courbes.png}
-	\caption{Les courbes d'apprentissage des deux méthodes proposées avec et sans erreurs du simulateur}\label{courbes}
+	\caption{Les courbes d'apprentissage des deux méthodes proposées avec et sans erreurs du simulateur d'utilisateur}\label{courbes}
 \end{figure}
-\paragraph{}Nous remarquons que la deuxième méthode arrive beaucoup plus rapidement à comprendre la fonction de récompense. Et donc, déconnecter le DQN de l'encodeur rend effectivement la tâche de trouver la relation entre les motifs des vecteurs d'états et les récompenses plus difficile.
-\paragraph{} L'apprentissage peut être améliorée dans les deux cas, et surtout en ce qui concerne le premier, en utilisant un meilleur encodage des n\oe{}uds et des arcs du graphe. En effet, les n\oe{}uds actuellement sont encodés avec des identifiants entiers seulement, perdant ainsi les riches connaissances sémantiques qu'on peut extraire des relations du graphe. Un meilleur encodage serait d'utiliser des méthodes d'apprentissage semi-supervisé qui permettrait de donner aux n\oe{}uds proches un encodage similaire. Cette méthode permet d'éviter quelques problèmes que nous avons cités dans \ref{success_rate}, entre autre le problème d'encoder deux états lointains dans des vecteurs proches.
+\paragraph{}Nous remarquons que la deuxième méthode arrive beaucoup plus rapidement à comprendre la fonction de récompense. Il s'avère donc que déconnecter le DQN de l'encodeur rend effectivement la tâche de trouver la relation entre les motifs des vecteurs d'états et les récompenses plus difficile.
+\par L'apprentissage peut être amélioré dans les deux cas, et surtout en ce qui concerne le premier, en utilisant un meilleur encodage des n\oe{}uds et des arcs du graphe. En effet, les n\oe{}uds sont actuellement encodés avec des identifiants entiers seulement, perdant ainsi les riches connaissances sémantiques qu'on peut extraire des relations du graphe. Un meilleur encodage serait d'utiliser des méthodes d'apprentissage semi-supervisé qui permettraient de donner aux n\oe{}uds proches un encodage similaire. Cette méthode permet d'éviter quelques problèmes que nous avons cités dans \ref{success_rate}, entre autres le problème d'encoder deux états lointains dans des vecteurs proches.
 
 \section{Application PCS2}
-\paragraph{}L'application PCS2 relie les modules que nous avons implémenté dans un assistant qui aide à manipuler les fichiers de l'ordinateur avec la voix. Le schéma \ref{schema_app} montre les différentes parties que comporte l'application et les communications entre eux.
+\paragraph{}L'application PCS2 relie les modules que nous avons implémentés dans un assistant qui aide à manipuler les fichiers de l'ordinateur avec la voix. Le schéma \ref{schema_app} montre les différentes parties que comporte l'application et les communications entre elles.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Realisation/schema_app.png}
-	\caption{Schéma générale de l'application PCS2}\label{schema_app}
+	\caption{Schéma général de l'application PCS2}\label{schema_app}
 \end{figure}
-\par L'application contient principalement deux parties: une partie frontend, ce que l'utilisateur peut interagir avec, et une partie backend qui contient tous les modules que nous avons traités au cours de ce travail. Cette dernière partie se trouve dans un serveur qui répond aux requêtes de l'utilisateur. Les requêtes de l'utilisateur contiennent les données audios collecté par l'interface ainsi que les données du système sur lesquelles l'assistant peut agir. Quant à la réponse du backend, elle est sous forme d'une action qui peut être exécuté par le côté client de l'application. Nous n'avons cependant pas encore traité les cas de permissions et les limites de ce que peut manipuler l'assistant. Néanmoins, nous avons limité l'espace des actions de l'assistant pour qu'il ne puisse agir que sur une arborescence de fichier teste.
+\par L'application contient principalement deux parties: une partie frontend, avec laquelle l'utilisateur interagit, et une partie backend qui contient tous les modules que nous avons traités au cours de ce travail. Cette dernière partie se trouve dans un serveur qui répond aux requêtes de l'utilisateur. Les requêtes de l'utilisateur contiennent les données audio collectées par l'interface ainsi que les données du système sur lesquelles l'assistant peut agir. Quant-à la réponse du backend, elle est sous forme d'une action qui peut être exécutée par le côté client de l'application. Nous n'avons cependant pas encore traité les cas de permissions et les limites de ce que peut manipuler l'assistant. Néanmoins, nous avons limité l'espace des actions de l'assistant pour qu'il ne puisse agir que sur une arborescence de fichier test.
 \subsection{Backend}
 \paragraph{}Pour implémenter le backend, nous avons utilisé le framework Flask qui permet d'écrire en Python le côté serveur d'une application. Les communications client-serveur de notre application se font comme suit:
 \begin{itemize}
@@ -807,7 +808,7 @@ Les temps des échanges avec le simulateur des deux approches sont proches puisq
 	\item Le backend lui répond avec un token qui sera l'identifiant de cet utilisateur.
 	\item Lorsque l'utilisateur parle à l'assistant, une requête est envoyée contenant son enregistrement audio. Alternativement, l'utilisateur peut introduire directement du texte qui sera envoyé dans la requête.
 	\item Le backend reçoit le contenu de la requête. S'il s'agit d'un enregistrement audio, il le fait passer par le module de reconnaissance de la parole pour le convertir en texte.
-	\item Le texte passe ensuite par le module de compréhension du langage qui est directement connecté avec le gestionnaire de dialogue. Ce dernier reçoit l'action résultat du module précédent et décide quelle action à prendre selon l'état du système de l'utilisateur en question.
+	\item Le texte passe ensuite par le module de compréhension du langage qui est directement connecté avec le gestionnaire de dialogue. Ce dernier reçoit l'action résultat du module précédent et décide quelle action prendre selon l'état du système de l'utilisateur en question.
 	\item L'action de l'assistant est transformée en langage naturel avant qu'elle soit envoyée à l'utilisateur.
 	\item Le côté client de l'application reçoit le texte et l'action de l'assistant. Il exécute l'action et affiche le texte à l'utilisateur.
 \end{itemize}
