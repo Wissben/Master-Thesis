@@ -22,14 +22,14 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 		
 	\end{figure}
 	\par
-	En ce qui concerne la partie logicielle une liste non exhaustive est présentée ci dessous, qui ne mentionne que les outils les plus utilisés et les plus exploités :
+	En ce qui concerne la partie logicielle, une liste non exhaustive est présentée ci dessous, qui ne mentionne que les outils les plus utilisés et les plus exploités :
 	\subsection{Langages de programmation}
-		\begin{figure}[H] 
-		\centering
-		\includegraphics[width=0.3\linewidth]{images/implementation/langs.png}
-		\caption{Langages de programmation utilisés}
-		\label{fig:langs}
-	\end{figure}
+%		\begin{figure}[H] 
+%		\centering
+%		\includegraphics[width=0.3\linewidth]{images/implementation/langs.png}
+%		\caption{Langages de programmation utilisés}
+%		\label{fig:langs}
+%	\end{figure}
 		\subsubsection*{Python}
 		\label{python}
 		\paragraph{}
@@ -37,30 +37,30 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 		
 		\subsubsection*{Javascript} 
 		\paragraph{}
-		JavaScript est un langage de programmation utilisé principalement par les navigateurs web pour exécuter un bout de code incorporé dans une page web plus communément appelé script. Il permet la manipulation de tout les éléments inclus dans une page, et par conséquent permet une gestion dynamique de ces dernier. Il est beaucoup utilisé du coté client mais peut aussi être exécuté du coté serveur. Tout comme Python il offre une grande variété dans le choix des modules qui peuvent ajouter de nouvelles fonctionnalités, le tout géré par un gestionnaire de module \textit{npm} \footnote{Node Package Manager ou Gestionnaire de packages Node} devenu un standard \cite{js}.
+		JavaScript est un langage de programmation utilisé principalement par les navigateurs web pour exécuter un bout de code incorporé dans une page web, plus communément appelé script. Il permet la manipulation de tous les éléments inclus dans une page, et par conséquent permet une gestion dynamique de ces dernier. Il est beaucoup utilisé du coté client mais peut aussi être exécuté du coté serveur. Tout comme Python, il offre une grande variété dans le choix des modules qui peuvent ajouter de nouvelles fonctionnalités, le tout géré par un gestionnaire de module \textit{npm} \footnote{Node Package Manager ou Gestionnaire de packages Node} devenu un standard \cite{js}.
 	
 	\subsection{Librairies et bibliothèques}
 	\begin{figure}[H] 
 		\centering
 		\includegraphics[width=0.9\linewidth]{images/implementation/libs_frams.png}
-		\caption{Bibliothèques et librairies les plus utilisées}
+		\caption{Bibliothèques et librairies les plus utilisées dans ce projet.}
 		\label{fig:libs_frams}
 	\end{figure}
 		\subsubsection*{DeepSpeech API}
 		\paragraph{}
-		Package python qui fait office d'interface entre un script Python et la librairie de reconnaissance automatique de la parole DeepSpeech \cite{deepspeech_paper}. Il permet entre autre de charger différents modèles acoustiques ou modèles de langues. Il offre aussi la possibilité d'utiliser des scripts d'apprentissage prédéfinis pour peu que les données soient organisé suivant une certaine norme, ces scripts sont notamment hautement paramétrables \cite{deepseech_github}.
+		Package python qui fait office d'interface entre un script Python et la librairie de reconnaissance automatique de la parole DeepSpeech \cite{deepspeech_paper}. Il permet entre autres de charger différents modèles acoustiques ou modèles de langues. Il offre aussi la possibilité d'utiliser des scripts d'apprentissage prédéfinis pour peu que les données soient organisées suivant une certaine norme; ces scripts sont notamment hautement paramétrables \cite{deepseech_github}.
 		
 		\subsubsection*{PyAudio}
 		\paragraph{}
-		Librairie python destinée à la manipulation des fichiers ou flux audios. Elle offre entre autre la possibilité d'extraire des méta-données sur un flux audio (fréquence d'échantillonnage, débit ...). La possibilité d'extraire le vecteur de caractéristiques d'un extrait audio est aussi présente comme fonctionnalité \cite{pyaudio}.
+		Librairie python destinée à la manipulation des fichiers ou flux audios. Elle offre entre autres la possibilité d'extraire des méta-données sur un flux audio (fréquence d'échantillonnage, débit ...). La possibilité d'extraire le vecteur de caractéristiques d'un extrait audio est aussi présente comme fonctionnalité \cite{pyaudio}.
 		
-		\subsubsection*{Beatiful Soup}
+		\subsubsection*{Beautiful Soup}
 		\paragraph{}
-		Bibliothèque Open source permettant l'analyse de fichier html pour en extraire ou y injecter des données. Principalement utilisée pour filtrer les balises nécessaire depuis une page web \cite{bs4}.
+		Bibliothèque Open source permettant l'analyse de fichiers html pour en extraire ou y injecter des données. Principalement utilisée pour filtrer les balises html depuis une page web \cite{bs4}.
 		
 		\subsubsection*{PySpark}
 		\paragraph{}
-		Package Python utilisé comme interface pour interagir avec un serveur Spark. Il permet entre autre de lire et écrire des données dans le nouveau format Hadoop \cite{pyspark}.
+		Package Python utilisé comme interface pour intéragir avec un serveur Spark. Il permet entre autres de lire et écrire des données dans le nouveau format Hadoop \cite{pyspark}.
 		
 		\subsubsection*{Scikit-Learn}
 		\paragraph{}
