@@ -49,7 +49,7 @@ Premier module du système Bethano, le module de reconnaissance automatique de l
 		\begin{itemize}
 			\item Deux couches de convolution spatiale : pour capturer les patrons dans la séquence du spectrogramme du signal audio.
 			\item Sept couches de récurrence (Réseaux de neurones récurrents) pour analyser la séquence de patrons (ou caractéristiques) engendrée par les couches de convolutions. 
-			\item Une couche de prédiction utilisant un réseau de neurones complètement connecté pour prédire le caractère correspondant à la fenêtre d'observation du spectrogramme du signal audio. La fonction d'erreur prend en compte la similarité du caractère produit avec le véritable caractère ainsi que la vraisemblance de la séquence produite par rapport à un modèle de langue basé sur les N-grammes (voir \ref{n-grams})
+			\item Une couche de prédiction utilisant un réseau de neurones complètement connecté pour prédire le caractère correspondant à la fenêtre d'observation du spectrogramme du signal audio. La fonction d'erreur prend en compte la similarité du caractère produit avec le véritable caractère ainsi que la vraisemblance de la séquence produite par rapport à un modèle de langue basé sur les N-grammes (voir \ref{LM_n-grams})
 		\end{itemize}
 		\begin{figure}[H] 
 			\centering
@@ -441,31 +441,4 @@ Dans la figure \ref{nlg_schema} un exemple de génération de texte en utilisant
 \paragraph{}
 Dans ce chapitre, et en nous inspirant des travaux existants, nous avons pu modéliser et conceptualiser tout les aspects du système que nous jugeons assez conforme au standard. Viennent s'ajouter les améliorations proposées pour enrichir le système de base retrouvé dans la littérature ainsi que pour faciliter l'extensibilité des fonctionnalités de bases avec un moindre effort d'intégration. Ceci est le résultat d'une conception modulaire et facilement maintenable. 
 \par Dans le chapitre suivant nous allons passer à l'implémentation des différents modules, au développement d'une application dédiée et à une partie expérimentation pour tester les approches proposées. Nous discuterons leurs améliorations et les comparer avec des standards existants.
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%        Generated with the experimental alpha version of the TeX exporter of WebVOWL (version 1.1.3) %%% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%   The content can be used as import in other TeX documents. 
-%   Parent document has to use the following packages   
-%   \usepackage{tikz}  
-%   \usepackage{helvet}  
-%   \usetikzlibrary{decorations.markings,decorations.shapes,decorations,arrows,automata,backgrounds,petri,shapes.geometric}  
-%   \usepackage{xcolor}  
-
-%%%%%%%%%%%%%%% Example Parent Document %%%%%%%%%%%%%%%%%%%%%%%
-%\documentclass{article} 
-%\usepackage{tikz} 
-%\usepackage{helvet} 
-%\usetikzlibrary{decorations.markings,decorations.shapes,decorations,arrows,automata,backgrounds,petri,shapes.geometric} 
-%\usepackage{xcolor} 
-
-%\begin{document} 
-%\section{Example} 
-%  This is an example. 
-%  \begin{figure} 
-%    \input{<THIS_FILE_NAME>} % << tex file name for the graph 
-%    \caption{A generated graph with TKIZ using alpha version of the TeX exporter of WebVOWL (version 1.1.3) } 
-%  \end{figure} 
-%\end{document} 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

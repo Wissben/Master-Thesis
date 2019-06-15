@@ -1,5 +1,5 @@
 % !TeX program = lualatex
-\documentclass[12pt]{memoir}
+\documentclass[12pt]{report}
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
 \usepackage{fontspec}
@@ -38,16 +38,12 @@
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 
-\usepackage{fancyhdr}
-\pagestyle{fancy}   
-\fancyhead{}
-\fancyhead[C]{\leftmark}
-
-
 \usepackage{tikz}  
 \usepackage{helvet}
 \usepackage[bottom]{footmisc}
-  
+
+\usepackage{natbib}
+ 
 \usetikzlibrary{decorations.markings,decorations.shapes,decorations,arrows,automata,backgrounds,petri,shapes.geometric}  
 \usepackage{svg}
 \usepackage{listings}
@@ -191,22 +187,20 @@
 	{]}{{{\color{delim}{]}}}}{1},
 }
 \begin{document}
-\date{2018}
 
-\tableofcontents
-\textcolor{red}{To correct} \\
-\textcolor{blue}{To explain more deeply}
+%\tableofcontents
 \bibliographystyle{plain}
-
+%\bibliographystyle{apalike}
 
 %\input{other/intro}
 
 %\input{chapters/chap2.tex}
-\newpage
+%\newpage
 %\input{chapters/chap2.tex}
 %\newpage
 %\input{chapters/chap3.tex}
 \input{chapters/chap4.tex}
+%\input{other/conclusion.tex}
 \listoffigures
 
 \bibliography{ref}
