@@ -161,7 +161,7 @@ Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de rése
 		\item $W_f$ est la matrice de poids entre les entrées et le vecteur d'oubli de la cellule LSTM.
 		\item $b_f$ est un vecteur de biais.		
 	\end{itemize}
-	\item \textbf{État interne de la cellule (Internal cell's state ): } $C_t$ est une sorte de convoyeur qui fait circuler l'information à travers la cellule. Cet état est mis à jour à travers la combinaison des deux valeurs précédemment filtrées par les portes $f_t$ et $i_t$ \citep{lstm_original_paper}.
+	\item \textbf{État interne de la cellule (Internal cell's state ): } C'est une sorte de convoyeur qui fait circuler l'information à travers la cellule. Cet état est mis à jour à travers la combinaison des vecteurs $C_{t - 1}$ et $\tilde{C}_t$ filtrés par les portes $f_t$ et $i_t$ \citep{lstm_original_paper}.
 	
 	\begin{equation}
 	\begin{gathered}
@@ -172,7 +172,7 @@ Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de rése
 	\begin{itemize}
 		\item $C_{t-1}$ est le vecteur d'état interne de la cellule LSTM à l'instant $t-1$.
 	\end{itemize}
-	\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état interne caché du réseau, la cellule filtre son vecteur d'état et le combine avec la donnée en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \citep{rnns_online,lstm_original_paper,rnn_lstms}.
+	\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état caché du réseau, la cellule filtre son vecteur d'état interne $C_t$ et le combine avec la donnée en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \citep{rnns_online,lstm_original_paper,rnn_lstms}.
 	
 	\begin{equation}
 	\begin{gathered}
@@ -191,7 +191,7 @@ Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de rése
 
 \subsection{Modèles de Markov cachés (Hidden Markov Models HMM)}
 \paragraph{}
-Informellement, un modèle de Markov caché (HMM) est un outil de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est supposé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de son état à l'instant $t-1$. Il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \citep{hmm_intro,markov_process}. D'une façon plus intuitive, un HMM  est utilisé pour modéliser un processus dont les observations sont régies par un autre processus caché qui ne peut être observé.
+Informellement, un modèle de Markov caché (HMM) est un outil de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est supposé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de son état à l'instant $t-1$. Il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \citep{hmm_intro,markov_process}. D'une façon plus intuitive, un HMM  est utilisé pour modéliser un processus dont les observations sont régies par un autre processus qui ne peut pas être directement observé.
 \par De façon plus formelle, un HMM est un 5-tuple $<S,V,\Pi,A,B>$ \citep{hmm_formal} où :
 \begin{itemize}
 	\item $S = \lbrace s_1,...,s_N \rbrace$ est l'ensemble fini des $N$ états du processus sous-jacent.
@@ -422,7 +422,7 @@ Il existe six tâches trouvées fréquemment dans les systèmes de génération 
 Cette partie consiste à sélectionner les informations de l'entrée dont le système veut transmettre leur contenu sous forme de texte naturel à l'utilisateur. En effet, les données en entrée peuvent contenir plus d'informations que ce que l'on désire communiquer \citep{Yu:2007}. De plus, le choix de l'information peut aussi dépendre de l'utilisateur et de ses connaissances \citep{Dethlefs2014}. Ceci requiert de mettre au point un système qui détecte les informations pertinentes à l'utilisateur.
 \subsection{Structuration de texte}
 \paragraph{}
-Après la détermination du contenu, le système doit ordonner les informations à transmettre. Ceci dépend grandement du domaine d'application qui peut exiger des contraintes d'ordre temporel ou de préférence par importance des idées. Les informations à transmettre en elles-mêmes sont souvent reliées par sens, ce qui implique une certaine structuration de texte à respecter.\newpage
+Après la détermination du contenu, le système doit ordonner les informations à transmettre. Ceci dépend grandement du domaine d'application qui peut exiger des contraintes d'ordre temporel ou de préférence par importance des idées. Les informations à transmettre en elles-mêmes sont souvent reliées par sens, ce qui implique une certaine structuration de texte à respecter.
 \subsection{Agrégation de phrases}
 \paragraph{}
 Certaines informations peuvent être transmises dans une même phrase. Cette partie introduit des notions de la linguistique afin que le texte généré soit plus lisible et éviter les répétitions. Un exemple de cela peut être la description de la météo à Alger au cours de la matinée:
@@ -481,23 +481,23 @@ Comme les modèles de phrases, les systèmes basés grammaire nécessitent un é
 
 \paragraph{Approches statistiques:} Il existe plusieurs méthodes basées sur des statistiques pour la tâche de réalisation. Certains se basent sur des grammaires probabilistes, qui ont l'avantage de minimiser le travail manuel tout en couvrant plus de cas de réalisation. Il existe principalement deux approches l'utilisant \citep{Gatt2018}:
 \begin{itemize}
-	\item La première se base sur une petite grammaire qui génère plusieurs alternatives qui sont ensuite ordonnées selon un modèle statistique basé sur un corpus pour sélectionner la phrase la plus probable par exemple \citep{LangkildeGeary2000}.
+	\item La première se base sur une petite grammaire qui génère plusieurs alternatives qui sont ensuite ordonnées selon un modèle statistique basé sur un corpus pour sélectionner la phrase la plus probable comme par exemple \citep{LangkildeGeary2000}.
 	\item La deuxième méthode utilise les informations statistiques directement au niveau de la génération pour produire la solution optimale \citep{Belz2008}.
 \end{itemize}
 Dans les deux méthodes sus-citées la grammaire de base peut être manuellement développée. Dans ce cas, les informations statistiques aideront à la détermination de la solution optimale. Elle peut être aussi extraite à partir des données, comme l'utilisation des Treebanks \footnote{un Treebank est un texte analysé qui contient des informations syntaxiques ou sémantiques sur les structures de phrases} pour déduire les règles de grammaire \citep{Espinosa2008}.
 \paragraph{}
 D'autres approches statistiques n'utilisent pas des grammaires mais se basent sur des classificateurs. Ces derniers peuvent être cascadés de telle sorte à décider quel constituant utiliser dans quelle position ainsi que les modifications nécessaires pour générer un texte correct. À noter qu'une telle approche, ne nécessitant pas l'utilisation de grammaire, utilise des entrées plus abstraites et moins détaillées linguistiquement. À voire même la possibilité qu'elle s'étend aux autres tâches de NLG, c'est-à-dire un système qui accomplit plusieurs tâches de NLG en parallèle jusqu'à la réalisation linguistique en utilisant les entrées initiales. Par exemple, les systèmes encodeur-décodeur sont des systèmes de bout-en-bout qui peuvent, directement à partir des entrées, générer du texte sans passer explicitement par les étapes citées précédemment. Dans la suite de ce travail, nous allons présenter ces systèmes basés encodeur-décodeur qui sont récemment plus utilisés.
 
-\subsection{Systèmes basés encodeur-décodeur}
+\section{Systèmes basés encodeur-décodeur}
 \paragraph{}
-Une architecture souvent utilisée dans le traitement du langage naturel est l'encodeur-décodeur. En particulier, son utilisation dans les tâches seq2seq permet de mettre en correspondance une séquence de taille variable en entrée avec une autre séquence en sortie. Les modèles seq2seq peuvent être adaptés pour convertir une représentation abstraite de l'information en langage naturel \cite {Ferreira2017}.\newline
+Une architecture souvent utilisée dans le traitement du langage naturel est l'encodeur-décodeur. En particulier, son utilisation dans les tâches seq2seq permet de mettre en correspondance une séquence de taille variable en entrée avec une autre séquence en sortie. Les modèles seq2seq peuvent être adaptés pour convertir une représentation abstraite de l'information en langage naturel \citep {Ferreira2017}.\newline
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.95\linewidth]{images/NLG/Encoder.png} 
 	\caption{Schéma d'une architecture encodeur-décodeur pour NLG} 
 \end{figure}
 \paragraph{}
-Beaucoup d'approches de génération de langage naturel en gestion de dialogue utilisent des encodeurs-décodeurs. \citep{Wen2015} utilisent par exemple des LSTMs sémantiquement conditionnés; ils ajoutent aux LSTMs classiques une couche contenant des informations sur l'action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D'autres travaux utilisent des réseaux de neurones récurrents pour encoder l'état du gestionnaire de dialogue et l'entrée reçue, suivie par un décodeur pour générer le texte de la réponse \citep{Sordoni2015,Serban2016,Goyal2016}.
+Beaucoup d'approches de génération de langage naturel en gestion de dialogue utilisent des encodeurs-décodeurs. \cite{Wen2015} utilisent par exemple des LSTMs sémantiquement conditionnés; ils ajoutent aux LSTMs classiques une couche contenant des informations sur l'action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D'autres travaux utilisent des réseaux de neurones récurrents pour encoder l'état du gestionnaire de dialogue et l'entrée reçue, suivie par un décodeur pour générer le texte de la réponse \citep{Sordoni2015,Serban2016,Goyal2016}.
 \section{Conclusion}
 \paragraph{}
 Au terme de ce chapitre et après avoir étudié l'état de l'art sur les systèmes existants, nous avons pu construire un bagage théorique assez complet dans le domaine des SPAs. En assimilant les différentes approches, il est maintenant temps de passer à la conception de notre propre système. Le chapitre suivant introduira nos propositions pour le développement de notre propre SPA qui sera destiné à la manipulation d'un ordinateur.
