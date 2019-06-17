@@ -397,7 +397,7 @@ L'apprentissage par renforcement est une approche qui a pour but d'estimer une p
 \end{figure}
 Il existe plusieurs méthodes que l'agent peut utiliser pour estimer la fonction de récompense \citep{Dimitri2012}, notamment Deep Q Learning (DQN) \citep{Mnih2015} qui utilise les réseaux de neurones profonds pour trouver une approximation à cette fonction. Dans cette approche, à chaque fois que l'agent prend une action, il compare la récompense reçue avec celle estimée par le réseau de neurones, et applique ensuite l'algorithme de rétro-propagation pour corriger les erreurs du réseau. 
 
-\paragraph{}
+\paragraph{}\label{usersim}
 Le système de dialogue est modélisé par un MDP. Seulement, ce dernier inclut l'utilisateur comme partie de l'environnement. Par conséquent, pour appliquer l'apprentissage par renforcement, il est nécessaire qu'un utilisateur communique avec le système pour qu'il apprenne. D'où la nécessité d'utiliser un \textbf{simulateur d'utilisateur} qui est un programme capable de se comporter comme un humain interagissant avec un système de dialogue. Le simulateur doit pouvoir estimer la satisfaction de l'utilisateur après une interaction. En d'autres termes, il doit comporter une fonction de récompense. Il existe plusieurs méthodes pour créer un simulateur d'utilisateur:
 \begin{itemize}
 	\item Les simulateurs d'utilisateur basés règles: dans ce cas une liste de règles est écrite manuellement et le simulateur doit les suivre pour communiquer avec le système \citep{Schatzmann2007}.
