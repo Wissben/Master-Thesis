@@ -7,6 +7,9 @@ Chapitre 1:
 		  à s'exprimer en disposant d'un tel outil, je n'ai pas trouvé de référence pour cela malheuresmenet,
 		  c'était juste une idée de ma part.
 	P-4:	- "les tout premiers" me semble être correcte, pourquoi mettre les 'tous' ?
+		  j'ai cherché un peu sur le net j'ai trouvé une discussion sur le sujet :
+		  https://www.etudes-litteraires.com/forum/topic481-les-tout-premiers.html
+
 	P-5:	- Remplacer 'voir 2.3.2' par une référence bibliographique d'un Agent (programme) ? 
 	P-5:	- Ajouter un espace après les ... ? 'example1,example2 ... , suite_du_paragraphe'
 	P-7:	- Devrions-nous ajouter un point '.' après "etc" lorsque la phrase parenthèsée n'est pas la dernière
