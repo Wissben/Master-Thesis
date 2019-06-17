@@ -397,7 +397,7 @@ L'apprentissage par renforcement est une approche qui a pour but d'estimer une p
 \end{figure}
 Il existe plusieurs méthodes que l'agent peut utiliser pour estimer la fonction de récompense \citep{Dimitri2012}, notamment Deep Q Learning (DQN) \citep{Mnih2015} qui utilise les réseaux de neurones profonds pour trouver une approximation à cette fonction. Dans cette approche, à chaque fois que l'agent prend une action, il compare la récompense reçue avec celle estimée par le réseau de neurones, et applique ensuite l'algorithme de rétro-propagation pour corriger les erreurs du réseau. 
 
-\paragraph{}
+\paragraph{}\label{usersim}
 Le système de dialogue est modélisé par un MDP. Seulement, ce dernier inclut l'utilisateur comme partie de l'environnement. Par conséquent, pour appliquer l'apprentissage par renforcement, il est nécessaire qu'un utilisateur communique avec le système pour qu'il apprenne. D'où la nécessité d'utiliser un \textbf{simulateur d'utilisateur} qui est un programme capable de se comporter comme un humain interagissant avec un système de dialogue. Le simulateur doit pouvoir estimer la satisfaction de l'utilisateur après une interaction. En d'autres termes, il doit comporter une fonction de récompense. Il existe plusieurs méthodes pour créer un simulateur d'utilisateur:
 \begin{itemize}
 	\item Les simulateurs d'utilisateur basés règles: dans ce cas une liste de règles est écrite manuellement et le simulateur doit les suivre pour communiquer avec le système \citep{Schatzmann2007}.
@@ -422,7 +422,7 @@ Il existe six tâches trouvées fréquemment dans les systèmes de génération 
 Cette partie consiste à sélectionner les informations de l'entrée dont le système veut transmettre leur contenu sous forme de texte naturel à l'utilisateur. En effet, les données en entrée peuvent contenir plus d'informations que ce que l'on désire communiquer \citep{Yu:2007}. De plus, le choix de l'information peut aussi dépendre de l'utilisateur et de ses connaissances \citep{Dethlefs2014}. Ceci requiert de mettre au point un système qui détecte les informations pertinentes à l'utilisateur.
 \subsection{Structuration de texte}
 \paragraph{}
-Après la détermination du contenu, le système doit ordonner les informations à transmettre. Ceci dépend grandement du domaine d'application qui peut exiger des contraintes d'ordre temporel ou de préférence par importance des idées. Les informations à transmettre en elles-mêmes sont souvent reliées par sens, ce qui implique une certaine structuration de texte à respecter.\newpage
+Après la détermination du contenu, le système doit ordonner les informations à transmettre. Ceci dépend grandement du domaine d'application qui peut exiger des contraintes d'ordre temporel ou de préférence par importance des idées. Les informations à transmettre en elles-mêmes sont souvent reliées par sens, ce qui implique une certaine structuration de texte à respecter.
 \subsection{Agrégation de phrases}
 \paragraph{}
 Certaines informations peuvent être transmises dans une même phrase. Cette partie introduit des notions de la linguistique afin que le texte généré soit plus lisible et éviter les répétitions. Un exemple de cela peut être la description de la météo à Alger au cours de la matinée:
@@ -481,23 +481,23 @@ Comme les modèles de phrases, les systèmes basés grammaire nécessitent un é
 
 \paragraph{Approches statistiques:} Il existe plusieurs méthodes basées sur des statistiques pour la tâche de réalisation. Certains se basent sur des grammaires probabilistes, qui ont l'avantage de minimiser le travail manuel tout en couvrant plus de cas de réalisation. Il existe principalement deux approches l'utilisant \citep{Gatt2018}:
 \begin{itemize}
-	\item La première se base sur une petite grammaire qui génère plusieurs alternatives qui sont ensuite ordonnées selon un modèle statistique basé sur un corpus pour sélectionner la phrase la plus probable par exemple \citep{LangkildeGeary2000}.
+	\item La première se base sur une petite grammaire qui génère plusieurs alternatives qui sont ensuite ordonnées selon un modèle statistique basé sur un corpus pour sélectionner la phrase la plus probable comme par exemple \citep{LangkildeGeary2000}.
 	\item La deuxième méthode utilise les informations statistiques directement au niveau de la génération pour produire la solution optimale \citep{Belz2008}.
 \end{itemize}
 Dans les deux méthodes sus-citées la grammaire de base peut être manuellement développée. Dans ce cas, les informations statistiques aideront à la détermination de la solution optimale. Elle peut être aussi extraite à partir des données, comme l'utilisation des Treebanks \footnote{un Treebank est un texte analysé qui contient des informations syntaxiques ou sémantiques sur les structures de phrases} pour déduire les règles de grammaire \citep{Espinosa2008}.
 \paragraph{}
 D'autres approches statistiques n'utilisent pas des grammaires mais se basent sur des classificateurs. Ces derniers peuvent être cascadés de telle sorte à décider quel constituant utiliser dans quelle position ainsi que les modifications nécessaires pour générer un texte correct. À noter qu'une telle approche, ne nécessitant pas l'utilisation de grammaire, utilise des entrées plus abstraites et moins détaillées linguistiquement. À voire même la possibilité qu'elle s'étend aux autres tâches de NLG, c'est-à-dire un système qui accomplit plusieurs tâches de NLG en parallèle jusqu'à la réalisation linguistique en utilisant les entrées initiales. Par exemple, les systèmes encodeur-décodeur sont des systèmes de bout-en-bout qui peuvent, directement à partir des entrées, générer du texte sans passer explicitement par les étapes citées précédemment. Dans la suite de ce travail, nous allons présenter ces systèmes basés encodeur-décodeur qui sont récemment plus utilisés.
 
-\subsection{Systèmes basés encodeur-décodeur}
+\section{Systèmes basés encodeur-décodeur}
 \paragraph{}
-Une architecture souvent utilisée dans le traitement du langage naturel est l'encodeur-décodeur. En particulier, son utilisation dans les tâches seq2seq permet de mettre en correspondance une séquence de taille variable en entrée avec une autre séquence en sortie. Les modèles seq2seq peuvent être adaptés pour convertir une représentation abstraite de l'information en langage naturel \cite {Ferreira2017}.\newline
+Une architecture souvent utilisée dans le traitement du langage naturel est l'encodeur-décodeur. En particulier, son utilisation dans les tâches seq2seq permet de mettre en correspondance une séquence de taille variable en entrée avec une autre séquence en sortie. Les modèles seq2seq peuvent être adaptés pour convertir une représentation abstraite de l'information en langage naturel \citep {Ferreira2017}.\newline
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.95\linewidth]{images/NLG/Encoder.png} 
 	\caption{Schéma d'une architecture encodeur-décodeur pour NLG} 
 \end{figure}
 \paragraph{}
-Beaucoup d'approches de génération de langage naturel en gestion de dialogue utilisent des encodeurs-décodeurs. \citep{Wen2015} utilisent par exemple des LSTMs sémantiquement conditionnés; ils ajoutent aux LSTMs classiques une couche contenant des informations sur l'action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D'autres travaux utilisent des réseaux de neurones récurrents pour encoder l'état du gestionnaire de dialogue et l'entrée reçue, suivie par un décodeur pour générer le texte de la réponse \citep{Sordoni2015,Serban2016,Goyal2016}.
+Beaucoup d'approches de génération de langage naturel en gestion de dialogue utilisent des encodeurs-décodeurs. \cite{Wen2015} utilisent par exemple des LSTMs sémantiquement conditionnés; ils ajoutent aux LSTMs classiques une couche contenant des informations sur l'action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D'autres travaux utilisent des réseaux de neurones récurrents pour encoder l'état du gestionnaire de dialogue et l'entrée reçue, suivie par un décodeur pour générer le texte de la réponse \citep{Sordoni2015,Serban2016,Goyal2016}.
 \section{Conclusion}
 \paragraph{}
 Au terme de ce chapitre et après avoir étudié l'état de l'art sur les systèmes existants, nous avons pu construire un bagage théorique assez complet dans le domaine des SPAs. En assimilant les différentes approches, il est maintenant temps de passer à la conception de notre propre système. Le chapitre suivant introduira nos propositions pour le développement de notre propre SPA qui sera destiné à la manipulation d'un ordinateur.
