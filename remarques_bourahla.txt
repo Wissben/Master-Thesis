@@ -12,3 +12,8 @@ Nombre moyen de noeuds page 46:
 Les taux dans le tableau page 49:
     C'est les taux obtenus en calculant la moyenne des taux de réussite pour chaque nombre de vecteur. Par exemple, pour 4 vecteurs 
     la moyenne = (0.27 + 0.55 + 0.61 + 0.72)/4 = 0.5375. J'ai essayé de le clarifier un peu.
+
+et en analysant page 51:
+    ce que je voulais dire c'est qu'en analysant les forces et faiblesses de chaque méthode qu'on donne les explication$
+
+

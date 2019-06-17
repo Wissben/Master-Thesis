@@ -3,7 +3,7 @@ Les pages mentionnées ici sont celles des versions papier corrigées. à savoir
 Chapitre 1:
 	P-2 :	- La remarque sur la marge droite n'est lisible 'manque qq chose ...'
 	P-2 :	- Le lien entre le développement et les langue est que l'utilisation d'un outil 
-		  standard (une langue parlée de tous) aide à faciliter la communication, on arrive plus rapidement 
+		  standardisé (une langue parlée de tous) aide à faciliter la communication, on arrive plus rapidement 
 		  à s'exprimer en disposant d'un tel outil, je n'ai pas trouvé de référence pour cela malheuresmenet,
 		  c'était juste une idée de ma part.
 	P-4:	- "les tout premiers" me semble être correcte, pourquoi mettre les 'tous' ?
