@@ -1,0 +1,14 @@
+chapitre 2:
+    partic page 24:
+    Je l'ai trouvée écrite comme cela "partic" dans le document référencé dans la page 2. Je ne sais pas si je l'ai bien lu, veuillez le trouver en PJ.
+
+    page 25: la référence est Langkilde-Geary, I. (2000). Forest-based statistical sentence generation. In ANLP .
+
+
+chapitre 4:
+Nombre moyen de noeuds page 46:
+    Ce que je veux dire dans le tableau, c'est que les noeuds créés pendant le dialogue auront des identifiants dans l'intervalle [62-256]. 
+
+Les taux dans le tableau page 49:
+    C'est les taux obtenus en calculant la moyenne des taux de réussite pour chaque nombre de vecteur. Par exemple, pour 4 vecteurs 
+    la moyenne = (0.27 + 0.55 + 0.61 + 0.72)/4 = 0.5375. J'ai essayé de le clarifier un peu.
