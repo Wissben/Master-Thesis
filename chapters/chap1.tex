@@ -6,33 +6,31 @@
 
 \chapter{Assistants virtuels intelligents}
 
-\section{Intteroduction}
+\section{Introduction}
 \paragraph{}
 Depuis la commercialisation du premier ordinateur grand public (Xerox PARC Alto) en 1973, le monde découvrit pour la première fois ce qui allait devenir l'apparence basique de chaque ordinateur moderne. En effet, la compagnie Xerox fut la première à proposer une interface graphique dotée de fenêtres, d'icônes et d'une souris pour se déplacer et d'un clavier pour écrire du texte. Bien que basique, cette idée lança alors plusieurs autres grandes marques sur le même chemin (IBM, Apple, Compaq ...). Par la suite, beaucoup ont essayé d'améliorer la façon dont l'homme utilisait sa machine : souris plus précise, écran doté d'une plus grande résolution, clavier plus enrichi, voire même l'introduction des écrans tactiles dans certains systèmes embarqués.
-\par Cependant, certains voyaient encore cette façon d'utiliser la machine comme trop primitive, et peu intuitive. En effet laissez un enfant devant un ordinateur et il prendrait un bon moment pour apprendre à éditer ne serait ce qu'un simple fichier. Pour citer Donald A. Norman :
+\par Cependant, certains voyaient encore cette façon d'utiliser la machine comme trop primitive, et peu intuitive. En effet, laissez un enfant devant un ordinateur et il prendrait un bon moment pour apprendre à éditer ne serait ce qu'un simple fichier. Pour citer Donald A. Norman \citep{don_norman} :
 \begin{quote}
-	\say{We must design for the way people behave, not for how we would wish them to behave.}\cite{don-norman}
+	\say{We must design for the way people behave, not for how we would wish them to behave.}
 \end{quote}
 que nous pouvons traduire par :
 \begin{quote}
 	\say{Nous devons concevoir selon le comportement des utilisateurs, et non pas selon la façon dont nous voudrions qu'ils se comportent.}
 \end{quote} 
-L'humanité a fait beaucoup de chemin depuis les années 70, l'utilisation d'un ordinateur de nos jours avec les moyens classiques (souris, clavier, écran ...) est devenue une tâche triviale, voire même une seconde nature, 
-%cela reste cependant dû au fait que de plus en plus de jeunes enfants sont exposés depuis leur plus jeune âge au monde technologique qui les entoure, le processus d'apprentissage reste cependant présent, 
-cependant l'effort d'utiliser les outils communs reste lui très présent.
+L'humanité a fait beaucoup de chemin depuis les années 70, l'utilisation d'un ordinateur de nos jours avec les moyens classiques (souris, clavier, écran ...) est devenue une tâche triviale, voire même une seconde nature. Cependant, l'effort d'utiliser les outils communs reste lui très présent.
 \par La plus naturelle et plus ancienne façon de communiquer pour l'homme a toujours été la parole. Le développement de langues toutes aussi riches et complexes les unes que les autres a permis à l'humanité de briser plusieurs \textcolor{blue}{barrières sociales}. L'avancement le plus naturel pour cette façon de communiquer serait donc de l'étendre aux machines que l'homme a su construire et améliorer au fil des années.
 \par 
 Motivé par cette manière que l'on a de communiquer entre nous, et épaulé par les récentes technologies telles que l'apprentissage automatique, le traitement automatique du langage naturel et l'intelligence artificielle, les plus brillants des chercheurs ont entamé leurs travaux dans cette toute nouvelle direction.
 \par 
-Les Assistants Virtuels Intelligents (Smart Personal Assistant, SPA \cite{SPA-overview}) sont donc le produit de plusieurs années de recherche, visant tout d'abord à faciliter certaines tâches pour l'utilisateur. Les premiers SPAs étaient conçus comme des agents de conversation ou Chatbots, limités dans leurs actions et dépendant toujours d'un moyen de communication textuel, ce n'était pas la forme désirée du SPA. Avec l'avancement des recherches sur la reconnaissance automatique de la parole (Automatic Speech Recognition, ASR) et l'émergence de l'apprentissage automatique, les tout premiers assistants virtuels utilisant l'ASR étaient spécialisés dans certains domaines comme des systèmes médicaux d'aide à la décision. Il a ensuite été plus aisé de briser la barrière et de réaliser ce qui était encore une esquisse d'un SPA personnalisé. Aujourd'hui, et ce depuis l'avènement de l'apprentissage profond et la popularisation des Smartphones, de nouveaux SPAs comme Apple Siri (voir \ref{siri}) et Google assistant (voir \ref{googleass}) et Amazon Alexa (voir \ref{alexa}) ont fait leurs apparitions, offrant de plus en plus de services personnalisés et spécifiques à chaque utilisateurs.
+Les Assistants Virtuels Intelligents (Smart Personal Assistant, SPA) sont donc le produit de plusieurs années de recherche, visant tout d'abord à faciliter certaines tâches pour l'utilisateur. Les premiers SPAs étaient conçus comme des agents de conversation ou Chatbots, limités dans leurs actions et dépendant toujours d'un moyen de communication textuel. Ce n'était pas la forme désirée du SPA \citep{rview}. Avec l'avancement des recherches sur la reconnaissance automatique de la parole (Automatic Speech Recognition, ASR) et l'émergence de l'apprentissage automatique, les tout premiers assistants virtuels utilisant l'ASR étaient spécialisés dans certains domaines comme les systèmes médicaux d'aide à la décision. Il a ensuite été plus aisé de briser la barrière et de réaliser ce qui était encore une esquisse d'un SPA personnalisé. Aujourd'hui, et ce depuis l'avènement de l'apprentissage profond et la popularisation des Smartphones, de nouveaux SPAs comme Apple Siri (voir \ref{siri}), Google Assistant (voir \ref{googleass}) et Amazon Alexa (voir \ref{alexa}) ont fait leur apparition, offrant de plus en plus de services personnalisés et spécifiques à chaque utilisateurs.
 \par 
 
 Dans la suite de ce chapitre nous essayerons de mieux détailler ce qu'est un SPA, ce qui est demandé d'un tel système, ses domaines d'application, en enchaînant par une description d'une pseudo-architecture potentielle de ce système, pour enfin  conclure sur les limitations actuelles et les motivations de ce projet. 
 
 \newpage
-\section{\textcolor{red}{L'importance du contexte pour un SPA}}\label{spa-def}
-Informellement, un SPA est un type d'agent (voir \ref{agent}) logiciel qui peut effectuer certaines tâches et proposer des services dédiés aux utilisateurs qui vont d'une simple tâche (Ouvrir une fenêtre, lancer une application ...) à la réalisation de requêtes un peu plus complexes comme réserver une table dans un restaurant en passant un appel vocal (voir \ref{duplex}). Pour répondre efficacement à toutes sortes de requêtes, un SPA se doit donc de garder trace du contexte courant de sa conversation avec l'utilisateur. Il doit disposer d'un système capable d'enregistrer les informations pertinentes et de savoir les réutiliser, mais aussi de pouvoir déduire lesquelles de ces informations sont manquantes. On parle ici de Context-Awarness ou Sensibilité au contexte, comme vu dans \cite{SPA-overview}.
-\par D'après \cite{SPA-overview} et \cite{Dey-Abwod},
+\section{L'importance du contexte pour un Assistant Virtuel Intelligent  (SPA)}\label{spa-def}
+Informellement, un SPA est un type d'agent logiciel qui peut effectuer certaines tâches et proposer des services dédiés aux utilisateurs qui vont d'une simple tâche comme ouvrir une fenêtre, lancer une application ..., à la réalisation de requêtes un peu plus complexes comme réserver une table dans un restaurant en passant un appel vocal. Pour répondre efficacement à toutes sortes de requêtes, un SPA se doit donc de garder trace du contexte courant de sa conversation avec l'utilisateur. Il doit disposer d'un système capable d'enregistrer les informations pertinentes et de savoir les réutiliser, mais aussi de pouvoir déduire lesquelles de ces informations sont manquantes. On parle ici de Context-Awarness ou Sensibilité au contexte, comme vu dans \citep{SPA-overview}.
+\par D'après \citep{SPA-overview} et \citep{dey-abwod},
 \textit{Day} et \textit{Abwod} définissent un contexte comme suit : 
 \begin{quote}\label{context-def}
 	\say{A context is any information
@@ -42,68 +40,68 @@ Informellement, un SPA est un type d'agent (voir \ref{agent}) logiciel qui peut 
 \end{quote}
 qui peut être traduit par :
 \begin{quote}\label{context-def-fr}
-	\say{Un contexte est une information qui peut être utilisé pour caractériser l'état d'une entité. Une entité peut être une personne une place ou un objet, considérée comme pertinente à  l'interraction entre l'utilisateur et l'application, ainsi qu'à ces deux derniers eux mêmes}
+	\say{Un contexte est une information qui peut être utilisée pour caractériser l'état d'une entité. Une entité peut être une personne, une place ou un objet, considéré comme pertinent à  l'interraction entre l'utilisateur et l'application, ainsi qu'à ces deux derniers eux mêmes}
 \end{quote}
-Il en découle que pour parvenir à développer un système qui puisse répondre aux besoins individuels et spécifiques de chaque personne, modéliser et prendre en compte le contexte semble être une solution prometteuse.
+Il en découle que pour parvenir à développer un système qui réponde aux besoins individuels et spécifiques de chaque personne, modéliser et prendre en compte le contexte semble être une solution prometteuse.
 
 
 
 \section{Caractéristiques principales d'un SPA}
 \paragraph{}
-À partir de \cite{SPA-overview}, nous pouvons dégager certaines caractéristiques principales qui peuvent être vues comme primordiales pour qualifier un assistant virtuel comme étant intelligent.
-\subsection{Sensible au contexte}
+À partir de \citep{SPA-overview}, nous pouvons dégager certaines caractéristiques principales qui peuvent être vues comme primordiales pour qualifier un assistant virtuel d'intelligent.
+\subsection{Sensibilité au contexte}
 \paragraph{}
-Comme précédemment vu dans la définition du contexte (section \ref{context-def}), ce dernier peut être interprété comme tout aspect d'une entité (position d'un objet, couleur d'un objet, température d'une chambre, etc.). Un assistant dit intelligent doit donc être capable de capturer le concept du contexte, d'utiliser et de traiter toute information catégorisée comme contextuelle.
+Comme vu précédemment dans la section \ref{context-def}, le contexte peut être interprété comme tout aspect d'une entité (position d'un objet, couleur d'un objet, température d'une chambre, etc.). Un assistant dit intelligent doit donc être capable de capturer le concept du contexte, d'utiliser et de traiter toute information catégorisée comme contextuelle.
 Pour être plus précis, un SPA doit être sensible à l'évolution du contexte courant, par le biais de capteurs optiques, de microphones, ou tout ce qui pourrait amener l'utilisateur à faire évoluer la requête qu'il a émise. L'assistant devra donc proposer un système de mise à jour du contexte pour éliminer les informations inutiles et garder celles qui pourraient aider à répondre à la requête de l'utilisateur.
-\subsection{Évolutif}
+\subsection{Évolutivité}
 \paragraph{}
-Comme vu dans la section \ref{spa-def}, un SPA peut être vu comme un type d'agent. Pour rappel, d'après \textit{Russel} et \textit{Norvig} dans \cite{RussellAgent}, un agent\label{agent} est une entité autonome pouvant interagir avec son environnement afin d'accomplir certaines tâches et peut être de plusieurs types : 
+Comme vu dans la section \ref{spa-def}, un SPA peut être vu comme un type d'agent. Pour rappel, d'après \textit{Russel} et \textit{Norvig} dans \citep{RussellAgent}, un agent\label{agent} est une entité autonome pouvant interagir avec son environnement afin d'accomplir certaines tâches et peut être de plusieurs types : 
 \begin{itemize}
-	\item Agent à réflexes simples : agent exécutant ses actions à base de règles conditionnelles simples (c.à.d Si \textit{Condition } alors \textit{exécuter actions}), ils sont ainsi très simplistes et limités dans la portée de leurs actions.
+	\item Agent à réflexes simples : agent exécutant ses actions à base de règles conditionnelles simples, c.à.d Si \textit{Condition } alors \textit{exécuter actions}. Ils sont ainsi très simplistes et limités dans la portée de leurs actions.
 	
-	\item Agent basé modèle : semblable aux agents à réflexes simples, il est doté d'un modèle interne complexe censé représenter le monde extérieur auquel l'agent a accès. Cependant, il applique les actions de la même manière que le précédent type d'agents.
+	\item Agent basé modèle : il est semblable semblable aux agents à réflexes simples. Il est doté d'un modèle interne complexe censé représenter le monde extérieur auquel il a accès. Les actions sont appliquées de la même manière que le précédent type d'agents.
 	
-	\item Agent à but : ce type représente une amélioration des agents simples puisqu'il est doté d'un ensembles d'états buts à atteindre d'une façon ou d'une autre.
+	\item Agent à but(s) : ce type représente une amélioration des agents simples puisqu'il est doté d'un ensembles d'états buts à atteindre d'une façon ou d'une autre.
 	
-	\item Agent à utilité : il s'agit ici agents à buts qui tentent d'aboutir à leurs buts d'une manières optimisée (intelligente) utilisant une fonction de mesure adéquate pour le choix des différents états à atteindre.
+	\item Agent à utilité : il s'agit ici d'agents à buts qui tentent d'aboutir à leurs buts d'une manière optimisée (intelligente) utilisant une fonction de mesure adéquate pour le choix des différents états à atteindre.
 	
 	\item Agent apprenant : agent à utilité enrichi par un module d'apprentissage qui sert de juge pour répondre aux "critiques" des actions qu'il entreprend. Le terme agent évolutif est aussi employé.
 \end{itemize}
-\par Pour ce qui est des SPAs, les plus récents systèmes (ex : Amazon Alexa qui améliore son  module de reconnaissance de la parole après chaque réponse non \textcolor{blue}{réfutée} par l'utilisateur) peuvent être considérés comme des agents apprenants, répondant de ce fait à la contrainte évolutive imposée. Cependant, le domaine de l'auto-évolution des systèmes intelligents est encore un domaine nouveau qui se voit \textcolor{blue}{aidé} par les récentes avancées dans l'apprentissage automatique \cite{SPA-overview}.
+\par Pour ce qui est des SPAs, les systèmes plus récents peuvent être considérés comme des agents apprenants, répondant de ce fait à la contrainte évolutive imposée. On peut donner comme exemple Amazon Alexa qui améliore son  module de reconnaissance de la parole après chaque réponse non réfutée par l'utilisateur. Cependant, le domaine de l'auto-évolution des systèmes intelligents est encore un domaine nouveau qui est aidé par les récentes avancées dans l'apprentissage automatique \citep{SPA-overview}.
 
 
-\subsection{Multimodal}
+\subsection{Multimodalité}
 \paragraph{}
-Afin d'assurer une aisance d'utilisation, les SPAs sont fréquemment amenés à récupérer les requêtes (ou données) en entrée de la manière la plus naturelle possible (par exemple par le biais de la parole). Cependant, pour garantir une expérience d'utilisation adéquate, l'assistant sera souvent confronté à récupérer ces requêtes de différentes manières, que ce soit à travers une interface graphique (écran tactile) ou à travers un texte brut tapé au clavier, voire même à travers des expressions faciales ou des états cognitives/émotionnels \cite{Dingler2016}, pour ensuite produire une réponse qui elle aussi pourrait éventuellement être de la forme textuelle, sonore ou les deux. Cette capacité à recevoir en entrée et/ou produire une sortie de plusieurs façons différentes est appelée la multi-modalité \cite{Luger2016}. Cette caractéristique permet de masquer à l'utilisateur toute la complexité d'acquisition de ses requêtes.
+Afin d'assurer une aisance d'utilisation, les SPAs sont fréquemment amenés à récupérer les requêtes ou données en entrée de la manière la plus naturelle possible, par exemple par le biais de la parole. Cependant, pour garantir une expérience d'utilisation adéquate, l'assistant sera souvent confronté à récupérer ces requêtes de différentes manières, que ce soit à travers une interface graphique, écran tactile ou à travers un texte brut tapé au clavier, voire même à travers des expressions faciales ou des états cognitives/émotionnels \citep{Dingler2016}, pour ensuite produire une réponse qui elle aussi pourrait éventuellement être de la forme textuelle, sonore ou les deux. Cette capacité à recevoir en entrée et/ou produire une sortie de plusieurs façons différentes est appelée la multimodalité \citep{Luger2016}. Cette caractéristique permet de masquer à l'utilisateur toute la complexité d'acquisition de ses requêtes.
 
-\subsection{Anthropomorphe}\label{antropo}
+\subsection{Anthropomorphisme}\label{antropo}
 \paragraph{}
-Plusieurs auteurs tendent à attribuer une grande importance à l'anthropomorphisme des SPAs \cite{virtualbutler}, qui est 
+Plusieurs auteurs tendent à attribuer une grande importance à l'anthropomorphisme des SPAs \citep{virtualbutler}, qui est :
 \begin{quote}
-	\say{Un mécanisme qui pousse les êtres humains à induire qu'une entité non-humanoïde possède des caractéristiques et comportements propres à l'homme}\cite{alexabff}
+	\say{Un mécanisme qui pousse les êtres humains à induire qu'une entité non-humanoïde possède des caractéristiques et comportements propres à l'homme}\citep{alexabff}
 \end{quote}
 
 \par Ce comportement humanoïde pousserait donc l'utilisateur à se sentir plus à l'aise avec l'assistant, le conduisant ainsi à adopter une façon de communiquer plus humaine et moins structurée qu'avec les autres machines. Ceci est une caractéristique majeure d'un SPA se disant personnalisé.
-\subsection{Multi-plateforme et Flexible }
+\subsection{Flexibilté et Environnement Multi-Plateforme}
 \paragraph{}
-Malgré leurs récentes prouesses, certains SPAs sont encore restreints à un écosystème fortement dépendant du fabricant.  Cowan et al. mentionnent dans \cite{Cowan2017} que Apple Siri est limité à l'environnement constitué des produits de la firme à la pomme, n'ouvrant par défaut que les applications de cette dernière quand une requête lui est transmise. C'est un comportement que les assistants devraient éviter, car une indépendance des plateformes utilisées est, certes, très complexe à instaurer, mais offre plus de possibilités aux utilisateurs et aux développeurs pouvant ainsi exploiter la puissance de certaines plateformes (Smartphones, TV connectées, etc).
+Malgré leurs récentes prouesses, certains SPAs sont encore restreints à un écosystème fortement dépendant du fabricant.  Cowan et al. mentionnent dans \citep{Cowan2017} que Apple Siri est limité à l'environnement constitué des produits de la firme à la pomme, n'ouvrant par défaut que les applications de cette dernière quand une requête lui est transmise. C'est un comportement que les assistants devraient éviter, car une indépendance des plateformes utilisées est, certes, très complexe à instaurer, mais offre plus de possibilités aux utilisateurs et aux développeurs pouvant ainsi exploiter la puissance de certaines plateformes (Smartphones, TV connectées, etc.).
 Avec l'émergence de l'IoT (Internet of Things) et des maisons intelligentes  par exemple, c'est un tout nouveau terrain de jeu qui est présenté aux SPAs, offrant plus d'opportunités pour les utilisateurs.
 \section{Domaines d'applications des SPAs}
 \paragraph{}
-Après avoir vu les différents aspects que les SPAS doivent traiter, nous nous intéresserons maintenant aux types de services et applications que ces derniers pourraient fournir pour démontrer qu'ils peuvent bel et bien faciliter certaines tâches à l'homme.
+Après avoir vu les différents aspects que les SPAS doivent traiter, nous nous intéresserons maintenant aux types de services et applications fournis pour démontrer qu'ils peuvent bel et bien faciliter certaines tâches à l'homme.
 
 \subsection{Vie quotidienne}
 \paragraph{}
-À la base, les SPAs étaient destinés à un usage très personnel comme la gestion des achats dans les supermarchés, ou des guides touristiques de plusieurs destinations de voyage. Cette spécificité a commencé à s'estomper petit à petit avec l'émergence de nouveaux systèmes dédiés à des applications plus générales, comme les maisons intelligentes ou les assistants de planification de tâches. Ceci a permit de mettre encore plus l'accent sur cet aspect de convivialité que les tout premiers SPAs ont tenté de perfectionner. Ainsi, ces assistants spécialisés dans des domaines restreints (Tourisme, shopping, détente, etc) ont été regroupés dans un seul système plus polyvalent, capable de répondre à des besoins quotidiens divers et variés, allant même à fournir une assistance aux personnes âgées pour leur faciliter les tâches rudimentaires devenues trop fatigantes. 
+À la base, les SPAs étaient destinés à un usage très personnel comme la gestion des achats dans les supermarchés, ou des guides touristiques de plusieurs destinations de voyage. Cette spécificité a commencé à s'estomper petit à petit avec l'émergence de nouveaux systèmes dédiés à des applications plus générales, comme les maisons intelligentes ou les assistants de planification de tâches. Ceci a permis de mettre encore plus l'accent sur cet aspect de convivialité que les tout premiers SPAs ont tenté de perfectionner. Ainsi, ces assistants spécialisés dans des domaines restreints, tourisme, shopping, détente ..., ont été regroupés dans un seul système plus polyvalent, capable de répondre à des besoins quotidiens divers et variés, allant même à fournir une assistance aux personnes âgées pour leur faciliter les tâches rudimentaires devenues trop fatigantes. 
 \subsection{Assistance professionnelle}
 \paragraph{}
-Les SPAs ont aussi une place dans le monde professionnel. Dans \cite{Imtiaz2014} il est cité que dans les situations où la marge d'erreur est très petite (par exemple dans les système de manufacturing \footnote{Manufacturing ici dans le sens chaîne de montage industrielle, par exemple dans des usines.}) l'assistance d'un SPA est nécessaire, servant d'un aide à l'humain pour la prise de décision.
+Les SPAs ont aussi une place dans le monde professionnel. Dans \citep{Imtiaz2014}, il est cité que dans les situations où la marge d'erreur est très petite, par exemple dans les système de manufacturing \footnote{Manufacturing ici dans le sens chaîne de montage industrielle, par exemple dans des usines.}, l'assistance d'un SPA est nécessaire, servant d'une aide à l'humain pour la prise de décision.
 \par
-Par exemple, dans un environnement de travail hétérogène (Nouveaux/anciens employés, Hiérarchies des postes ...) les SPAs pourraient décharger les employés les plus expérimentés de la tâche d'assister les nouveaux arrivants, pour ainsi aider ces derniers dans leurs tâches et permettre aux autres de se focaliser sur les leurs.
+Par exemple, dans un environnement de travail hétérogène , nouveaux/anciens employés, hiérarchies des postes..., les SPAs pourraient décharger les employés les plus expérimentés de la tâche d'assister les nouveaux arrivants, pour ainsi aider ces derniers dans leurs tâches et permettre aux autres de se focaliser sur les leurs.
 
-\subsection{E-Apprentissage}
+\subsection{Apprentissage Assisté par Ordinateur}
 \paragraph{}
-Les SPAs peuvent aussi être utiles dans l'enseignement, aussi  bien dans un milieu académique que professionnel. D'une part ils pourraient occuper plusieurs rôles dans les établissements scolaires (correcteur automatique de copies, enseignant interactif ... ) \cite{ENGAGINGTA} et, d'autre part, accompagner les employés durant leurs formations professionnelles.
+Les SPAs peuvent aussi être utiles dans l'enseignement académique que professionnel. D'une part, ils pourraient occuper plusieurs rôles dans les établissements scolaires pour les corrections automatiques de copies, l'enseignement interactif ... \citep{ENGAGINGTA} et, d'autre part, accompagner les employés durant leur formation professionnelle.
 \par
 Ainsi, en considérant les caractéristiques d'un SPA, la sensibilité au contexte est reliée aux expériences antérieures de l'apprenant, permettant au SPA d'adapter son processus d'enseignement en conséquence.
 \par 
@@ -113,14 +111,14 @@ En ce qui concerne l'aspect évolutif du SPA, il lui permet de préférer une ap
 \paragraph{}
 Pour illustrer la puissance des SPAs les plus récents, nous présentons dans cette section les quatre produits qui dominent le marché courant :
 
-\subsection{Google assistant}\label{googleass}
+\subsection{Google Assistant}\label{googleass}
 \paragraph{}
 %\begin{figure}[H]
 %	\centering
 %	\includegraphics[width=.2\linewidth]{images/google_assitant/logo.png}
 %	\caption{Logo de Google assistant} 
 %\end{figure}
-Lancé en 2016 sous forme d'un chatbot intégré dans l'application Google Allo,  Google Assistant s'est vu ensuite être directement intégré sur les système d'exploitation Android (que ce soit sur smartphones ou tablettes, et plus récemment sur Google Home\footnote{Appareil servant à contrôler les composants d'une smart-house ainsi que l'utilisation des différents services de Google}). Google Assistant est un assistant à tout faire qui a été développé par les ingénieurs de Google dans le but de faciliter la recherche sur internet, la planification des tâches, l'ajustement des réglages de l'appareil, etc. Son point fort est sa capacité à engager une conversation bi-directionnelle avec l'utilisateur, assurant ainsi une interaction personnalisée variant d'un utilisateur à un autre. Cette capacité lui permet par exemple de proposer certains résultats de recherche selon les précédentes interactions avec l'utilisateur ou de lui proposer une activité si ce dernier lui mentionne qu'il s'ennuie (voir figure \ref{fig:boredpic}).
+Lancé en 2016 sous forme d'un chatbot intégré dans l'application Google Allo,  Google Assistant s'est vu intégré directement sur les système d'exploitation Android, que ce soit sur smartphones ou tablettes, et plus récemment sur Google Home\footnote{Appareil servant à contrôler les composants d'une smart-house ainsi que l'utilisation des différents services de Google}. Google Assistant est un assistant à tout faire, Il a été développé par les ingénieurs de Google dans le but de faciliter la recherche sur internet, la planification des tâches, l'ajustement des réglages de l'appareil, etc. Son point fort est sa capacité à engager une conversation bi-directionnelle avec l'utilisateur, assurant ainsi une interaction personnalisée variant d'un utilisateur à un autre. Cette capacité lui permet par exemple de proposer certains résultats de recherche selon les précédentes interactions avec l'utilisateur ou de lui proposer une activité si ce dernier lui mentionne qu'il s'ennuie (voir figure \ref{fig:boredpic}).
 
 
 
@@ -142,9 +140,9 @@ Lancé en 2016 sous forme d'un chatbot intégré dans l'application Google Allo,
 \end{figure}
 
 
-\subsubsection{Google duplex}\label{duplex}
+\subsubsection*{Google Duplex}\label{duplex}
 
-\par Une des nouveautés impressionnante de Google Assistant est la fonctionnalité Google Duplex. Toujours en phase de développement, ce module est capable de passer des appels a de vraies personnes et d'avoir une conversation avec elles afin de réaliser une tâche demandée par l'utilisateur comme par exemple réserver une chambre d'hôtel, une table au restaurant, etc. 
+\par Une des nouveautés impressionnante de Google Assistant est la fonctionnalité \textbf{Google Duplex}. Toujours en phase de développement, ce module est capable de passer des appels a de vraies personnes et d'avoir une conversation avec elles afin de réaliser une tâche demandée par l'utilisateur comme par exemple réserver une chambre d'hôtel, une table au restaurant, etc. 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\linewidth]{images/google_assitant/duplex.png} 
@@ -159,27 +157,27 @@ Lancé en 2016 sous forme d'un chatbot intégré dans l'application Google Allo,
 %	\caption{Logo d'Apple Siri} 
 %\end{figure}
 \paragraph{}
-Siri est l'assistant virtuel développé par Apple. Contrairement aux SPAs durant sa sortie, Siri proposait une nouvelle façon de communiquer avec l'utilisateur, à travers une interface de requêtes vocales, et une façon de \textcolor{blue}{converser} très humanoïde (satisfaisant ainsi le critère d'anthropomorphisme \ref{antropo}).
-Siri est capable de répondre à des questions précises (voir figure \ref{fig:macbooksiri}), de proposer des recommandations, déléguer la requête à des services web ou d'autres applications (voir figures \ref{fig:whatsapp} et \ref{fig:cashconfirm}). Il a l'avantage (et l'inconvénient) d'être uniquement disponible que sur les appareils qui composent l'écosystème d'Apple (MacBook, iPhone, iWatch, etc).
+Siri est le SPA développé par Apple. Contrairement à ceux qui existaient avant sa sortie, Siri proposait une nouvelle façon de communiquer avec l'utilisateur, à travers une interface de requêtes vocales, et une façon d'entretenir une conversation très humanoïde, satisfaisant ainsi le critère d'anthropomorphisme vu dans la section \ref{antropo}.
+Siri est capable de proposer des recommandations, déléguer la requête à des services web ou d'autres applications (voir figures \ref{fig:whatsapp} et \ref{fig:cashconfirm}, de répondre à des questions précises (voir figure \ref{fig:macbooksiri}). Il a l'avantage d'être uniquement disponible que sur les appareils qui composent l'écosystème d'Apple (MacBook, iPhone, iWatch, etc). Ceci assure une prise en charge et un support total de la part d'Apple. Cependant, pour utiliser l'ensemble de ses fonctionnalités, Apple restreint la liste des appareils compatibles à ceux que la compagnie fabrique uniquement. Il est ainsi quasi mono-plateforme et difficile à utiliser sur des alternatives aux produit de la firme.
 
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=.25\linewidth]{images/apple_siri/whatsapp.jpg} 
-	\caption{Intégration aux applications \cite{siriDemo}}
+	\caption{Intégration aux applications \citep{siriDemo}}
 	\label{fig:whatsapp}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/apple_siri/cashconfirm.jpg} 
-	\caption{Service paiement 1 \cite{siriDemo}}
+	\caption{Service paiement 1 \citep{siriDemo}}
 	\label{fig:cashconfirm}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.75\linewidth]{images/apple_siri/macbook.png} 
-	\caption{Siri sur un laptop  \cite{macossiridemo}}
+	\caption{Siri sur un laptop  \citep{macossiridemo}}
 	\label{fig:macbooksiri}
 	
 \end{figure}
@@ -191,7 +189,7 @@ Siri est capable de répondre à des questions précises (voir figure \ref{fig:m
 %	\includegraphics[width=.5\linewidth]{images/amazon_alexa/logo.png}
 %	\caption{Logo d'Amazon Alexa} 
 %\end{figure}
-\paragraph{}Amazon Alexa est un assistant exclusivement intégré au dispositif Amazon Echo (un haut-parleur portatif). À l'instar de Siri, il est aussi capable de communiquer avec l'utilisateur par le biais de la parole, pouvant ainsi exécuter diverse commandes comme jouer de la musique, réciter des livres audios, annoncer des news en temps réel (Résultats sportifs, tendances politiques, etc). Son atout majeur est sa capacité à s'intégrer à plusieurs appareils-connectés (Contrôleur de thermostat ou de lumières ambiantes dans une Smart-House) ainsi que la possibilité d'ajout des Skills (ou compétences) de la part des développeurs tiers pour enrichir la panoplie de services que peut offrir Alexa.
+\paragraph{}Amazon Alexa est un assistant exclusivement intégré au dispositif Amazon Echo, un haut-parleur portatif. À l'instar de Siri, il est capable de communiquer avec l'utilisateur par le biais de la parole, pouvant ainsi exécuter diverses commandes, comme jouer de la musique, réciter des livres audios, annoncer des news en temps réel (résultats sportifs, tendances politiques, etc.). Son atout majeur est sa capacité à s'intégrer à plusieurs appareils-connectés (contrôleur de thermostat ou de lumières ambiantes dans une Smart-House) ainsi que la possibilité d'ajout des Skills (ou compétences) de la part des développeurs tiers pour enrichir la panoplie de services que peut offrir Alexa.
 %\begin{figure}[H]
 %	\centering
 %	\includegraphics[width=.75\linewidth]{images/amazon_alexa/alexa.png}
@@ -206,7 +204,7 @@ Siri est capable de répondre à des questions précises (voir figure \ref{fig:m
 %	\caption{Logo de Microsoft Cortana} 
 %\end{figure}
 \paragraph{}
-Cortana est la tentative de la part de Microsoft d'intégrer un assistant dans son système d'exploitation Windows 10 et WindowsPhone. Il propose divers services de base tel que planifier des tâches, exécuter des commandes via la parole, et analyser des résultats de recherche sur le moteur de recherche de Microsoft, Bing, pour répondre à des questions.
+Cortana est la tentative de la part de Microsoft d'intégrer un assistant dans son système d'exploitation Windows 10 et WindowsPhone. Il propose divers services de base tel que planifier des tâches, exécuter des commandes via la parole, et  pour répondre à des questions, analyser des résultats de recherche sur le moteur de recherche de Microsoft, Bing.
 %\begin{figure}[H]
 %	\centering
 %	\includegraphics[width=.3\linewidth]{images/cortana/weather.png}
@@ -219,7 +217,7 @@ Cortana est la tentative de la part de Microsoft d'intégrer un assistant dans s
 %\begin{figure}[H]
 %	\centering
 %	\includegraphics[width=\linewidth]{images/SPA_architecture.png}
-%	\caption{Architecture haut niveau de Google Assistant \cite{GAlayout}}
+%	\caption{Architecture haut niveau de Google Assistant \citep{GAlayout}}
 %\end{figure}
 %On peut ainsi dégager le schéma simplifié abstrait suivant : 
 %\begin{figure}[H]
@@ -236,10 +234,10 @@ Cortana est la tentative de la part de Microsoft d'intégrer un assistant dans s
 %
 \section{Conclusion}
 \paragraph{}
-À travers les sections précédentes, nous avons essayé de présenter les différents aspects d'un assistant virtuel intelligent (caractéristiques, exemples, architectures possibles, etc). Nous avons donc pu apprécier la potentielle puissance d'un tel système s'il venait à être perfectionner d'avantage.
+À travers les sections précédentes, nous avons présenté un certain nombre d'aspects d'un assistant virtuel intelligent. Nous avons donc pu apprécier la potentielle puissance d'un tel système s'il venait à être perfectionné d'avantage.
 \par En effet, en examinant les domaines d'applications, il est facile de déduire que le recours à un SPA peut grandement faciliter certaines tâches, que ce soit celles qui sont les plus triviales pouvant retarder d'autres tâches plus importantes, ou bien celles qui doivent faire appel à la précision et à la grande capacité de calcul des machines, assurant ainsi des résultats précis et rapidement délivrés.
 \par
 À la fin de ce chapitre nous pouvons donc mettre en valeur la place primordiale que pourraient avoir les SPAs s'ils arrivaient à maturité, c.à.d briser la barrière qui sépare les humains de la machine, parvenant ainsi à faire partie de la vie quotidienne des utilisateurs. 
-\par Dans le prochain chapitre nous allons principalement aborder les aspects techniques des différents composants du SPA que nous désirons réaliser.
+\par Dans le prochain chapitre nous allons principalement aborder les aspects techniques des différents composants du SPA que nous allons réaliser.
 
  
