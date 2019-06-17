@@ -4,7 +4,7 @@
 \paragraph{}Nous commençons par décrire l'environnement de travail. Nous détaillerons par la suite les aspects de l'implémentation des différents modules de notre application qui seront évalués et analysés. Pour clôturer avec une application d'un assistant personnel pour la manipulation de fichiers. 
 
 \section{Environnement de développement}
-Dans cette section nous allons présenter les différents outils (logiciels et matériels) qui ont été utilisé pour l'implémentation de BETHANO.
+Dans cette section nous allons présenter les différents outils (logiciels et matériels) qui ont été utilisé pour l'implémentation de Speech2Act.
 	\subsection{Machines utilisées}
 	\paragraph{}
 	Principalement, le développement se divise en deux parties : 
@@ -33,11 +33,11 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 		\subsubsection*{Python}
 		\label{python}
 		\paragraph{}
-		 C'est un langage de programmation interprété de haut niveau, structuré et open source. Il est multi-paradigme (orienté objet, programmation fonctionnelle et impérative) et multi-usage. Il est, comme la plupart des applications et outils open source, maintenu par une équipe de développeurs un peu partout dans le monde. Il offre une grande panoplie d'extensions (packages) pour résoudre une variété de problèmes, qu'ils soient reliés au développement d'applications de bureau, web ou mobiles \cite{python}.
+		 Python\footnote{\url{https://fr.wikibooks.org/wiki/Programmation_Python/Introduction}} est un langage de programmation interprété de haut niveau, structuré et open source. Il est multi-paradigme (orienté objet, programmation fonctionnelle et impérative) et multi-usage. Il est, comme la plupart des applications et outils open source, maintenu par une équipe de développeurs un peu partout dans le monde. Il offre une grande panoplie d'extensions (packages) pour résoudre une variété de problèmes, qu'ils soient liés au développement d'applications de bureau, web ou mobiles.
 		
 		\subsubsection*{Javascript} 
 		\paragraph{}
-		JavaScript est un langage de programmation utilisé principalement par les navigateurs web pour exécuter un bout de code incorporé dans une page web, plus communément appelé script. Il permet la manipulation de tous les éléments inclus dans une page, et par conséquent permet une gestion dynamique de ces derniers. Il est beaucoup utilisé du coté client mais peut aussi être exécuté du coté serveur. Tout comme Python, il offre une grande variété dans le choix des modules qui peuvent ajouter de nouvelles fonctionnalités, le tout géré par un gestionnaire de module \textit{npm} \footnote{Node Package Manager ou Gestionnaire de packages Node} devenu un standard \cite{js}.
+		JavaScript\footnote{\url{https://fr.wikibooks.org/wiki/Programmation_JavaScript/Introduction}} est un langage de programmation utilisé principalement par les navigateurs web pour exécuter un bout de code incorporé dans une page web, plus communément appelé script. Il permet la manipulation de tous les éléments inclus dans une page, et par conséquent permet une gestion dynamique de ces derniers. Il est beaucoup utilisé du coté client mais peut aussi être exécuté du coté serveur. Tout comme Python, il offre une grande variété dans le choix des modules qui peuvent ajouter de nouvelles fonctionnalités, le tout géré par un gestionnaire de module \textit{npm} \footnote{Node Package Manager ou Gestionnaire de packages Node} devenu un standard.
 	
 	\subsection{Librairies et bibliothèques}
 	\begin{figure}[H] 
@@ -48,71 +48,70 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 	\end{figure}
 		\subsubsection*{DeepSpeech API}
 		\paragraph{}
-		Package python qui fait office d'interface entre un script Python et la librairie de reconnaissance automatique de la parole DeepSpeech \cite{deepspeech_paper}. Il permet entre autres de charger différents modèles acoustiques ou modèles de langues. Il offre aussi la possibilité d'utiliser des scripts d'apprentissage prédéfinis pour peu que les données soient organisées suivant une certaine norme; ces scripts sont notamment hautement paramétrables \cite{deepseech_github}.
-		
+		Package python qui fait office d'interface entre un script Python et la librairie de reconnaissance automatique de la parole DeepSpeech \citep{deepspeech_paper}. Il permet entre autres de charger différents modèles acoustiques ou modèles de langues. Il offre aussi la possibilité d'utiliser des scripts d'apprentissage prédéfinis pour peu que les données soient organisées suivant une certaine norme; ces scripts sont notamment hautement paramétrables.
 		\subsubsection*{PyAudio}
 		\paragraph{}
-		Librairie python destinée à la manipulation des fichiers ou flux audios. Elle offre entre autres la possibilité d'extraire des méta-données sur un flux audio (fréquence d'échantillonnage, débit ...). La possibilité d'extraire le vecteur de caractéristiques d'un extrait audio est aussi présente comme fonctionnalité \cite{pyaudio}.
+		PyAudio\footnote{\url{https://pypi.org/project/PyAudio/}} est un librairie python destinée à la manipulation des fichiers ou flux audios. Elle offre entre autres la possibilité d'extraire des méta-données sur un flux audio (fréquence d'échantillonnage, débit, etc.). La possibilité d'extraire le vecteur de caractéristiques d'un extrait audio est aussi présente comme fonctionnalité.
 		
 		\subsubsection*{Beautiful Soup}
 		\paragraph{}
-		Bibliothèque Open source permettant l'analyse de fichiers html pour en extraire ou y injecter des données. Principalement utilisée pour filtrer les balises html depuis une page web \cite{bs4}.
+		Beautiful Soup\footnote{\url{https://pypi.org/project/beautifulsoup4/}} est une bibliothèque Open source permettant l'analyse de fichiers html pour en extraire ou y injecter des données. Principalement utilisée pour filtrer les balises html depuis une page web.
 		
 		\subsubsection*{PySpark}
 		\paragraph{}
-		Package Python utilisé comme interface pour intéragir avec un serveur Spark. Il permet entre autres de lire et écrire des données dans le nouveau format Hadoop \cite{pyspark}.
+		PySpark\footnote{\url{https://spark.apache.org/}} est un package Python utilisé comme interface pour intéragir avec un serveur Spark. Il permet entre autres de lire et écrire des données dans le nouveau format Hadoop.
 		
 		\subsubsection*{Scikit-Learn}
 		\paragraph{}
-		Bibliothèque Open source conçue pour rapidement développer des modèles pour l'apprentissage automatique, principalement utilisée pour ses nombreux outils de pré-traitement des données (codification, normalisation, filtrage ...) \cite{sklearn}.
+		Scikit-Learn\footnote{\url{https://scikit-learn.org/stable/}} est une bibliothèque Open source conçue pour rapidement développer des modèles pour l'apprentissage automatique, principalement utilisée pour ses nombreux outils de pré-traitement des données (codification, normalisation, filtrage ...).
 		
 		\subsubsection*{Numpy}
 		\paragraph{}
-		Bibliothèque spécialisée dans la manipulation de grands volumes de données numériques, notamment les vecteurs (tableaux) multi-dimensionnels. Les opérations sur ces derniers sont implémentées en C pour optimiser au maximum leur coût en temps de calcul ou ressources mémoires utilisées. Elle offre des structures de données compatibles avec beaucoup d'autre librairies comme Tensorflow ou Keras \cite{numpy}.
+		Numpy\footnote{\url{https://www.numpy.org/}} est une bibliothèque spécialisée dans la manipulation de grands volumes de données numériques, notamment les vecteurs (tableaux) multi-dimensionnels. Les opérations sur ces derniers sont implémentées en C pour optimiser au maximum leur coût en temps de calcul ou ressources mémoires utilisées. Elle offre des structures de données compatibles avec beaucoup d'autre librairies comme Tensorflow ou Keras.
 		
 		\subsubsection*{Tensorflow \& Keras}\label{tf&keras}
 		\paragraph{}
-		Tensorflow est une bibliothèque dédiée à l'apprentissage automatique, et plus particulièrement aux réseaux de neurones et l'apprentissage profond. Optimisée pour exécuter des opérations à grande échelle et massivement distribuées sur un réseau, Tensorflow offre la possibilité d'implémenter une grande variété d'architectures de modèles avec un maximum d'efficacité. Elle dispose d'un package Python permettant d'interagir avec le c\oe{}ur de la bibliothèque mais reste néanmoins assez bas-niveau. Keras quant-à elle propose de rajouter une couche d'abstraction à Tensorflow. C'est un package python destiné à faciliter le développement de modèles pour l'apprentissage profond tout en offrant la possibilité de rajouter et modifier un grand nombre de fonctionnalités par défaut. Sa force réside dans le fait qu'il peut utiliser au plus bas niveau plusieurs librairies autres que Tensorflow comme Theano et CNLTK \cite{tf,keras,theano,cnltk}.
+		Tensorflow\footnote{\url{https://www.tensorflow.org/}} est une bibliothèque dédiée à l'apprentissage automatique, et plus particulièrement aux réseaux de neurones et l'apprentissage profond. Optimisée pour exécuter des opérations à grande échelle et massivement distribuées sur un réseau, Tensorflow offre la possibilité d'implémenter une grande variété d'architectures de modèles avec un maximum d'efficacité. Elle dispose d'un package Python permettant d'interagir avec le c\oe{}ur de la bibliothèque mais reste néanmoins assez bas-niveau. Keras\footnote{\url{https://keras.io/}} quant-à elle propose de rajouter une couche d'abstraction à Tensorflow. C'est un package python destiné à faciliter le développement de modèles pour l'apprentissage profond tout en offrant la possibilité de rajouter et modifier un grand nombre de fonctionnalités par défaut. Sa force réside dans le fait qu'il peut utiliser au plus bas niveau plusieurs librairies autres que Tensorflow comme Theano\footnote{\url{http://deeplearning.net/software/theano/}} et CNTK\footnote{\url{https://github.com/microsoft/CNTK}}.
 		
 		\subsubsection*{Flask}
 		\paragraph{}
-		Micro-librairie Open source dédiée au développement d'applications basées web. De base, cette librairie est très légère, mais elle offre la possibilité d'ajouter des extensions qui s'intègrent très facilement au système de base \cite{flask}.
+		Falsk\footnote{\url{http://flask.pocoo.org/}} est une micro-librairie Open source dédiée au développement d'applications basées web. De base, cette librairie est très légère, mais elle offre la possibilité d'ajouter des extensions qui s'intègrent très facilement au système de base.
 		
 		\subsubsection*{Vuetify}
 		\paragraph{}
-		Librairie Open source basée sur VueJs dédié au développement d'interfaces web ou mobiles. Elle implémente le paradigme Material Design de Google et offre la possibilité d'étendre les composants de base et de créer des interfaces belles et adaptatives \cite{vuetify}.
+		Vuetify est une librairie Open source basée sur VueJs dédié au développement d'interfaces web ou mobiles. Elle implémente le paradigme Material Design de Google et offre la possibilité d'étendre les composants de base et de créer des interfaces belles et adaptatives.
 	\subsection{Outils et logiciels de développement}
 		\subsubsection*{PyCharm}
 		\paragraph{}
-		PyCharm est un environnement de développement intégré spécialisé et optimisé pour programmer dans le langage Python (voir \ref{python} ci dessus). Il permet l'analyse de code en continu et offre un débogueur intégré pour exécuter un code instruction par instruction. Il offre également l'intégration de logiciel de gestion de versions comme Git \cite{git}, et supporte le développement web avec Django et Flask \cite{pycharm}.
+		PyCharm est un environnement de développement intégré spécialisé et optimisé pour programmer dans le langage Python (voir \ref{python} ci dessus). Il permet l'analyse de code en continu et offre un débogueur intégré pour exécuter un code instruction par instruction. Il offre également l'intégration de logiciel de gestion de versions comme Git, et supporte le développement web avec Flask.
 		
 		\subsubsection*{Git}
 		\paragraph{}
-		Système décentralisé de gestion de versions. Il permet entre autres de gérer les différentes versions d'un projet durant son développement, mais aussi de garder l'historique des modifications effectuées ainsi que la possibilité de régler des conflits lors de l'intégration finale des contributions des développeurs \cite{Git}.
+		Système décentralisé de gestion de versions. Il permet entre autres de gérer les différentes versions d'un projet durant son développement, mais aussi de garder l'historique des modifications effectuées ainsi que la possibilité de régler des conflits lors de l'intégration finale des contributions des développeurs.
 		
 		\subsubsection*{Google Colaboratory}
 		\paragraph{}
-		Colaboratory est un outil de recherche et développement pour la formation et la recherche associées à l'apprentissage profond. C'est un environnement Python qui ne nécessite aucune configuration et offre la possibilité d'utiliser de puissantes machines rendues accessibles par Google pour accélérer la phase d'apprentissage \cite{colab}.
+		Colaboratory\footnote{\url{https://colab.research.google.com/}} est un outil de recherche et développement pour la formation et la recherche associées à l'apprentissage profond. C'est un environnement Python qui ne nécessite aucune configuration et offre la possibilité d'utiliser de puissantes machines rendues accessibles par Google pour accélérer la phase d'apprentissage.
 		
 		\subsubsection*{Protégé}
 		\paragraph{}
-		Protégé est un système dédié à la création et la modification d'ontologies. Il est développé en Java et est Open source distribué sous une licence libre (la Mozilla Public License). Il se démarque par le fait qu'il permet de travailler sur des ontologies de très grandes dimensions 
-		\cite{protege}.
+		Protégé est un système dédié à la création et la modification d'ontologies. Il est développé en Java et est Open source distribué sous une licence libre (la Mozilla Public License). Il se démarque par le fait qu'il permet de travailler sur des ontologies de très grandes dimensions.
 		
 		
 \section{Reconnaissance automatique de la parole}
 \paragraph{}
-Pour ce premier module, il a été très difficile d'effectuer les tests idéaux. En effet, nous n'avons pas pu trouver un ensemble de données qui proposait du contenu en rapport avec Bethano. Cependant puisque nous avons pu construire un mini-ensemble pour tester l'apport de notre modèle de langue. Les résultats ne doivent pas être pris comme une référence absolue, mais plutôt comme une indication pour de futurs possibles tests.
+Pour ce premier module, il a été très difficile d'effectuer les tests idéaux. En effet, nous n'avons pas pu trouver un ensemble de données qui proposait du contenu en rapport avec Speech2Act. Cependant puisque nous avons pu construire un mini-ensemble pour tester l'apport de notre modèle de langue. Les résultats ne doivent pas être pris comme une référence absolue, mais plutôt comme une indication pour de futurs possibles tests.
 	\subsection{Ensemble de test}
 	\paragraph{}
-	Pour tester le modèle acoustique, les données récoltées à travers le projet CommonVoice \ref{common_voice} constituent un assez bon échantillon, de par la nature des enregistrements (sur téléphone portable, par plusieurs genres et accents de locuteurs ...), mais aussi de par le volume (environs 500 heures d'enregistrements audios). Nous avons toutefois décidé de construire un mini-ensemble de test d'environs 204 enregistrements audio d'une longueur moyenne de 5 secondes chacun. Ces échantillons ont été prélevés sur trois locuteurs masculins. $20\%$ de ces échantillons ont été prélevés dans un environnement fermé mais bruité (il s'agit d'un espace de travail pour étudiants) et sur téléphone. Le reste a été prélevé dans un environnement fermé avec peu de bruit à partir du micro d'un ordinateur portable. Chaque enregistrement est soit : 
+	Pour tester le modèle acoustique, les données récoltées à travers le projet CommonVoice (voir la section \ref{common_voice}) constituent un assez bon échantillon, de par la nature des enregistrements (sur téléphone portable, par plusieurs genres et accents de locuteurs ...), mais aussi de par le volume (environs 500 heures d'enregistrements audios). Nous avons toutefois décidé de construire un mini-ensemble de test d'environs 204 enregistrements audio d'une longueur moyenne de 5 secondes chacun. Ces échantillons ont été prélevés sur trois locuteurs masculins. $20\%$ de ces échantillons ont été prélevés dans un environnement fermé mais bruité (il s'agit d'un espace de travail pour étudiants) et sur téléphone. Le reste a été prélevé dans un environnement fermé avec peu de bruit à partir du micro d'un ordinateur portable. Chaque enregistrement est soit : 
 	\begin{itemize}
 		\item une requête prélevée de l'ensemble de test du module de compréhension du langage naturel (voir les sections \ref{nlu_steps} et ~\ref{nlu_dataset}), ou
 		
 		\item une question prélevée de l'ensemble de données AskUbuntu\footnote{\url{https://github.com/taolei87/askubuntu}} qui regroupe des questions relatives à la manipulation d'un ordinateur sous le système d'exploitation GNU/Linux.
 	\end{itemize}
 	\par
-	Pour le modèle de langue il s'agit de celui mentionné dans la section \ref{LM_n-grams}. Quelques modifications ont été rajoutées comme le filtrage des mots qui n'appartiennent pas à la langue anglaise, mais au prix du sacrifice de quelques noms propres non reconnus ou bien de séquences de mots/lettres sans réel sens.
+	Pour le modèle de langue il s'agit de celui mentionné dans la section 
+	\ref{n-grams}. Quelques modifications ont été rajoutées comme le filtrage des mots qui n'appartiennent pas à la langue anglaise, mais au prix du sacrifice de quelques noms propres non reconnus ou bien de séquences de mots/lettres sans réel sens.
 	\subsection{Méthodologie d'évaluation}
 	\paragraph{}
 	Les tests ont été effectués dans un serveur Colab pour libérer les machines locales. Les principales étapes sont les suivantes :  
@@ -179,9 +178,9 @@ Pour ce premier module, il a été très difficile d'effectuer les tests idéaux
 Pour ce module, une approche assez classique a été utilisée et l'ensemble de test est extrait de l'ensemble d'apprentissage (plus de détails dans la section suivante ). Les métriques d'évaluation utilisées sont mentionnées dans la sous section \ref{nlu_steps}. Nous commençons d'abord par détailler le contenu de l'ensemble de tests. Puis nous présenterons la méthodologie suivie pour la réalisation de ces tests. Un tableau récapitulatif sera présenté avant la fin pour illustrer les différents résultats.
 	\subsection{Ensemble de test}
 	\paragraph{}
-	Comme mentionné dans le chapitre précédent (voir la section \ref{nlu_dataset}), nous avons nous mêmes construit un ensemble d'apprentissage relativement varié. Il regroupe essentiellement des commandes, ou requêtes liées à l'exploration de fichiers pour le moment car c'est la tâche rudimentaire que Bethano peut accomplir.
+	Comme mentionné dans le chapitre précédent (voir la section \ref{nlu_dataset}), nous avons nous mêmes construit un ensemble d'apprentissage relativement varié. Il regroupe essentiellement des commandes, ou requêtes liées à l'exploration de fichiers pour le moment car c'est la tâche rudimentaire que Speech2Act peut accomplir.
 	\par
-	L'ensemble de test est dérivé de celui d'apprentissage selon une politique de découpage basée sur le taux de présence d'un intent (intention). Comme illustré dans la figure \ref{fig:split}, un pourcentage de chaque groupe d'instances affilié à la même classe est utilisé à la fois pour la validation et pour le test. Ce choix est motivé par le fait que les proportions des distributions des intentions dans l'ensemble original sont non-équilibrées.
+	L'ensemble de test est dérivé de celui d'apprentissage selon une politique de découpage basée sur le taux de présence d'un intent (intention). Comme illustré dans la figure ~\ref{fig:split}, un pourcentage de chaque groupe d'instances affilié à la même classe est utilisé à la fois pour la validation et pour le test. Ce choix est motivé par le fait que les proportions des distributions des intentions dans l'ensemble original sont non-équilibrées.
 	
 	Une liste exhaustive des intentions et slots accompagnée d'une description est introduite dans le tableau \ref{tab:all_intents} ci dessous.
 %	TODO insert table of intents and their tags
@@ -190,7 +189,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 		\centering
 		\includegraphics[width=.75\linewidth]{images/implementation/split.png} 
 		\caption{Schéma de découpage des données pour l'apprentissage du modèle de compréhension du langage naturel} 
-		\label{split}
+		\label{fig:split}
 	\end{figure}
 
 	\begin{table}[H]
@@ -290,7 +289,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 		Pour éviter que le modèle ne sur-apprenne, nous avons volontairement interchangé quelques mots dans la séquence d'entrée et celle de sortie pour introduire un certain taux d'erreur et de variété. Cet échange se fait suivant une probabilité $q$ fixée à $20\%$. Bien entendu, les étiquettes morphosyntaxiques ne sont pas échangées, et ce pour garder la structure de la phrase correcte.
 	\end{itemize}
 	\par
-	Pour le reste des hyper-paramètres, la plupart ont été fixés par manque de temps et de ressources. Ainsi, le nombre d'epochs (itérations) a été limité au maximum à 15 avec une politique d'arrêt anticipé si la fonction erreur d'évaluation ne diminue pas plus d'un taux $\Delta E = 2*10^{-3}$ pendant au moins 3 itérations successives. Les métriques employées pour évaluer les deux classificateurs sont les suivantes : 
+	Pour le reste des hyper-paramètres, la plupart ont été fixés par manque de temps et de ressources. Ainsi, le nombre d'epochs (itérations) a été limité au maximum à 15 avec une politique d'arrêt anticipé si la fonction erreur d'évaluation ne diminue pas plus d'un taux $\Delta E = 2*10^{-3}$ pendant au moins 4 itérations successives. Les métriques employées pour évaluer les deux classificateurs sont les suivantes : 
 	\begin{itemize}
 		\item \textbf{Précision} : il s'agit d'une métrique classique qui évalue à quel point le modèle est bon pour prédire les classes.
 		\begin{equation*}
@@ -313,7 +312,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 	
 		\item \textbf{F-Mesure} : Mesure qui combine (d'une point de vu ensembliste) la précision et le rappel. Elle ne privilégie aucune des deux et essaye de donner un aperçu plus global de l'efficacité de l'algorithme en prenant compte des résultats de ces deux mesures.
 		\begin{equation*}
-		F-mesure = \frac{2*R*P}{R+P}
+		F-Mesure = \frac{2*R*P}{R+P}
 		\end{equation*}
 	\end{itemize}
 	\subsection{Résultats}
@@ -645,7 +644,7 @@ Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour facil
 \subsection{Encodeur de graphe}
 \paragraph{}Dans la première méthode, l'entraînement de l'encodeur se fait avec une architecture encodeur-décodeur en passant les triplets du graphe comme entrées et sorties de cette architecture.
 \subsubsection{Implémentation}
-\par Le réseau de neurones a été implémenté en utilisant la bibliothèque Keras de Python. Nous avons utilisé des cellules GRUs (Gated Reccurent Units \cite{Cho2014}) comme unités récurrentes pour l'encodeur et le décodeur vu leur efficacité comparable aux LSTMs tout en utilisant un seul vecteur d'état, ce qui les rend moins exigeants en mémoire. Comme notre tâche consiste à encoder un graphe dans un vecteur, la taille de ce dernier est très importante. Intuitivement, plus cette taille est grande plus le nombre de triplets qu'on peut y encoder est grand. D'où l'intérêt des cellules GRUs qui permettent d'utiliser de plus grands vecteurs d'état en moins d'espace mémoire que les LSTMs.
+\par Le réseau de neurones a été implémenté en utilisant la bibliothèque Keras de Python. Nous avons utilisé des cellules GRUs (Gated Reccurent Units \citep{Cho2014}) comme unités récurrentes pour l'encodeur et le décodeur vu leur efficacité comparable aux LSTMs tout en utilisant un seul vecteur d'état, ce qui les rend moins exigeants en mémoire. Comme notre tâche consiste à encoder un graphe dans un vecteur, la taille de ce dernier est très importante. Intuitivement, plus cette taille est grande plus le nombre de triplets qu'on peut y encoder est grand. D'où l'intérêt des cellules GRUs qui permettent d'utiliser de plus grands vecteurs d'état en moins d'espace mémoire que les LSTMs.
 \paragraph{}La génération aléatoire des graphes de taille $t$ triplets se fait en suivant les étapes suivantes:
 \begin{itemize}
 	\item choisir un nombre de n\oe{}uds $nn$ aléatoire entre $2$ et $t+1$.
@@ -721,10 +720,10 @@ Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour facil
 \end{table}
 Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 \begin{itemize}
-	\item Évidemment, avec moins de probabilités d'erreurs, le réseau arrive à mieux reconnaître les motifs dans le vecteur d'état et leurs relations avec les récompenses du simulateur. Cependant, l'augmentation de la taille du vecteur n'améliore que légèrement les résultats; en calculons la moyenne des taux de réussite pour chaque nombre de vecteurs, les résultats sont comme suit: \textbf{53.5\%} de taux de réussite pour quatre vecteurs, \textbf{53.75\%} pour cinq vecteurs et \textbf{57.5\%} pour six vecteurs.
-	\item Le meilleur résultat a été obtenu en utilisant quatre vecteurs et sans erreurs avec un taux de réussite de \textbf{72\%}. En pratique, ce modèle ne s'adapte pas aux erreurs des modules précédents. Par conséquent, il se perd lorsqu'une erreur se produit et il n'arrive pas à se resituer dans la conversation.
-	\item Avec des probabilités d'erreurs très élevées, le réseau n'arrive pas à apprendre et ne dépasse pas 28\% de taux de réussite.
-	\item Les résultats les plus prometteurs dans ce cas sont celles qui sont entraînées avec des probabilités d'erreurs proches de la réalité avec des taux de réussite acceptables. Dans ce cas, nous avons obtenu un taux de réussite de \textbf{69\%} avec des probabilités d'erreurs de \textbf{1\%} et \textbf{10\%} sur les intentions et les emplacements respectivement.
+	\item Évidemment, avec moins de probabilités d'erreurs, le réseau arrive à mieux reconnaître les motifs dans le vecteur d'état et leurs relations avec les récompenses du simulateur. Cependant, l'augmentation de la taille du vecteur n'améliore que légèrement les résultats; en calculons la moyenne des taux de réussite pour chaque nombre de vecteurs, les résultats sont comme suit: $53.5\%$ de taux de réussite pour quatre vecteurs, $53.75\%$ pour cinq vecteurs et $57.5\%$ pour six vecteurs.
+	\item Le meilleur résultat a été obtenu en utilisant quatre vecteurs et sans erreurs avec un taux de réussite de $72\%$. En pratique, ce modèle ne s'adapte pas aux erreurs des modules précédents. Par conséquent, il se perd lorsqu'une erreur se produit et il n'arrive pas à se resituer dans la conversation.
+	\item Avec des probabilités d'erreurs très élevées, le réseau n'arrive pas à apprendre et ne dépasse pas $28\%$ de taux de réussite.
+	\item Les résultats les plus prometteurs dans ce cas sont celles qui sont entraînées avec des probabilités d'erreurs proches de la réalité avec des taux de réussite acceptables. Dans ce cas, nous avons obtenu un taux de réussite de $69\%$ avec des probabilités d'erreurs de $1\%$ et $10\%$ sur les intentions et les emplacements respectivement.
 \end{itemize}
 
 \subsubsection{Apprentissage avec DQN connecté}
@@ -775,7 +774,7 @@ Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 \end{table}
 \begin{itemize}
 	\item Comme pour la méthode précédente, l'augmentation des probabilités d'erreurs diminue le taux de réussite en général.
-	\item Le meilleur taux de réussite est toujours obtenu en faisant un apprentissage sans erreurs ce qui a donné \textbf{93\%} de réussite.
+	\item Le meilleur taux de réussite est toujours obtenu en faisant un apprentissage sans erreurs ce qui a donné $93\%$ de réussite.
 	\item Pour des probabilités d'erreurs élevées, le taux de réussite diminue considérablement par rapport aux autres valeurs de probabilités.
 	\item Le réseau arrive à reconnaître les motifs encodés aussi bien pour de petites tailles du vecteur d'état que pour de grandes tailles. Cette méthode permet effectivement de réduire la taille du vecteur encodant le graphe d'état par rapport à son prédécesseur.	
 \end{itemize}
@@ -787,7 +786,7 @@ Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 \begin{itemize}
 	\item La difficulté de comprendre les motifs encodés séparément: En effet, la deuxième méthode permet au réseau de neurones d'apprendre à générer des motifs qui correspondent aux poids du réseau DQN.
 	\item Deux états de dialogue lointains peuvent être encodés dans des vecteurs très proches en utilisant un encodeur séparé. Par exemple, il se peut que deux graphes soient similaires sauf pour un n\oe{}ud d'action qui est dans un graphe de type \textbf{Create\_node} et dans l'autre graphe \textbf{Delete\_node}. Dans ce cas, si l'encodeur les encode dans des vecteurs proches, le DQN aura des difficultés à distinguer les deux états. Par contre, en connectant l'encodeur avec le DQN, il peut observer les récompenses pour avoir l'information que certains n\oe{}uds sont plus importants que d'autres, les n\oe{}uds d'action par exemple, et qu'ils peuvent changer complètement l'état du vecteur.
-	\item Les erreurs provenant de l'encodeur: Bien que la précision de l'encodeur obtenue était de \textbf{99\%}, en empilant 6 vecteurs encodés avec le même taux d'erreurs pour chacun et sachant que la probabilité d'erreur dans un vecteur est indépendante des autres, cette précision diminue à \textbf{96\%}.
+	\item Les erreurs provenant de l'encodeur: Bien que la précision de l'encodeur obtenue était de $99\%$, en empilant 6 vecteurs encodés avec le même taux d'erreurs pour chacun et sachant que la probabilité d'erreur dans un vecteur est indépendante des autres, cette précision diminue à $96\%$.
 \end{itemize}
 \subsubsection{Vitesse d'apprentissage}
 \paragraph{}Nous avons comparé les vitesses d'apprentissage des deux approches. En utilisant le réseau DQN séparé, ce dernier apprend avec une moyenne de \textbf{1013.15 instances/seconde}. De l'autre côté, le réseau connecté ne fait que \textbf{197.61 instances/seconde}. La raison derrière la lenteur de la deuxième approche revient à la nécéssité de refaire l'encodage de tout le graphe d'état de l'instance sauvegardée pendant les échanges avec le simulateur. Tandis que dans la deuxième approche, on ne sauvegarde que le vecteur déjà encodé.\\\\
@@ -802,23 +801,23 @@ Les temps des échanges avec le simulateur des deux approches sont proches puisq
 \paragraph{}Nous remarquons que la deuxième méthode arrive beaucoup plus rapidement à comprendre la fonction de récompense. Il s'avère donc que déconnecter le DQN de l'encodeur rend effectivement la tâche de trouver la relation entre les motifs des vecteurs d'états et les récompenses plus difficile.\\[6pt]
 L'apprentissage peut être amélioré dans les deux cas, et surtout en ce qui concerne le premier, en utilisant un meilleur encodage des n\oe{}uds et des arcs du graphe. En effet, les n\oe{}uds sont actuellement encodés avec des identifiants entiers seulement, perdant ainsi les riches connaissances sémantiques qu'on peut extraire des relations du graphe. Un meilleur encodage serait d'utiliser des méthodes d'apprentissage semi-supervisé qui permettraient de donner aux n\oe{}uds proches un encodage similaire. Cette méthode permet d'éviter quelques problèmes que nous avons cités dans \ref{success_rate}, entre autres le problème d'encoder deux états lointains dans des vecteurs proches.
 
-\section{Application PCS2}
-\paragraph{}L'application PCS2 relie les modules que nous avons implémentés dans un assistant qui aide à manipuler les fichiers de l'ordinateur avec la voix. Le schéma \ref{schema_app} montre les différentes parties que comporte l'application et les communications entre elles.
+\section{Application Speech2Act}
+\paragraph{}L'application Speech2Act relie les modules que nous avons implémentés dans un assistant qui aide à manipuler les fichiers de l'ordinateur avec la voix. Le schéma \ref{schema_app} montre les différentes parties que comporte l'application et les communications entre elles.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Realisation/schema_app.png}
-	\caption{Schéma général de l'application PCS2}\label{schema_app}
+	\caption{Schéma général de l'application Speech2Act2}\label{schema_app}
 \end{figure}
 \par L'application contient principalement deux parties: une partie frontend, avec laquelle l'utilisateur interagit, et une partie backend qui contient tous les modules que nous avons traités au cours de ce travail. Cette dernière partie se trouve dans un serveur qui répond aux requêtes de l'utilisateur. Les requêtes de l'utilisateur contiennent les données audio collectées par l'interface ainsi que les données du système sur lesquelles l'assistant peut agir. Quant-à la réponse du backend, elle est sous forme d'une action qui peut être exécutée par le côté client de l'application. Nous n'avons cependant pas encore traité les cas de permissions et les limites de ce que peut manipuler l'assistant. Néanmoins, nous avons limité l'espace des actions de l'assistant pour qu'il ne puisse agir que sur une arborescence de fichier test.
 \subsection{Backend}
-\paragraph{}Pour implémenter le backend, nous avons utilisé le framework Flask qui permet d'écrire en Python le côté serveur d'une application. Les communications client-serveur de notre application se font comme suit:
+\paragraph{}Pour implémenter le backend, nous avons utilisé le micro-framework Flask qui permet d'écrire en Python le côté serveur d'une application. Les communications client-serveur de notre application se font comme suit:
 \begin{itemize}
 	\item Au lancement de l'application du côté client, celle-ci envoie une requête de début contenant l'état du système, dans notre cas une arborescence de fichiers. 
-	\item Le backend lui répond avec un token qui sera l'identifiant de cet utilisateur.
+	\item Le backend lui répond avec un token (jeton) qui sera l'identifiant de cet utilisateur.
 	\item Lorsque l'utilisateur parle à l'assistant, une requête est envoyée contenant son enregistrement audio. Alternativement, l'utilisateur peut introduire directement du texte qui sera envoyé dans la requête.
 	\item Le backend reçoit le contenu de la requête. S'il s'agit d'un enregistrement audio, il le fait passer par le module de reconnaissance de la parole pour le convertir en texte.
 	\item Le texte passe ensuite par le module de compréhension du langage qui est directement connecté avec le gestionnaire de dialogue. Ce dernier reçoit l'action résultat du module précédent et décide quelle action prendre selon l'état du système de l'utilisateur en question.
-	\item L'action de l'assistant est transformée en langage naturel avant qu'elle soit envoyée à l'utilisateur.
+	\item L'action de l'assistant est transformée en langage naturel avant qu'elle ne soit envoyée à l'utilisateur.
 	\item Le côté client de l'application reçoit le texte et l'action de l'assistant. Il exécute l'action et affiche le texte à l'utilisateur.
 \end{itemize}
 
@@ -828,8 +827,8 @@ Pour la réalisation de l'interface de l'application, nous avons opté pour une 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.8\linewidth]{images/Realisation/app_wiss.png} 
-	\caption{Interface principale de Bethano}
+	\includegraphics[width=\linewidth]{images/implementation/app_screens/main.png} 
+	\caption{Interface principale de Speech2Act}
 \end{figure} 
 
 \par 
@@ -851,14 +850,14 @@ L'application se compose de quatre parties disposées sur une seule page web dyn
 		\caption{Fenêtre d'affichage de l'arborescence virtuelle}
 	\end{figure} 
 	
-	\item \textbf{Champ de dialogue} : C'est là que vont résider toutes les informations sur le dialogue tout au long du cycle de vie de l'application. Il est mis à jour à chaque échange avec les messages échangés par l'utilisateur et l'assistant Bethano. Il permet ainsi de garder trace de tous les échanges effectués et pouvoir à tout moment vérifier ou réutiliser des messages.
+	\item \textbf{Champ de dialogue} : C'est là que vont résider toutes les informations sur le dialogue tout au long du cycle de vie de l'application. Il est mis à jour à chaque échange avec les messages échangés par l'utilisateur et l'assistant Speech2Act. Il permet ainsi de garder trace de tous les échanges effectués et pouvoir à tout moment vérifier ou réutiliser des messages.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=.6\linewidth]{images/Realisation/chat_box_yass.png}
 		\caption{Fenêtre de dialogue avec l'assistant}
 	\end{figure} 
 	
-	\item \textbf{Fenêtre de Débogage} : C'est une option réservée aux développeurs pour faciliter les tests durant le développement. Toute réponse du serveur peut y être affichée pour peu qu'elle soit au format JSON sous la forme d'une réponse à une requête RESTFul. Pour le moment il y est affiché l'intention de l'utilisateur avec son degré de confiance généré par Bethano, ainsi que les arguments de la requête (nom, type, positions ...).
+	\item \textbf{Fenêtre de Débogage} : C'est une option réservée aux développeurs pour faciliter les tests durant le développement. Toute réponse du serveur peut y être affichée pour peu qu'elle soit au format JSON sous la forme d'une réponse à une requête RESTFul. Pour le moment il y est affiché l'intention de l'utilisateur avec son degré de confiance généré par Speech2Act, ainsi que les arguments de la requête (nom, type, positions ...).
 	
 	\begin{figure}[H]
 		\centering
@@ -869,4 +868,4 @@ L'application se compose de quatre parties disposées sur une seule page web dyn
 \end{itemize}
 \section{Conclusion}
 \paragraph{}
-Au terme de ce chapitre nous avons pu apprécier les fruits d'un long travail de conception. L'implémentation de certaines fonctionnalités a permis de mieux apprécier la complexité de la tâche qu'est le développement de Bethano. Chaque module a été soumis à une série de tests pour déterminer ses forces, faiblesses et limites. Une rapide analyse stipulant que pour un manque de données flagrant et un manque de ressources frustrant, Bethano a pu effectuer des petites tâches rudimentaires de manipulation du bureau sur un ordinateur et délivrer une mini-expérience de ce que peut être un véritable assistant virtuel intelligent.
+Au terme de ce chapitre nous avons pu apprécier les fruits d'un long travail de conception. L'implémentation de certaines fonctionnalités a permis de mieux apprécier la complexité de la tâche qu'est le développement de Speech2Act. Chaque module a été soumis à une série de tests pour déterminer ses forces, faiblesses et limites. Une rapide analyse stipulant que pour un manque de données flagrant et un manque de ressources frustrant, Speech2Act a pu effectuer des petites tâches rudimentaires de manipulation du bureau sur un ordinateur et délivrer une mini-expérience de ce que peut être un véritable assistant virtuel intelligent.
