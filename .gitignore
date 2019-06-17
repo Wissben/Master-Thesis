@@ -258,3 +258,5 @@ TSWLatexianTemp*
 # standalone packages
 *.sta
 
+#others
+.remarques.txt

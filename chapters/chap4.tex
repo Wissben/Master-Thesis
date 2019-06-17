@@ -835,25 +835,20 @@ Pour la réalisation de l'interface de l'application, nous avons opté pour une 
 L'application se compose de quatre parties disposées sur une seule page web dynamiquement mise à jour au fur et à mesure du dialogue :
 
 \begin{itemize}
-	\item \textbf{Champ de saisie} : C'est une petite surface qui permet à l'utilisateur de communiquer avec le système. Il lui ai possible bien entendu d'utiliser du texte ou bien de cliquer sur le bouton Microphone à gauche pour lancer des commandes vocales. Pour l'instant, c'est à l'utilisateur d'arrêter l'enregistrement de la commande ou bien d'attendre une période limite fixée à 7 secondes. Le bouton de volume permet d'activer ou non la réponse vocale du système (extensions de synthèse vocale). Le bouton tout à droite est réservé au mode Développeur pour analyser l'interaction entre le système et l'utilisateur.
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=.9\linewidth]{images/Realisation/app_bar.png} 
-		\caption{Champ de saisie de l'application}
-	\end{figure} 
+	\item \textbf{Champ de saisie} : C'est une petite surface qui permet à l'utilisateur de communiquer avec le système. Il lui est possible bien entendu d'utiliser du texte ou bien de cliquer sur le bouton Microphone à gauche pour lancer des commandes vocales. Pour l'instant, c'est à l'utilisateur d'arrêter l'enregistrement de la commande ou bien d'attendre une période limite fixée à 7 secondes. Le bouton de volume permet d'activer ou non la réponse vocale du système (extensions de synthèse vocale). Le bouton tout à droite est réservé au mode Développeur pour analyser l'interaction entre le système et l'utilisateur.
 	
 	\item \textbf{Arborescence virtuelle} : C'est une petite fenêtre pour faciliter à l'utilisateur la mémorisation de l'environnement d'interaction. Cette fenêtre est dynamiquement mise à jour à travers le déroulement du dialogue et la manipulation des fichiers/répertoires.
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=.4\linewidth]{images/Realisation/app_browser.png}
+		\includegraphics[width=.4\linewidth]{images/implementation/app_screens/tree.png}
 		\caption{Fenêtre d'affichage de l'arborescence virtuelle}
 	\end{figure} 
 	
 	\item \textbf{Champ de dialogue} : C'est là que vont résider toutes les informations sur le dialogue tout au long du cycle de vie de l'application. Il est mis à jour à chaque échange avec les messages échangés par l'utilisateur et l'assistant Speech2Act. Il permet ainsi de garder trace de tous les échanges effectués et pouvoir à tout moment vérifier ou réutiliser des messages.
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=.6\linewidth]{images/Realisation/chat_box_yass.png}
+		\includegraphics[width=.6\linewidth]{images/implementation/app_screens/dialog.png}
 		\caption{Fenêtre de dialogue avec l'assistant}
 	\end{figure} 
 	
@@ -861,7 +856,7 @@ L'application se compose de quatre parties disposées sur une seule page web dyn
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=.4\linewidth]{images/Realisation/intent_box.png}
+		\includegraphics[width=.38\linewidth]{images/implementation/app_screens/debug.png}
 		\caption{Fenêtre de Débogage}
 	\end{figure} 
 
