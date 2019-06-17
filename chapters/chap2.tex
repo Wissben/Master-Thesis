@@ -161,7 +161,7 @@ Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de rése
 		\item $W_f$ est la matrice de poids entre les entrées et le vecteur d'oubli de la cellule LSTM.
 		\item $b_f$ est un vecteur de biais.		
 	\end{itemize}
-	\item \textbf{État interne de la cellule (Internal cell's state ): } $C_t$ est une sorte de convoyeur qui fait circuler l'information à travers la cellule. Cet état est mis à jour à travers la combinaison des deux valeurs précédemment filtrées par les portes $f_t$ et $i_t$ \citep{lstm_original_paper}.
+	\item \textbf{État interne de la cellule (Internal cell's state ): } C'est une sorte de convoyeur qui fait circuler l'information à travers la cellule. Cet état est mis à jour à travers la combinaison des vecteurs $C_{t - 1}$ et $\tilde{C}_t$ filtrés par les portes $f_t$ et $i_t$ \citep{lstm_original_paper}.
 	
 	\begin{equation}
 	\begin{gathered}
@@ -172,7 +172,7 @@ Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de rése
 	\begin{itemize}
 		\item $C_{t-1}$ est le vecteur d'état interne de la cellule LSTM à l'instant $t-1$.
 	\end{itemize}
-	\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état interne caché du réseau, la cellule filtre son vecteur d'état et le combine avec la donnée en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \citep{rnns_online,lstm_original_paper,rnn_lstms}.
+	\item \textbf{Porte de sortie (Output gate): } Pour renvoyer un résultat comme état caché du réseau, la cellule filtre son vecteur d'état interne $C_t$ et le combine avec la donnée en entrée et l'état du réseau précédent pour ne laisser passer que certaines informations \citep{rnns_online,lstm_original_paper,rnn_lstms}.
 	
 	\begin{equation}
 	\begin{gathered}
@@ -191,7 +191,7 @@ Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de rése
 
 \subsection{Modèles de Markov cachés (Hidden Markov Models HMM)}
 \paragraph{}
-Informellement, un modèle de Markov caché (HMM) est un outil de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est supposé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de son état à l'instant $t-1$. Il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \citep{hmm_intro,markov_process}. D'une façon plus intuitive, un HMM  est utilisé pour modéliser un processus dont les observations sont régies par un autre processus caché qui ne peut être observé.
+Informellement, un modèle de Markov caché (HMM) est un outil de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est supposé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de son état à l'instant $t-1$. Il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \citep{hmm_intro,markov_process}. D'une façon plus intuitive, un HMM  est utilisé pour modéliser un processus dont les observations sont régies par un autre processus qui ne peut pas être directement observé.
 \par De façon plus formelle, un HMM est un 5-tuple $<S,V,\Pi,A,B>$ \citep{hmm_formal} où :
 \begin{itemize}
 	\item $S = \lbrace s_1,...,s_N \rbrace$ est l'ensemble fini des $N$ états du processus sous-jacent.
