@@ -1,0 +1,17 @@
+P-2	: pourquoi ne pas laisser 'sera' à la place de 'est' ? ça suit l'enchainement 'D'abord, ensuite, enfin'
+P-4	: je parlais de la section 'Schéma global d'un SPA' du chapitre 2. Elle y est toujours présente
+P-5	: dois je mettre les guillemets avant 'de' ou après ? 
+P-5	: dois je enelever la virgule avant 'extrait' ?
+P-5	: par 'réside' je voulais dire 'est installé'. je l'ai remplacé avec 'est installé'
+P-5	: je me demande si utiliser 'puis' ou 'ensuit' est idéal, j'ai utilisé 'Finalement' juste avant. je pensais
+	  à mettre 'Alternativement' ou 'Accessoirement'.
+P-7	: je n'ai pas compris la remarque sur 'plateforme'
+P-8	: les liens fonctionnent tous, vérification faite le Mardi 18/06/2019 à 20h47. 
+P-9	: si je laisse 'pour le modèle de langue' la phrase aura un  sens comme
+	  'un modèle A a été utilisé pour un modèlé B', alors que ce que nous voullons dire est 
+	  'un modèle A est utilisé comme modèle B'. je ne sais pas si j'arrive à bien m'exprimer.
+P-9	: Latex rajoute cet espace au début d'une portion de code insérée dans le texte, j'essaye de l'enlever depuis
+	  un bon moment.
+P-9	: 'formulée en un' ou bien 'formulée en' ?
+P-12	: la réference a été remplacée par une footnote
+
