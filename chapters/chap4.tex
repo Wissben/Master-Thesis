@@ -649,8 +649,8 @@ Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour facil
 \begin{itemize}
 	\item choisir un nombre de n\oe{}uds $nn$ aléatoire entre $2$ et $t+1$.
 	\item choisir un nombre d'arcs $na$ aléatoire entre $1$ et $nn-1$.
-	\item tirer $nn$ identifiants de n\oe{}uds et $na$ identifiants d'arcs aléatoirement de l'ensemble des identifiants possibles.
-	\item créer les triplets en tirant pour chaque triplet deux n\oe{}uds et un arc aléatoirement des ensembles résultats de l'étape précédente. 
+	\item choisir $nn$ identifiants de n\oe{}uds et $na$ identifiants d'arcs aléatoirement de l'ensemble des identifiants possibles.
+	\item créer les triplets en choisissant pour chaque triplet deux n\oe{}uds et un arc aléatoirement des ensembles résultats de l'étape précédente. 
 \end{itemize}
 \par Pendant l'apprentissage, le générateur choisit une taille pour le graphe inférieure à une taille maximale et crée un graphe en suivant les étapes sus-citées. Ce dernier est passé à l'encodeur-décodeur comme entrée et sortie désirée.
 \subsubsection{Résultats et discussion}
@@ -660,15 +660,15 @@ Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour facil
 	\includegraphics[width=0.95\linewidth]{images/Realisation/DM/heatmap.png}
 	\caption{Variation de la précision en fonction de la taille maximale du graphe et la taille du vecteur d'état}\label{heatmap}
 \end{figure}
-\par Nous remarquons évidemment que la précision diminue avec l'augmentation de la taille maximale du graphe. Cependant, l'augmentation de la taille du vecteur encodant le graphe n'améliore pas beaucoup les résultats. Ceci peut être dû à la nature combinatoire du problème. En effet, la taille du graphe augmente exponentiellement en fonction du nombre de triplets. Soit $nb$ et $t$ le nombre de triplets possibles et la fonction correspondant la taille du graphe avec le nombre de graphes possibles. $t$ est définie par la fonction de récurrence suivante:
-\[t(1) = nb\]\\
+\par Nous remarquons évidemment que la précision diminue avec l'augmentation de la taille maximale du graphe. Cependant, l'augmentation de la taille du vecteur encodant le graphe n'améliore pas beaucoup les résultats. Ceci peut être dû à la nature combinatoire du problème. En effet, la taille du graphe augmente exponentiellement en fonction du nombre de triplets. $nb$ et $t$ représentent respectivement le nombre de triplets possibles et la fonction correspondant à la taille du graphe le nombre de graphes possible. $t$ est définie par la fonction de récurrence suivante:
+\[t(1) = nb\]
 \[t(n+1) = t(n) \times nb\]
 \par La première équation montre que le nombre de graphes possibles est égale au nombre de triplets possibles lorsque le graphe se compose d'un seul triplet. Tandis que la deuxième vient du fait que les graphes de taille $n+1$ peuvent être obtenus en combinant chaque graphe de taille $n$ avec tous les triplets possibles. Le résultat des deux équations est:
-\[t(n) = nb^n\]\\
-\par Pour essayer de pallier à ce problème, le graphe d'état peut être divisé en plusieurs sous-graphes. De façon à ce que chaque sous-graphe soit assez petit pour être encodé par l'un des encodeurs déjà entraînés. Ainsi la concaténation de ces vecteurs peut être utilisée comme entrée pour le module suivant.
+\[t(n) = nb^n\]
+\par Pour pallier à ce problème, le graphe d'état peut être divisé en plusieurs sous-graphes, de façon à ce que chaque sous-graphe soit assez petit pour être encodé par l'un des encodeurs déjà entraînés. Ainsi, la concaténation de ces vecteurs peut être utilisée comme entrée pour le module suivant.
 \subsection{Apprentissage par renforcement}
 \paragraph{}Nous allons à présent présenter les deux méthodes citées dans la section \ref{DMReal}. La première consiste à utiliser le résultat de l'encodeur pour entraîner un réseau de neurones à estimer la récompense associée à chaque action possible. La deuxième, par contre, fait l'apprentissage des deux parties à la fois.
-\par Nous utilisons un simulateur d'utilisateur pour communiquer avec l'agent de dialogue. Afin de simuler aussi les erreurs des modules précédents (reconnaissance automatique de la parole et compréhension du langage naturel), nous ajoutons un module qui insère du bruit dans les actions du simulateur. Sachant qu'une action utilisateur se compose de l'intention et des emplacements, ce dernier module prend donc deux valeurs de probabilités en paramètre; la probabilité de bruiter l'intention et celle de bruiter les emplacements. Dans la suite de ce travail nous allons varier ces deux valeurs ainsi que la taille du vecteur d'état afin d'arriver à un compromis entre la robustesse face aux erreurs, la réussite des tâches utilisateur et l'utilisation de la mémoire.
+\par Nous utilisons un simulateur d'utilisateur pour communiquer avec l'agent de dialogue. Afin de simuler aussi les erreurs des modules précédents (reconnaissance automatique de la parole et compréhension du langage naturel), nous ajoutons un module qui insère du bruit dans les actions du simulateur. Sachant qu'une action utilisateur se compose de l'intention et des emplacements, ce dernier module prend donc deux valeurs de probabilités en paramètre; la probabilité de bruiter l'intention et celle de bruiter les emplacements. Dans la suite de ce travail, nous allons varier ces deux valeurs ainsi que la taille du vecteur d'état afin d'arriver à un compromis entre la robustesse face aux erreurs, la réussite des tâches utilisateur et l'utilisation de la mémoire.
 \par Nous allons évaluer les différents résultats en comparant leur taux de succès qui est donné par le rapport entre le nombre de fois où l'agent arrive au but sur le nombre total d'essais. Un succès nécessite d'arriver au but dans un nombre d'échanges limite que nous avons estimé comme suit: 
 \[limite = nb_{diff} \times 4 \times (1 + (pb_i + pb_e) \times 2) \]
 \begin{itemize}
@@ -715,15 +715,15 @@ Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour facil
 			6 & 0 & 0 & 0.7\\
 			\hline
 		\end{tabular}
-		\caption{Taux de réussite en fonction des probabilités d'erreurs et du nombre de vecteurs d'état. Avec les probabilités pb\textsubscript{i} et pb\textsubscript{e}: les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_dis}
+		\caption{Taux de réussite en fonction des probabilités d'erreurs et du nombre de vecteurs d'état. Avec les probabilités pb\textsubscript{i} et pb\textsubscript{e}, les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_dis}
 	\end{center}
 \end{table}
 Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 \begin{itemize}
-	\item Évidemment, avec moins de probabilités d'erreurs, le réseau arrive à mieux reconnaître les motifs dans le vecteur d'état et leurs relations avec les récompenses du simulateur. Cependant, l'augmentation de la taille du vecteur n'améliore que légèrement les résultats; en calculons la moyenne des taux de réussite pour chaque nombre de vecteurs, les résultats sont comme suit: $53.5\%$ de taux de réussite pour quatre vecteurs, $53.75\%$ pour cinq vecteurs et $57.5\%$ pour six vecteurs.
+	\item Évidemment, avec moins de probabilités d'erreurs, le réseau arrive à mieux reconnaître les motifs dans le vecteur d'état et leurs relations avec les récompenses du simulateur. Cependant, l'augmentation de la taille du vecteur n'améliore que légèrement les résultats; en calculant la moyenne des taux de réussite pour chaque nombre de vecteurs, les résultats sont comme suit: $53.5\%$ de taux de réussite pour quatre vecteurs, $53.75\%$ pour cinq vecteurs et $57.5\%$ pour six vecteurs.
 	\item Le meilleur résultat a été obtenu en utilisant quatre vecteurs et sans erreurs avec un taux de réussite de $72\%$. En pratique, ce modèle ne s'adapte pas aux erreurs des modules précédents. Par conséquent, il se perd lorsqu'une erreur se produit et il n'arrive pas à se resituer dans la conversation.
 	\item Avec des probabilités d'erreurs très élevées, le réseau n'arrive pas à apprendre et ne dépasse pas $28\%$ de taux de réussite.
-	\item Les résultats les plus prometteurs dans ce cas sont celles qui sont entraînées avec des probabilités d'erreurs proches de la réalité avec des taux de réussite acceptables. Dans ce cas, nous avons obtenu un taux de réussite de $69\%$ avec des probabilités d'erreurs de $1\%$ et $10\%$ sur les intentions et les emplacements respectivement.
+	\item Les résultats les plus prometteurs, dans ce cas, sont ceux qui sont entraînés avec des probabilités d'erreurs proches de la réalité avec des taux de réussite acceptables. Dans ce cas, nous avons obtenu un taux de réussite de $69\%$ avec des probabilités d'erreurs de $1\%$ et $10\%$ sur les intentions et les emplacements respectivement.
 \end{itemize}
 
 \subsubsection{Apprentissage avec DQN connecté}
@@ -769,7 +769,7 @@ Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 			200 & 0 & 0 & 0.86\\
 			\hline
 		\end{tabular}
-		\caption{Taux de réussite en fonction des probabilités d'erreurs et de la taille du vecteur d'état. Avec les probabilités pb\textsubscript{i} et pb\textsubscript{e}: les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_con}
+		\caption{Taux de réussite en fonction des probabilités d'erreurs et de la taille du vecteur d'état. Avec les probabilités pb\textsubscript{i} et pb\textsubscript{e}, les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_con}
 	\end{center}
 \end{table}
 \begin{itemize}
@@ -780,7 +780,7 @@ Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 \end{itemize}
 
 \subsubsection{Comparaison des approches et discussion}
-\paragraph{}En comparant les deux méthodes, apprentissage avec DQN déconnecté et apprentissage avec DQN connecté, il est évident que la deuxième méthode est beaucoup plus efficace. Dans cette partie nous allons donner de potentielle explications aux résultats trouvés en analysant les forces et faiblesses de chaque méthode. Nous allons analyser les méthodes par rapport à trois aspects: le taux de réussite, la vitesse d'apprentissage et la courbe d'apprentissage.
+\paragraph{}En comparant les deux méthodes, apprentissage avec DQN déconnecté et apprentissage avec DQN connecté, il est évident que la deuxième méthode est beaucoup plus efficace. Dans cette partie, nous allons donner de potentielles explications aux résultats trouvés en analysant les forces et faiblesses de chaque méthode. Nous allons analyser les méthodes par rapport à trois aspects: le taux de réussite, la vitesse d'apprentissage et la courbe d'apprentissage.
 \subsubsection{Taux de réussite}\label{success_rate}
 \paragraph{}Il est clair que connecter l'encodeur avec le réseau DQN a donné de meilleurs résultats. Ceci peut être dû aux facteurs suivants:
 \begin{itemize}
@@ -845,14 +845,14 @@ L'application se compose de quatre parties disposées sur une seule page web dyn
 		\caption{Fenêtre d'affichage de l'arborescence virtuelle}
 	\end{figure} 
 	
-	\item \textbf{Champ de dialogue} : C'est là que vont résider toutes les informations sur le dialogue tout au long du cycle de vie de l'application. Il est mis à jour à chaque échange avec les messages échangés par l'utilisateur et l'assistant Speech2Act. Il permet ainsi de garder trace de tous les échanges effectués et pouvoir à tout moment vérifier ou réutiliser des messages.
+	\item \textbf{Champ de dialogue} : C'est là que vont résider toutes les informations sur le dialogue tout au long du cycle de vie de l'application. Il est mis à jour à chaque échange entre l'utilisateur et l'assistant Speech2Act. Il permet ainsi de garder trace de tous les échanges effectués et pouvoir à tout moment vérifier ou réutiliser des messages.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=.6\linewidth]{images/implementation/app_screens/dialog.png}
 		\caption{Fenêtre de dialogue avec l'assistant}
 	\end{figure} 
 	
-	\item \textbf{Fenêtre de Débogage} : C'est une option réservée aux développeurs pour faciliter les tests durant le développement. Toute réponse du serveur peut y être affichée pour peu qu'elle soit au format JSON sous la forme d'une réponse à une requête RESTFul. Pour le moment il y est affiché l'intention de l'utilisateur avec son degré de confiance généré par Speech2Act, ainsi que les arguments de la requête (nom, type, positions ...).
+	\item \textbf{Fenêtre de Débogage} : C'est une option réservée aux développeurs pour faciliter les tests durant le développement. Toute réponse du serveur peut y être affichée pour peu qu'elle soit au format JSON sous la forme d'une réponse à une requête RESTFul. Pour le moment, il y est affiché l'intention de l'utilisateur avec son degré de confiance généré par Speech2Act, ainsi que les arguments de la requête (nom, type, positions ...).
 	
 	\begin{figure}[H]
 		\centering
@@ -863,4 +863,4 @@ L'application se compose de quatre parties disposées sur une seule page web dyn
 \end{itemize}
 \section{Conclusion}
 \paragraph{}
-Au terme de ce chapitre nous avons pu apprécier les fruits d'un long travail de conception. L'implémentation de certaines fonctionnalités a permis de mieux apprécier la complexité de la tâche qu'est le développement de Speech2Act. Chaque module a été soumis à une série de tests pour déterminer ses forces, faiblesses et limites. Une rapide analyse stipulant que pour un manque de données flagrant et un manque de ressources frustrant, Speech2Act a pu effectuer des petites tâches rudimentaires de manipulation du bureau sur un ordinateur et délivrer une mini-expérience de ce que peut être un véritable assistant virtuel intelligent.
+Au terme de ce chapitre, nous avons pu apprécier les fruits d'un long travail de conception. L'implémentation de certaines fonctionnalités a permis de mieux apprécier la complexité de la tâche qu'est le développement de Speech2Act. Chaque module a été soumis à une série de tests pour déterminer ses forces, faiblesses et limites. Une rapide analyse stipulant que pour un manque de données flagrant et un manque de ressources frustrant, Speech2Act a pu effectuer des petites tâches rudimentaires de manipulation du bureau sur un ordinateur et délivrer une mini-expérience de ce que peut être un véritable assistant virtuel intelligent.
