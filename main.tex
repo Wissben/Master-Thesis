@@ -186,19 +186,32 @@
 	{[}{{{\color{delim}{[}}}}{1}
 	{]}{{{\color{delim}{]}}}}{1},
 }
+
+\makeatletter
+\renewcommand{\@chapapp}{}% Not necessary...
+\newenvironment{chapquote}[2][2em]
+{\setlength{\@tempdima}{#1}%
+	\def\chapquote@author{#2}%
+	\parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+	\itshape}
+{\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
 \begin{document}
 
 %\tableofcontents
 %\bibliographystyle{plain}
 \bibliographystyle{apalike}
+\input{other/intro.tex}
+\input{other/conclusion.tex}
 
-\input{chapters/chap1.tex}
-\newpage
-\input{chapters/chap2.tex}
-\newpage
-\input{chapters/chap3.tex}
-\newpage
-\input{chapters/chap4.tex}
+%\input{chapters/chap1.tex}
+%\newpage
+%\input{chapters/chap2.tex}
+%\newpage
+%\input{chapters/chap3.tex}
+%\newpage
+%\input{chapters/chap4.tex}
 %%\input{chapters/chap4.tex}
 %\input{other/conclusion.tex}
 \listoffigures

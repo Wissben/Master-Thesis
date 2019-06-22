@@ -4,7 +4,7 @@
 \paragraph{}Nous commençons par décrire l'environnement de travail. Nous détaillerons par la suite les aspects de l'implémentation des différents modules de notre application qui seront évalués et analysés. Pour clôturer avec une application d'un assistant personnel pour la manipulation de fichiers. 
 
 \section{Environnement de développement}
-Dans cette section nous allons présenter les différents outils (logiciels et matériels) qui ont été utilisé pour l'implémentation de Speech2Act.
+Dans cette section, nous allons présenter les différents outils (logiciels et matériels) qui ont été utilisés pour l'implémentation de Speech2Act.
 	\subsection{Machines utilisées}
 	\paragraph{}
 	Principalement, le développement se divise en deux parties : 
@@ -12,7 +12,7 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 		\item Apprentissage : les données sont récoltées ou construites puis nettoyées et préparées. Les modèles sont développés, entraînés puis testés.
 		\item Les modules sont implémentés puis connectés et intégrés dans l'application.
 	\end{itemize}
-	\par Pour ce faire nous avons utilisé des machines dont les spécificités sont mentionnés ci-dessous :
+	\par Pour ce, faire nous avons utilisé des machines dont les spécificités sont mentionnées ci-dessous :
 	%TODO insert figures with their caption here OR one diagram with specs
 	\begin{figure}[H] 
 		\centering
@@ -22,7 +22,7 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 		
 	\end{figure}
 	\par
-	En ce qui concerne la partie logicielle, une liste non exhaustive est présentée ci dessous, qui ne mentionne que les outils les plus utilisés et les plus exploités :
+	En ce qui concerne la partie logicielle, une liste non exhaustive est présentée ci dessous qui ne mentionne que les outils les plus utilisés et les plus exploités :
 	\subsection{Langages de programmation}
 %		\begin{figure}[H] 
 %		\centering
@@ -37,7 +37,7 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 		
 		\subsubsection*{Javascript} 
 		\paragraph{}
-		JavaScript\footnote{\url{https://fr.wikibooks.org/wiki/Programmation_JavaScript/Introduction}} est un langage de programmation utilisé principalement par les navigateurs web pour exécuter un bout de code incorporé dans une page web, plus communément appelé script. Il permet la manipulation de tous les éléments inclus dans une page, et par conséquent permet une gestion dynamique de ces derniers. Il est beaucoup utilisé du coté client mais peut aussi être exécuté du coté serveur. Tout comme Python, il offre une grande variété dans le choix des modules qui peuvent ajouter de nouvelles fonctionnalités, le tout géré par un gestionnaire de module \textit{npm} \footnote{Node Package Manager ou Gestionnaire de packages Node} devenu un standard.
+		JavaScript\footnote{\url{https://fr.wikibooks.org/wiki/Programmation_JavaScript/Introduction}} est un langage de programmation utilisé principalement par les navigateurs web pour exécuter un bout de code incorporé dans une page web, plus communément appelé script. Il permet la manipulation de tous les éléments inclus dans une page, et par conséquent permet une gestion dynamique de ces derniers. Il est beaucoup utilisé du côté client mais peut aussi être exécuté du côté serveur. Tout comme Python, il offre une grande variété dans le choix des modules qui peuvent ajouter de nouvelles fonctionnalités, le tout géré par un gestionnaire de module \textit{npm} \footnote{Node Package Manager ou Gestionnaire de packages Node} devenu un standard.
 	
 	\subsection{Librairies et bibliothèques}
 	\begin{figure}[H] 
@@ -48,14 +48,14 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 	\end{figure}
 		\subsubsection*{DeepSpeech API}
 		\paragraph{}
-		Package python qui fait office d'interface entre un script Python et la librairie de reconnaissance automatique de la parole DeepSpeech \citep{deepspeech_paper}. Il permet entre autres de charger différents modèles acoustiques ou modèles de langues. Il offre aussi la possibilité d'utiliser des scripts d'apprentissage prédéfinis pour peu que les données soient organisées suivant une certaine norme; ces scripts sont notamment hautement paramétrables.
+		C'est un module de python qui fait office d'interface entre un script Python et la librairie de reconnaissance automatique de la parole DeepSpeech \citep{deepspeech_paper}. Il permet entre autres de charger différents modèles acoustiques ou modèles de langues. Il offre aussi la possibilité d'utiliser des scripts d'apprentissage prédéfinis pour peu que les données soient organisées suivant une certaine norme; ces scripts sont notamment hautement paramétrables.
 		\subsubsection*{PyAudio}
 		\paragraph{}
 		PyAudio\footnote{\url{https://pypi.org/project/PyAudio/}} est un librairie python destinée à la manipulation des fichiers ou flux audios. Elle offre entre autres la possibilité d'extraire des méta-données sur un flux audio (fréquence d'échantillonnage, débit, etc.). La possibilité d'extraire le vecteur de caractéristiques d'un extrait audio est aussi présente comme fonctionnalité.
 		
 		\subsubsection*{Beautiful Soup}
 		\paragraph{}
-		Beautiful Soup\footnote{\url{https://pypi.org/project/beautifulsoup4/}} est une bibliothèque Open source permettant l'analyse de fichiers html pour en extraire ou y injecter des données. Principalement utilisée pour filtrer les balises html depuis une page web.
+		Beautiful Soup\footnote{\url{https://pypi.org/project/beautifulsoup4/}} est une bibliothèque Open source permettant l'analyse de fichiers html pour en extraire ou y injecter des données. Elle est principalement utilisée pour filtrer les balises html depuis une page web.
 		
 		\subsubsection*{PySpark}
 		\paragraph{}
@@ -83,7 +83,7 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 	\subsection{Outils et logiciels de développement}
 		\subsubsection*{PyCharm}
 		\paragraph{}
-		PyCharm est un environnement de développement intégré spécialisé et optimisé pour programmer dans le langage Python (voir \ref{python} ci dessus). Il permet l'analyse de code en continu et offre un débogueur intégré pour exécuter un code instruction par instruction. Il offre également l'intégration de logiciel de gestion de versions comme Git, et supporte le développement web avec Flask.
+		PyCharm est un environnement de développement intégré spécialisé et optimisé pour programmer dans le langage Python. Il permet l'analyse de code en continu et offre un débogueur intégré pour exécuter un code instruction par instruction. Il offre également l'intégration de logiciel de gestion de versions comme Git, et supporte le développement web avec Flask.
 		
 		\subsubsection*{Git}
 		\paragraph{}
@@ -100,17 +100,17 @@ Dans cette section nous allons présenter les différents outils (logiciels et m
 		
 \section{Reconnaissance automatique de la parole}
 \paragraph{}
-Pour ce premier module, il a été très difficile d'effectuer les tests idéaux. En effet, nous n'avons pas pu trouver un ensemble de données qui proposait du contenu en rapport avec Speech2Act. Cependant puisque nous avons pu construire un mini-ensemble pour tester l'apport de notre modèle de langue. Les résultats ne doivent pas être pris comme une référence absolue, mais plutôt comme une indication pour de futurs possibles tests.
+Pour ce premier module, il a été très difficile d'effectuer les tests idéaux. En effet, nous n'avons pas pu trouver un ensemble de données qui proposait du contenu en rapport avec Speech2Act. Cependant, puisque nous avons pu construire un mini-ensemble pour tester l'apport de notre modèle de langue. Les résultats ne doivent pas être pris comme une référence absolue, mais plutôt comme une indication pour de possibles futurs tests.
 	\subsection{Ensemble de test}
 	\paragraph{}
-	Pour tester le modèle acoustique, les données récoltées à travers le projet CommonVoice (voir la section \ref{common_voice}) constituent un assez bon échantillon, de par la nature des enregistrements (sur téléphone portable, par plusieurs genres et accents de locuteurs ...), mais aussi de par le volume (environs 500 heures d'enregistrements audios). Nous avons toutefois décidé de construire un mini-ensemble de test d'environs 204 enregistrements audio d'une longueur moyenne de 5 secondes chacun. Ces échantillons ont été prélevés sur trois locuteurs masculins. $20\%$ de ces échantillons ont été prélevés dans un environnement fermé mais bruité (il s'agit d'un espace de travail pour étudiants) et sur téléphone. Le reste a été prélevé dans un environnement fermé avec peu de bruit à partir du micro d'un ordinateur portable. Chaque enregistrement est soit : 
+	Pour tester le modèle acoustique, les données récoltées à travers le projet CommonVoice (voir la section \ref{common_voice}) constituent un assez bon échantillon, de par la nature des enregistrements (sur téléphone portable, par plusieurs genres et accents de locuteurs ...), mais aussi de par le volume (environs 500 heures d'enregistrements audios). Nous avons toutefois décidé de construire un mini-ensemble de test d'environ 204 enregistrements audios d'une longueur moyenne de 5 secondes chacun. Ces échantillons ont été prélevés sur trois locuteurs masculins. $20\%$ de ces échantillons ont été prélevés dans un environnement fermé mais bruité (il s'agit d'un espace de travail pour étudiants) et sur téléphone. Le reste a été prélevé dans un environnement fermé avec peu de bruit à partir du micro d'un ordinateur portable. Chaque enregistrement est soit : 
 	\begin{itemize}
 		\item une requête prélevée de l'ensemble de test du module de compréhension du langage naturel (voir les sections \ref{nlu_steps} et ~\ref{nlu_dataset}), ou
 		
 		\item une question prélevée de l'ensemble de données AskUbuntu\footnote{\url{https://github.com/taolei87/askubuntu}} qui regroupe des questions relatives à la manipulation d'un ordinateur sous le système d'exploitation GNU/Linux.
 	\end{itemize}
 	\par
-	Pour le modèle de langue il s'agit de celui mentionné dans la section 
+	Pour le modèle de langue, il s'agit de celui mentionné dans la section 
 	\ref{n-grams}. Quelques modifications ont été rajoutées comme le filtrage des mots qui n'appartiennent pas à la langue anglaise, mais au prix du sacrifice de quelques noms propres non reconnus ou bien de séquences de mots/lettres sans réel sens.
 	\subsection{Méthodologie d'évaluation}
 	\paragraph{}
@@ -123,7 +123,7 @@ Pour ce premier module, il a été très difficile d'effectuer les tests idéaux
 			\item \textbf{text} : transcription textuelle de la requête.
 		\end{itemize}
 		\par
-		Un script de conversion est ensuite lancé pour s'assurer que chaque enregistrement est au format .wav avec une fréquence de rafraîchissement égale à 16KHz (le modèle acoustique de DeepSpeech attend cette valeur exacte pour lancer l'inférence, sinon une erreur se produira).
+		Un script de conversion est ensuite lancé pour s'assurer que chaque enregistrement est au format .wav avec une fréquence de rafraîchissement égale à 16KHz, le modèle acoustique de DeepSpeech attend cette valeur exacte pour lancer l'inférence, sinon une erreur se produira.
 		
 		\item \textbf{Métriques retenues} : À chaque instance testée, le \textbf{WER} (Word Error Rate) est calculé. Pour rappel la formule du WER est la suivante :
 		\begin{equation*}
@@ -133,18 +133,18 @@ Pour ce premier module, il a été très difficile d'effectuer les tests idéaux
 		\begin{itemize}
 			\item $\hat{y}$ est la séquence de mots prédite appelée Hypothèse.
 			\item $y$ est la séquence de mots réelle appelée Référence.
-			\item $S$ est le nombre de substituions (compté en mots) réalisées entre l'hypothèse et la référence.
+			\item $S$ est le nombre de substitutions (compté en mots) réalisées entre l'hypothèse et la référence.
 			\item $D$ est le nombre de suppressions qu'a effectué le système, donc le nombre de mots supprimés dans l'hypothèse par rapport à la référence.
-			\item $I$ est le nombre d'insertions effectuées par le système (c.à.d, le nombre de mots rajoutés à l'hypothèse par rapport à la référence).
+			\item $I$ est le nombre d'insertions effectuées par le système (c.à.d. le nombre de mots rajoutés à l'hypothèse par rapport à la référence).
 			\item $C$ est le nombre de mots bien placés.
 			\item $N$ est la longueur totale de la séquence en nombre de mots
 		\end{itemize}
-		\item \textbf{Boucle d'évaluation} l'opération précédente est réitérée en incrémentant à chaque fois le taux d'utilisation de notre modèle de langue (de 20\% à 100\% avec un pas de 10\%). Le WER associé est ensuite comparé à celui obtenu en utilisant le modèle de langue par défaut que propose DeepSpeech, le modèle acoustique sans modèle de langue, le résultat de l'API de Google \footnote{\url{https://cloud.google.com/speech-to-text/}} et enfin le modèle par défaut de CMU Sphinx \footnote{\url{https://cmusphinx.github.io/}}
+		\item \textbf{Boucle d'évaluation} : L'opération précédente est réitérée en incrémentant à chaque fois le taux d'utilisation de notre modèle de langue (de 20\% à 100\% avec un pas de 10\%). Le WER associé est ensuite comparé à celui obtenu en utilisant le modèle de langue par défaut que propose DeepSpeech, le modèle acoustique sans modèle de langue, le résultat de l'API de Google \footnote{\url{https://cloud.google.com/speech-to-text/}} et enfin le modèle par défaut de CMU Sphinx \footnote{\url{https://cmusphinx.github.io/}}
 		
 	\end{enumerate}
 	\subsection{Résultats}
 	\paragraph{}
-	Les résultats sont décrits dans le tableau \ref{tab:asr_results} et la figure \ref{fig:asr_results}. Nous remarquons que sur notre mini-ensemble de test, les modèles par défaut obtiennent un score très proche de 1, ce qui démontre qu'ils ont été entraînés sur des cas assez généraux, ce qui n'est pas très bon. Cependant, en changeant juste le modèle de langue par défaut en injectant des échantillons, une nette amélioration est visible (environ $-20\%$). Ce taux d'erreur diminue en augmentant la taille du corpus utilisé pour le modèle de langue. Toutefois, après avoir pris plus de $75\%$ du corpus, l'erreur a légèrement augmenté. Cela peut s'expliquer par la nature assez bruitée du corpus, les fichiers README.MD qui sont rédigés par des personnes, l'erreur humaine, et l'absence de processus de vérification de l'orthographe, de la grammaire ou de la syntaxe du contenu. Nous avions envisagé de choisir comme corpus des extraits de livres dédiés à la manipulation des ordinateurs sous Linux, mais nous n'avons pas trouvé de ressources gratuites ou Open source exploitables.
+	Les résultats sont décrits dans le tableau \ref{tab:asr_results} et la figure \ref{fig:asr_results}. Nous remarquons que sur notre mini-ensemble de test, les modèles par défaut obtiennent un score très proche de 1, ce qui démontre qu'ils ont été entraînés sur des cas assez généraux, ce qui n'est pas très bon. Cependant, en changeant juste le modèle de langue par défaut en injectant des échantillons que nous avons récolté, une nette amélioration est visible (environ $-20\%$). Ce taux d'erreur diminue en augmentant la taille du corpus utilisé pour le modèle de langue. Toutefois, après avoir pris plus de $75\%$ du corpus, l'erreur a légèrement augmenté. Cela peut s'expliquer par la nature assez bruitée du corpus, les fichiers README.MD qui sont rédigés par des personnes, l'erreur humaine, et l'absence de processus de vérification de l'orthographe, de la grammaire ou de la syntaxe du contenu. Nous avions envisagé de choisir comme corpus des extraits de livres dédiés à la manipulation des ordinateurs sous Linux, mais nous n'avons pas trouvé de ressources gratuites ou Open source exploitables.
 	\par
 	Il est à noter que le meilleur résultat obtenu, c.à.d un taux d'erreur de $72.6\%$ est très loin d'être satisfaisant comparé au taux d'erreur de l'API de Google par exemple qui est d'approximativement $0.3496\%$. Néanmoins, l'ajout d'un modèle de langue personnalisé a pu améliorer nettement les résultats observés durant l'utilisation du modèle de base. Comme mentionné dans la section \ref{asr_probs}, DeepSpeech reste la meilleure option en Open Source à notre portée.
 	\begin{table}[H]
@@ -158,7 +158,7 @@ Pour ce premier module, il a été très difficile d'effectuer les tests idéaux
 				\multicolumn{1}{|c|}{Modèle acoustique avec 75\% du corpus} & 0,72809889 \\ \hline
 				\multicolumn{1}{|c|}{Modèle acoustique avec 100\% du corpus} & 0,72928369 \\ \hline
 				\multicolumn{1}{|c|}{Modèle acoustique avec 25\% du corpus} & 0,73910913 \\ \hline
-				\multicolumn{1}{|c|}{Modèle acoustique - 10\% du corpus} & 0,74333040 \\ \hline
+				\multicolumn{1}{|c|}{Modèle acoustique avec 10\% du corpus} & 0,74333040 \\ \hline
 				\multicolumn{1}{|c|}{Modèle acoustique et modèle de langue de base} & 0,79569078 \\ \hline
 				\multicolumn{1}{|c|}{Modèle acoustique seulement} & 0,91092787 \\ \hline
 				\multicolumn{1}{|c|}{CMU Sphinx de base} & 0,94024028 \\ \hline
@@ -173,12 +173,12 @@ Pour ce premier module, il a été très difficile d'effectuer les tests idéaux
 		\caption{Graphe récapitulatif des résultats pour le a reconnaissance automatique de la parole}
 		\label{fig:asr_results}
 	\end{figure}
-\section{Classification d'intentions et extractions d'entités de domaine}
+\section{Classification d'intentions et extraction d'entités de domaine}
 \paragraph{}
-Pour ce module, une approche assez classique a été utilisée et l'ensemble de test est extrait de l'ensemble d'apprentissage (plus de détails dans la section suivante ). Les métriques d'évaluation utilisées sont mentionnées dans la sous section \ref{nlu_steps}. Nous commençons d'abord par détailler le contenu de l'ensemble de tests. Puis nous présenterons la méthodologie suivie pour la réalisation de ces tests. Un tableau récapitulatif sera présenté avant la fin pour illustrer les différents résultats.
+Pour ce module, une approche assez classique a été utilisée et l'ensemble de test est extrait de l'ensemble d'apprentissage (plus de détails dans la section suivante ). Les métriques d'évaluation utilisées sont mentionnées dans la sous section \ref{nlu_steps}. Nous commençons d'abord par détailler le contenu de l'ensemble de tests. Puis, nous présenterons la méthodologie suivie pour la réalisation de ces tests. Un tableau récapitulatif sera présenté avant la fin pour illustrer les différents résultats.
 	\subsection{Ensemble de test}
 	\paragraph{}
-	Comme mentionné dans le chapitre précédent (voir la section \ref{nlu_dataset}), nous avons nous mêmes construit un ensemble d'apprentissage relativement varié. Il regroupe essentiellement des commandes, ou requêtes liées à l'exploration de fichiers pour le moment car c'est la tâche rudimentaire que Speech2Act peut accomplir.
+	Comme mentionné dans le chapitre précédent (voir la section \ref{nlu_dataset}), nous avons nous mêmes construit un ensemble d'apprentissage relativement varié. Il regroupe pour le moment essentiellement des commandes, ou requêtes liées à l'exploration de fichiers car c'est la tâche rudimentaire que Speech2Act peut accomplir.
 	\par
 	L'ensemble de test est dérivé de celui d'apprentissage selon une politique de découpage basée sur le taux de présence d'un intent (intention). Comme illustré dans la figure ~\ref{fig:split}, un pourcentage de chaque groupe d'instances affilié à la même classe est utilisé à la fois pour la validation et pour le test. Ce choix est motivé par le fait que les proportions des distributions des intentions dans l'ensemble original sont non-équilibrées.
 	
@@ -219,7 +219,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 		\label{tab:all_intents}
 	\end{table}
 	\paragraph{}
-	Les intentions sont regroupées en groupes; chaque groupe comporte des intentions qui influent sur les documents de la même manière. Il existe bien évidemment des intentions sans groupe (on peut considérer qu'ils forment un seul groupe, ou bien que chacun constitue son propre groupe) : 
+	Les intentions sont regroupées en groupes; chaque groupe comporte des intentions qui influent sur les documents de la même manière. Il existe bien évidemment des intentions sans groupe, on peut considérer qu'ils forment un seul groupe, ou bien que chacun constitue son propre groupe : 
 	\begin{itemize}
 		\item \textbf{ALTER} : Groupe d'intentions qui altère l'état d'un document.
 		\item \textbf{INFO} : Groupe d'intentions pour effectuer une opération puis informer l'utilisateur.
@@ -233,13 +233,13 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 		\item \textbf{Architecture d'encodage} :
 		C'est à dire l'utilisation ou pas d'un réseau récurrent LSTM de base ou bien BiLSTM. Le but étant de montrer que le modèle pourra mieux interpréter les données en entrée s'il capture le contexte de chaque mot.
 		
-		\item \textbf{Nombre neurones pour la couche de classification d'intention } : Lorsque l'encodeur retourne le dernier vecteur d'état caché, ce dernier passera par un réseau de neurones complètement connecté et multi-couches (nombre de couches fixé à 3 par souci de performance, une couche d'entrée, une couche intermédiaire et une couche de sortie). Le nombre de neurones sur la couche cachée dépend grandement de la complexité de la tâche à effectuer. La classification d'intentions pour l'exploration de fichier était relativement simple; nous avons commencé avec 32 neurones puis nous avons doublé ce nombre jusqu'à 512 pour, en théorie, donner plus de puissance au classificateur tout en évitant un sur-apprentissage par surplus de neurones.
+		\item \textbf{Nombre de neurones pour la couche de classification d'intention } : Lorsque l'encodeur retourne le dernier vecteur d'état caché, ce dernier passera par un réseau de neurones complètement connecté et multi-couches dont nombre de couches est fixé à 3 par souci de performance, une couche d'entrée, une couche intermédiaire et une couche de sortie. Le nombre de neurones sur la couche cachée dépend grandement de la complexité de la tâche à effectuer. La classification d'intentions pour l'exploration de fichier était relativement simple; nous avons commencé avec 32 neurones puis nous avons doublé ce nombre jusqu'à 512 pour, en théorie, donner plus de puissance au classificateur tout en évitant un sur-apprentissage par surplus de neurones.
 		
 		\item \textbf{Nombre d'unités d'une cellule LSTM (respectivement BiLSTM)}:
-		En effet, les portes d'une cellule LSTM (resp. BiLSTM) sont en vérité des réseaux de neurones denses (complètement connectés) et donc un ensemble de matrices de poids à optimiser. La capacité à "apprendre" la représentation des séquences dépend donc aussi du nombre de neurones dans ces mini-réseaux. Par le même raisonnement employé pour le classificateur d'intentions, nous avons commencé avec un petit nombre de neurones pour examiner où se trouverait le seuil minimal qui permettra au modèle de généraliser, mais aussi où le seuil critique se situerait pour permettre au modèle de ne pas tomber dans un cas de sur-apprentissage. Nous partons de 128 jusqu'à 512 unités avec pas de 32 unités.
+		Les portes d'une cellule LSTM (resp. BiLSTM) sont en vérité des réseaux de neurones denses (complètement connectés) et donc un ensemble de matrices de poids à optimiser. La capacité à "apprendre" la représentation des séquences dépend aussi du nombre de neurones dans ces mini-réseaux. Par le même raisonnement employé pour le classificateur d'intentions, nous avons commencé avec un petit nombre de neurones pour examiner d'une part où se trouverait le seuil minimal qui permettra au modèle de généraliser, et d'autre part où le seuil critique se situerait pour permettre au modèle de ne pas tomber dans un cas de sur-apprentissage. Nous partons de 128 jusqu'à 512 unités avec pas de 32 unités.
 		
-		\item \textbf{Fonctions d'activations} : 
-		C'est un élément essentiel qui permet d'introduire la non-linéarité dans les relations entre chaque neurones de couches voisines. Ces fonctions permettent de mieux représenter les seuils d'activations des neurones. La fonction la plus utilisée dans la littérature est actuellement ReLu (Rectified Linear Unit) car elle a expérimentalement donné de meilleurs résultats dans une grande variété de tâches et problèmes liés à l'apprentissage automatique et à la classification et étiquetage de textes. Par souci d'exhaustivité nous avons quand même décidé de tester deux autres fonctions $tanh$ (Tangente Hyperbolique) et $sigmoid$ (Sigmoïde). Pour chaque couche de sortie, la fonction $Softmax$ à été appliquée car chaque couche traite d'un problème de classification multi-classes. Voici les équations pour chacune de ces fonctions :
+		\item \textbf{Fonctions d'activation} : 
+		C'est un élément essentiel qui permet d'introduire la non-linéarité dans les relations entre chaque neurones de couches voisines. Ces fonctions permettent de mieux représenter les seuils d'activation des neurones. La fonction la plus utilisée dans la littérature est actuellement ReLu (Rectified Linear Unit) car elle a expérimentalement donné de meilleurs résultats dans une grande variété de tâches et problèmes liés à l'apprentissage automatique et à la classification et étiquetage de textes. Par souci d'exhaustivité, nous avons quand même décidé de tester deux autres fonctions $tanh$ (Tangente Hyperbolique) et $sigmoid$ (Sigmoïde). Pour chaque couche de sortie, la fonction $Softmax$ a été appliquée car chaque couche traite d'un problème de classification multi-classes. Voici les équations pour chacune de ces fonctions :
 %		TODO equations for fucntions
 		\begin{equation*}
 			\tanh{x} = \frac{e^{x}-e^{-x}}{e^x+e^{-x}}
@@ -280,10 +280,10 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 		\item \textbf{Fonction d'apprentissage}:
 		Le choix de la fonction d'apprentissage est généralement affecté par un désir de précision et de rapidité. Une fonction qui converge rapidement en un minimum local peut être parfois préférée à une autre qui prendrait un temps considérable pour soit se retrouver dans le même minimum ou un autre minimum local (donc sans garantie de minimum optimal de la fonction erreur). Les deux fonctions utilisées sont RmsProp et Adam qui sont connues pour leur rapidité de convergence.
 		
-		\item \textbf{Encodage des entrée-sorties}:
-		Là encore le choix de l'encodage des données influe grandement sur la capacité du modèle à distinguer et à représenter les différentes informations qui lui sont présentées. Comme initiative de notre part, nous avons mentionné dans la section \ref{nlu_dataset} l'ajout de l'étiquette morphosyntaxique de chaque mot à l'encodage. Nous avons donc lancé les tests sur un encodage avec (respectivement sans) l'ajout des étiquettes pour mieux constater son impact.
+		\item \textbf{Encodage des entrée-sorties} :
+		Là encore le choix de l'encodage des données influe grandement sur la capacité du modèle à distinguer et à représenter les différentes informations qui lui sont présentées. Comme initiative de notre part, nous avons mentionné dans la section \ref{nlu_dataset} l'ajout de l'étiquette morphosyntaxique de chaque mot à l'encodage. Nous avons donc lancé les tests sur un encodage avec et sans l'ajout des étiquettes pour mieux constater son impact.
 		
-		\item \textbf{Découpage des données}
+		\item \textbf{Découpage des données} :
 		La stratégie adoptée était de prendre aléatoirement les même proportions pour chaque sous-ensemble de chaque classe (intentions ou entités de domaine). Nous avons aussi décidé de faire varier les proportions de test et d'apprentissage en fixant celui de validation car nous avons remarqué que notre modèle n'arrivait pas à bien généraliser la relation entre les entrées et les sorties. Notre intuition portait sur le fait que le manque de données pouvait en être la cause (voir la section \ref{nlu_dataset} pour plus de détails). Ainsi, nous avons varié le taux de découpage pour les données de tests entre $25\%$ et $75\%$ avec un pas de $25\%$. Le taux de découpage pour l'apprentissage est évidement de $(100\%-T_{test})*90\%$.
 		\par
 		Pour éviter que le modèle ne sur-apprenne, nous avons volontairement interchangé quelques mots dans la séquence d'entrée et celle de sortie pour introduire un certain taux d'erreur et de variété. Cet échange se fait suivant une probabilité $q$ fixée à $20\%$. Bien entendu, les étiquettes morphosyntaxiques ne sont pas échangées, et ce pour garder la structure de la phrase correcte.
@@ -310,7 +310,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 			\item $FN$ (Faux Négatifs) : nombre de cas où le modèle ne prédit pas correctement la classe comme étant négative.
 		\end{itemize}
 	
-		\item \textbf{F-Mesure} : Mesure qui combine (d'une point de vu ensembliste) la précision et le rappel. Elle ne privilégie aucune des deux et essaye de donner un aperçu plus global de l'efficacité de l'algorithme en prenant compte des résultats de ces deux mesures.
+		\item \textbf{F-Mesure} : Mesure qui combine (d'une point de vue ensembliste) la précision et le rappel. Elle ne privilégie aucune des deux et essaye de donner un aperçu plus global de l'efficacité de l'algorithme en prenant compte des résultats de ces deux mesures.
 		\begin{equation*}
 		F-Mesure = \frac{2*R*P}{R+P}
 		\end{equation*}
@@ -347,7 +347,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 	\end{table}
 	
 	\paragraph{}
-	Nous pouvons remarquer depuis le tableau \ref{tab:lstm_1} que pour un ensemble d'apprentissage assez réduit, le modèle arrive tout de même à bien classifier la majorité des intentions avec un rappel maximum de $97,43\%$. Cependant le slot-filling se révèle être une tâche plus ardue avec un rappel ne dépassant pas $92,30\%$. La meilleure combinaison qui équilibre les deux tâches utilise un petit nombre de neurones pour la classification d'intentions, mais en revanche demande une grande capacité de calcul pour la mémorisation des séquences en utilisant 512 unités dans les cellules LSTM.
+	Nous pouvons remarquer depuis le tableau \ref{tab:lstm_1} que pour un ensemble d'apprentissage assez réduit, le modèle arrive tout de même à bien classifier la majorité des intentions avec un rappel maximum de $97,43\%$. Cependant, le slot-filling se révèle être une tâche plus ardue avec un rappel ne dépassant pas $92,30\%$. La meilleure combinaison qui équilibre les deux tâches utilise un petit nombre de neurones pour la classification d'intentions, mais en revanche demande une grande capacité de calcul pour la mémorisation des séquences en utilisant 512 unités dans les cellules LSTM.
 	
 	% Please add the following required packages to your document preamble:
 	% \usepackage{graphicx}
@@ -601,7 +601,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 	Les tableaux \ref{tab:lstm_3} et \ref{tab:bilstm_3} démontrent que la taille des données d'apprentissage poussent vers de meilleurs résultats. Cela reste conforme à notre intuition théorique et encourage encore plus le développement d'un corpus plus volumineux pour l'obtention probable de meilleurs résultats.
 	
 	\paragraph{}
-	Pour mieux récapituler et visualiser les différences de qualité de prédictions des différent modèles, la figure \ref{compare} ci dessous est proposée.
+	Pour mieux récapituler et visualiser les différences de qualité de prédictions des différents modèles, la figure \ref{compare} ci dessous est proposée.
 	
 	\begin{figure}[H]
 		\centering
