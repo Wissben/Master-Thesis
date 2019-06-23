@@ -36,7 +36,7 @@ Comme montré dans la figure ~\ref{spaArch} et comme cité dans le chapitre pré
 Premier module du système Speech2Act, le module de reconnaissance automatique de la parole (Automatic Speech Recognition, ASR) joue un rôle clé dans le dialogue entre l'utilisateur et la machine. En effet, il doit être assez robuste et précis dans la transcription de la requête en entrée afin de minimiser les erreurs et les ambiguïtés qui peuvent survenir dans le reste du pipeline. Dans cette optique, nous avons décidé de ne pas développer entièrement un sous-système en partant de zéro; faute de temps et par soucis de précision nous avons opté pour l'exploitation d'un outil open-source nommé DeepSpeech \citep{deepspeech_paper}. Naturellement, du fait que ce soit un projet open-source nous, avons pu avoir accès à différentes informations concernant le modèle d'apprentissage, d'inférence et la nature des données utilisées pour l'apprentissage et les tests.
 	\subsection{Architecture du module ASR}
 	\paragraph{}
-	Le module ASR possède une architecture en pipeline dont chaque composant exécute un traitement sur la donnée reçu par son prédécesseur.
+	Le module ASR possède une architecture en pipeline dont chaque composant exécute un traitement sur la donnée reçue par son prédécesseur.
 	\begin{figure}[H] 
 		\centering
 		\includegraphics[width=0.88\linewidth]{images/Conception/ASR/schema.png}
@@ -105,7 +105,7 @@ Second module du système, le module de compréhension automatique du langage na
 	\subsection{Architecture du module}
 	\paragraph{}
 	\label{encoding}
-	Comme précédemment cité (voir la section \ref{system_layer}), le module NLU possède une architecture en pipeline qui reçoit en entrée le texte brut de la requête. Sa codification varie selon les approches que nous avons explorées et qui seront plus explicitées dans le chapitre suivant "Réalisation et résultats". Pour mieux capturer l'aspect sémantique des mots dans le texte, nous avons décidé d'utiliser le modèle Word2Vec pré-entraîné par Google (entraîné sur 100 milliard de mots) pour produire un vecteur de taille fixe pour chaque mot. Pour encoder l'information syntaxique de la requête, nous avons concaténé au vecteur de prolongement de chaque mot de la requête (Word Embedding Vector) le vecteur codifiant son étiquette morphosyntaxique. Après avoir codifié la séquence de mots, elle est envoyée aux modèles de classification d'intentions et d'extraction d'entités \footnote{Par entité, nous entendons les arguments de l'intention.}, qui sont en fait un seul modèle joint dont l'architecture est détaillée dans la section \ref{joint_model}. Ces deux informations sont ensuite décodées et passées au constructeur de trame sémantique qui structurera ces dernières en une seule entité sémantique. Un exemple d'une requête et sa trame sémantique associée est donné ci-dessous :
+	Comme précédemment cité (voir la section \ref{system_layer}), le module NLU possède une architecture en pipeline qui reçoit en entrée le texte brut de la requête. Sa codification varie selon les approches que nous avons explorées et qui seront plus explicitées dans le chapitre suivant "Réalisation et résultats". Pour mieux capturer l'aspect sémantique des mots dans le texte, nous avons décidé d'utiliser le modèle Word2Vec pré-entraîné par Google (entraîné sur 100 milliard de mots) pour produire un vecteur de taille fixe pour chaque mot. Pour encoder l'information syntaxique de la requête, nous avons concaténé au vecteur de prolongement de chaque mot de la requête (Word Embedding Vector) le vecteur codifiant son étiquette morphosyntaxique. Après avoir codifié la séquence de mots, elle est envoyée aux modèles de classification d'intentions et d'extraction d'entités \footnote{Par entités, nous entendons les arguments de l'intention.}, qui sont en fait un seul modèle joint dont l'architecture est détaillée dans la section \ref{joint_model}. Ces deux informations sont ensuite décodées et passées au constructeur de trame sémantique qui structurera ces dernières en une seule entité sémantique. Un exemple d'une requête et sa trame sémantique associée est donné ci-dessous :
 	\begin{figure}[H] 
 		\label{nlu_arch}
 		\centering
@@ -120,7 +120,7 @@ Second module du système, le module de compréhension automatique du langage na
 			{	
 				"name"	: "file_name",
 				"value"	: "test.py",
-				"end-start"	: [31,37]
+				"start-end"	: [31,37]
 			}
 		]
 	}
