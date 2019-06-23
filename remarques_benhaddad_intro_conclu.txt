@@ -2,7 +2,5 @@ Intro :
 	P-3 :	- Que voulez vous dire par transition ? 
 	P-3 :	- Je n'ai pas compris la remarque : on devrait voir ..., le but de ce paragraphe est de présenter
 		  rapidement la situation des SPAs.
-	P-3 :	- 'comment ?' j'ai changé la seconde motivation selon vos remarques lors de la séance de travail.
+	P-3 :	- Pour le 'comment ?' j'ai changé la seconde motivation selon vos remarques lors de la séance de travail.
 
-Conclusion :
-	P-1 :	-  
