@@ -1,0 +1,4 @@
+chapitre 3:
+    p14 architecture multi-agents hierarchique: c'est l'architecture qui est hierarchique dans ce cas.
+    p24 je n'ai pas compris le "?" en haut de la page
+    p29 de lui donner le répertoire parent d'un fichier nommé "travail": c'est un discours indirect, je mets quand même les guillemets?

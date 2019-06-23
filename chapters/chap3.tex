@@ -185,7 +185,7 @@ Comme nous l'avons déjà vu, l'architecture typique des gestionnaires de dialog
 \end{itemize}
 \subsubsection{État du dialogue}
 Avant de détailler les deux modules du gestionnaire, il est nécessaire d'introduire une représentation de l'état du dialogue. Classiquement, les trames sémantiques ont été utilisées dans ce but (voir \ref{trame}). Le suivi d'état se fait, dans ce cas, en gardant trace des emplacements remplis durant le dialogue.
-Nous avons opté pour une représentation plus riche par l'utilisation des graphes de connaissances, qui sont une forme de représentation où les connaissances sont décrites sous forme d'un graphe orienté étiqueté. Des travaux ont déjà utilisé ce type de connaissances \citep{Stoyanchev2018} et des ontologies \citep{Wessel2019} pour représenter l'état du système de dialogue. À partir de ce dernier une base de règles décide quelle action prendre directement du graphe. L'avantage d'utiliser des graphes de connaissances par rapport à l'utilisation des trames sémantiques apparaît dans leur flexibilité et leur dynamisme. En effet, pour une tâche comme la navigation dans les fichiers, l'état de l'arborescence des fichiers est sujet à des changements fréquents: ajout, suppression, modification, etc. Il est difficile de faire une représentation de l'information dans ce cas avec de simples emplacements à remplir.
+Nous avons opté pour une représentation plus riche par l'utilisation des graphes de connaissances, qui sont une forme de représentation où les connaissances sont décrites sous forme d'un graphe orienté étiqueté. Des travaux ont déjà utilisé ce type de connaissances \citep{Stoyanchev2018} et des ontologies \citep{Wessel2019} pour représenter l'état du système de dialogue. À partir de ce dernier, une base de règles décide quelle action prendre directement du graphe. L'avantage d'utiliser des graphes de connaissances par rapport à l'utilisation des trames sémantiques apparaît dans leur flexibilité et leur dynamisme. En effet, pour une tâche comme la navigation dans les fichiers, l'état de l'arborescence des fichiers est sujet à des changements fréquents: ajout, suppression, modification, etc. Il est difficile de faire une représentation de l'information dans ce cas avec de simples emplacements à remplir.
 \subsubsection{Suivi de l'état du dialogue}
 Le rôle du premier module du gestionnaire de dialogue est de mettre à jour l'état du système au cours du dialogue. Il reçoit l'action de l'utilisateur ou du gestionnaire et il produit un nouvel état. Dans notre cas, le module NLU produit toujours une trame sémantique contenant l'intention de l'utilisateur ainsi que ses paramètres. C'est alors le travail du traqueur d'état d'injecter le résultat du module NLU dans le graphe de connaissances. Ceci consiste à transformer la trame sémantique en un graphe qui est ensuite ajouté au graphe d'états. Plus de détails seront donnés dans la section \ref{onto} où nous construirons une ontologie pour définir un vocabulaire de dialogue et comment elle peut être utilisée pour passer du résultat du module NLU en un graphe de connaissances.
 \begin{figure}[H] 
@@ -338,9 +338,9 @@ En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir 
 D'où, les évènements considérés dans la fonction de récompense sont:
 \begin{itemize}
 	\item La réalisation d'un sous-but.
-	\item Le changement de similarité: c'est-à-dire soit l'améliorer ou la diminuer.
-	\item La réalisation but final.
-	\item Les échanges d'informations: Nous distinguons de ces échanges la confirmation d'une question de l'agent que nous allons détailler dans la suite.
+	\item Le changement de similarité: soit en l'améliorant ou en la diminuant.
+	\item La réalisation du but final.
+	\item Les échanges d'informations: Nous distinguons de ces échanges la confirmation d'une question de l'agent qui sera traitée séparément.
 \end{itemize}
 Le tableau \ref{table_reward} associe les changements avec leurs récompenses:
 \begin{table}[H]
@@ -399,8 +399,8 @@ Ces méthodes nécessitent tout le graphe pour l'encoder. Cependant, dans notre 
 	\caption{Schéma représentant un encodeur séquentiel de graphe}\label{encoder_seq}
 	
 \end{figure}
-Comme le montre la figure \ref{encoder_seq}, lorsque un sous-graphe arrive, celui-ci est décomposé en triplets. Ensuite, chaque triplet est encodé séquentiellement dans le vecteur d'état précédent qui encode déjà l'ancien état du graphe. Le résultat sera un vecteur d'état encodant la totalité du nouveau graphe.
-\par Pour faire l'apprentissage de cette architecture, il est possible de générer des graphes aléatoirement qu'on fait passer triplet par triplet par l'encodeur. Celui-ci est un RNN qui prend en entrée l'état précédent du réseau et un triplet du graphe et qui produit en sortie un nouvel état. L'état final du RNN, après avoir fait passer tous les triplets du graphe, est utilisé dans le décodeur qui est un autre RNN. Ce dernier essaye de reconstruire le graphe triplet par triplet à partir de l'état reçu comme sortie de l'encodeur. Ainsi, si on peut reconstruire le graphe, on peut dire que le dernier état encode tout le graphe dans un vecteur de taille fixe. La figure \ref{encoder_seq_train} illustre un exemple de l'entrée et la sortie de l'apprentissage de cette architecture.
+Comme le montre la figure \ref{encoder_seq}, lorsqu'un sous-graphe arrive, celui-ci est décomposé en triplets. Ensuite, chaque triplet est encodé séquentiellement dans le vecteur d'état précédent qui encode déjà l'ancien état du graphe. Le résultat sera un vecteur d'état encodant la totalité du nouveau graphe.
+\par Pour faire l'apprentissage de cette architecture, il est possible de générer des graphes aléatoirement qu'on fait passer triplet par triplet par l'encodeur. Celui-ci est un RNN qui prend en entrée l'état précédent du réseau et un triplet du graphe et qui produit en sortie un nouvel état. L'état final du RNN, après avoir fait passer tous les triplets du graphe, est utilisé dans le décodeur qui est un autre RNN. Ce dernier essaye de reconstruire le graphe triplet par triplet à partir de l'état reçu comme sortie de l'encodeur. Ainsi, si on peut reconstruire le graphe, on peut dire que le dernier état encode tout le graphe dans un vecteur de taille fixe. La figure \ref{encoder_seq_train} illustre un exemple des entrées/sorties de l'apprentissage en utilisant  cette architecture.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.9\linewidth]{images/Conception/DM/encoder_seq_train.png}
@@ -429,9 +429,9 @@ L'algorithme utilisé pour l'apprentissage par renforcement est double DQN en re
 	On remarque la récurrence dans cette formule qui nécessite la réutilisation du réseau pour estimer le terme $max_j (Q(s',a_j))$. Il a été démontré que l'utilisation d'un autre réseau qu'on fixe lors de l'apprentissage pour choisir l'action de la récompense dans le terme $max_j (Q(s',a_j))$ améliore les résultats \citep{Mnih2015}. La formule qui calcule la valeur cible du réseau de neurones au i\textsuperscript{ème} apprentissage est donc: 
 	\[y_i = r + \alpha \times Q_i(s',argmax_{a_j}(Q_{i-1}(s',a_j)))\]
 	Avec $Q_i$ et $Q_{i-1}$: les fonctions de récompense données par les réseaux de neurones pendant le i\textsuperscript{ème} apprentissage et avant le début du i\textsuperscript{ème} apprentissage respectivement.
-	\par Cette valeur $y_i$ est donc utilisée comme cible du réseau DQN et permet de calculer l'erreur moyenne quadratique par rapport à sa prédiction.
+	\par Cette valeur $y_i$ est donc utilisée comme cible du réseau DQN et permet de calculer l'erreur moyenne quadratique par rapport à la prédiction du réseau.
 	 \[E = (y_i - Q_i(s,a))^2\]
-	 Ensuite l'algorithme de retro-propagation est appliqué pour mettre à jour les poids du réseau de neurones.
+	 Ensuite, l'algorithme de retro-propagation est appliqué pour mettre à jour les poids du réseau de neurones.
 \end{itemize}
 Une autre architecture possible serait de relier l'encodeur de graphe directement avec le réseau DQN pendant l'apprentissage. Ainsi, l'erreur de l'apprentissage pour l'encodeur est calculée à partir de la fonction de récompense de l'apprentissage par renforcement. L'avantage de relier l'encodeur avec le réseau DQN est de permettre à l'encodeur de contrôler quelle partie du graphe encodé est à oublier. En effet, la taille fixe du vecteur dont on encode le graphe a une limite de nombre de triplets supportable. L'utilisation des cellules de réseaux de neurones récurrents comme les LSTMs ou GRUs qui ont des portes d'oubli rend cette architecture possible. En effet, ce type de RNNs ont la possibilité de garder en mémoire (leur état) des informations qu'ils ont reçues au début de la séquence de données en sacrifiant d'autres plus récentes. En d'autres termes, ils peuvent choisir quelles sont les informations à garder dont le DQN aura besoin pour estimer la fonction de récompense.
 \begin{figure}[H] 
