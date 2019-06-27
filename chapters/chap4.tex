@@ -4,7 +4,7 @@
 \paragraph{}Nous commençons par décrire l'environnement de travail. Nous détaillerons par la suite les aspects de l'implémentation des différents modules de notre application qui seront évalués et analysés. Pour clôturer avec une application d'un assistant personnel pour la manipulation de fichiers. 
 
 \section{Environnement de développement}
-Dans cette section, nous allons présenter les différents outils (logiciels et matériels) qui ont été utilisés pour l'implémentation de Speech2Act.
+Dans cette section, nous allons présenter les différents outils (logiciels et matériels) qui ont été utilisés pour l'implémentation de Speact.
 	\subsection{Machines utilisées}
 	\paragraph{}
 	Principalement, le développement se divise en deux parties : 
@@ -100,7 +100,7 @@ Dans cette section, nous allons présenter les différents outils (logiciels et 
 		
 \section{Reconnaissance automatique de la parole}
 \paragraph{}
-Pour ce premier module, il a été très difficile d'effectuer les tests idéaux. En effet, nous n'avons pas pu trouver un ensemble de données qui proposait du contenu en rapport avec Speech2Act. Cependant, puisque nous avons pu construire un mini-ensemble pour tester l'apport de notre modèle de langue. Les résultats ne doivent pas être pris comme une référence absolue, mais plutôt comme une indication pour de possibles futurs tests.
+Pour ce premier module, il a été très difficile d'effectuer les tests idéaux. En effet, nous n'avons pas pu trouver un ensemble de données qui proposait du contenu en rapport avec Speact. Cependant, puisque nous avons pu construire un mini-ensemble pour tester l'apport de notre modèle de langue. Les résultats ne doivent pas être pris comme une référence absolue, mais plutôt comme une indication pour de possibles futurs tests.
 	\subsection{Ensemble de test}
 	\paragraph{}
 	Pour tester le modèle acoustique, les données récoltées à travers le projet CommonVoice (voir la section \ref{common_voice}) constituent un assez bon échantillon, de par la nature des enregistrements (sur téléphone portable, par plusieurs genres et accents de locuteurs ...), mais aussi de par le volume (environs 500 heures d'enregistrements audios). Nous avons toutefois décidé de construire un mini-ensemble de test d'environ 204 enregistrements audios d'une longueur moyenne de 5 secondes chacun. Ces échantillons ont été prélevés sur trois locuteurs masculins. $20\%$ de ces échantillons ont été prélevés dans un environnement fermé mais bruité (il s'agit d'un espace de travail pour étudiants) et sur téléphone. Le reste a été prélevé dans un environnement fermé avec peu de bruit à partir du micro d'un ordinateur portable. Chaque enregistrement est soit : 
@@ -178,7 +178,7 @@ Pour ce premier module, il a été très difficile d'effectuer les tests idéaux
 Pour ce module, une approche assez classique a été utilisée et l'ensemble de test est extrait de l'ensemble d'apprentissage (plus de détails dans la section suivante ). Les métriques d'évaluation utilisées sont mentionnées dans la sous section \ref{nlu_steps}. Nous commençons d'abord par détailler le contenu de l'ensemble de tests. Puis, nous présenterons la méthodologie suivie pour la réalisation de ces tests. Un tableau récapitulatif sera présenté avant la fin pour illustrer les différents résultats.
 	\subsection{Ensemble de test}
 	\paragraph{}
-	Comme mentionné dans le chapitre précédent (voir la section \ref{nlu_dataset}), nous avons nous mêmes construit un ensemble d'apprentissage relativement varié. Il regroupe pour le moment essentiellement des commandes, ou requêtes liées à l'exploration de fichiers car c'est la tâche rudimentaire que Speech2Act peut accomplir.
+	Comme mentionné dans le chapitre précédent (voir la section \ref{nlu_dataset}), nous avons nous mêmes construit un ensemble d'apprentissage relativement varié. Il regroupe pour le moment essentiellement des commandes, ou requêtes liées à l'exploration de fichiers car c'est la tâche rudimentaire que Speact peut accomplir.
 	\par
 	L'ensemble de test est dérivé de celui d'apprentissage selon une politique de découpage basée sur le taux de présence d'un intent (intention). Comme illustré dans la figure ~\ref{fig:split}, un pourcentage de chaque groupe d'instances affilié à la même classe est utilisé à la fois pour la validation et pour le test. Ce choix est motivé par le fait que les proportions des distributions des intentions dans l'ensemble original sont non-équilibrées.
 	
@@ -801,12 +801,12 @@ Les temps des échanges avec le simulateur des deux approches sont proches puisq
 \paragraph{}Nous remarquons que la deuxième méthode arrive beaucoup plus rapidement à comprendre la fonction de récompense. Il s'avère donc que déconnecter le DQN de l'encodeur rend effectivement la tâche de trouver la relation entre les motifs des vecteurs d'états et les récompenses plus difficile.\\[6pt]
 L'apprentissage peut être amélioré dans les deux cas, et surtout en ce qui concerne le premier, en utilisant un meilleur encodage des n\oe{}uds et des arcs du graphe. En effet, les n\oe{}uds sont actuellement encodés avec des identifiants entiers seulement, perdant ainsi les riches connaissances sémantiques qu'on peut extraire des relations du graphe. Un meilleur encodage serait d'utiliser des méthodes d'apprentissage semi-supervisé qui permettraient de donner aux n\oe{}uds proches un encodage similaire. Cette méthode permet d'éviter quelques problèmes que nous avons cités dans \ref{success_rate}, entre autres le problème d'encoder deux états lointains dans des vecteurs proches.
 
-\section{Application Speech2Act}
-\paragraph{}L'application Speech2Act relie les modules que nous avons implémentés dans un assistant qui aide à manipuler les fichiers de l'ordinateur avec la voix. Le schéma \ref{schema_app} montre les différentes parties que comporte l'application et les communications entre elles.
+\section{Application Speact}
+\paragraph{}L'application Speact relie les modules que nous avons implémentés dans un assistant qui aide à manipuler les fichiers de l'ordinateur avec la voix. Le schéma \ref{schema_app} montre les différentes parties que comporte l'application et les communications entre elles.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Realisation/schema_app.png}
-	\caption{Schéma général de l'application Speech2Act}\label{schema_app}
+	\caption{Schéma général de l'application Speact}\label{schema_app}
 \end{figure}
 \par L'application contient principalement deux parties: une partie frontend, avec laquelle l'utilisateur interagit, et une partie backend qui contient tous les modules que nous avons traités au cours de ce travail. Cette dernière partie se trouve dans un serveur qui répond aux requêtes de l'utilisateur. Les requêtes de l'utilisateur contiennent les données audio collectées par l'interface ainsi que les données du système sur lesquelles l'assistant peut agir. Quant-à la réponse du backend, elle est sous forme d'une action qui peut être exécutée par le côté client de l'application. Nous n'avons cependant pas encore traité les cas de permissions et les limites de ce que peut manipuler l'assistant. Néanmoins, nous avons limité l'espace des actions de l'assistant pour qu'il ne puisse agir que sur une arborescence de fichier test.
 \subsection{Backend}
@@ -828,7 +828,7 @@ Pour la réalisation de l'interface de l'application, nous avons opté pour une 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{images/implementation/app_screens/main.png} 
-	\caption{Interface principale de Speech2Act}
+	\caption{Interface principale de Speact}
 \end{figure} 
 
 \par 
@@ -845,14 +845,14 @@ L'application se compose de quatre parties disposées sur une seule page web dyn
 		\caption{Fenêtre d'affichage de l'arborescence virtuelle}
 	\end{figure} 
 	
-	\item \textbf{Champ de dialogue} : C'est là que vont résider toutes les informations sur le dialogue tout au long du cycle de vie de l'application. Il est mis à jour à chaque échange entre l'utilisateur et l'assistant Speech2Act. Il permet ainsi de garder trace de tous les échanges effectués et pouvoir à tout moment vérifier ou réutiliser des messages.
+	\item \textbf{Champ de dialogue} : C'est là que vont résider toutes les informations sur le dialogue tout au long du cycle de vie de l'application. Il est mis à jour à chaque échange entre l'utilisateur et l'assistant Speact. Il permet ainsi de garder trace de tous les échanges effectués et pouvoir à tout moment vérifier ou réutiliser des messages.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=.6\linewidth]{images/implementation/app_screens/dialog.png}
 		\caption{Fenêtre de dialogue avec l'assistant}
 	\end{figure} 
 	
-	\item \textbf{Fenêtre de Débogage} : C'est une option réservée aux développeurs pour faciliter les tests durant le développement. Toute réponse du serveur peut y être affichée pour peu qu'elle soit au format JSON sous la forme d'une réponse à une requête RESTFul. Pour le moment, il y est affiché l'intention de l'utilisateur avec son degré de confiance généré par Speech2Act, ainsi que les arguments de la requête (nom, type, positions ...).
+	\item \textbf{Fenêtre de Débogage} : C'est une option réservée aux développeurs pour faciliter les tests durant le développement. Toute réponse du serveur peut y être affichée pour peu qu'elle soit au format JSON sous la forme d'une réponse à une requête RESTFul. Pour le moment, il y est affiché l'intention de l'utilisateur avec son degré de confiance généré par Speact, ainsi que les arguments de la requête (nom, type, positions ...).
 	
 	\begin{figure}[H]
 		\centering
@@ -863,4 +863,4 @@ L'application se compose de quatre parties disposées sur une seule page web dyn
 \end{itemize}
 \section{Conclusion}
 \paragraph{}
-Au terme de ce chapitre, nous avons pu apprécier les fruits d'un long travail de conception. L'implémentation de certaines fonctionnalités a permis de mieux apprécier la complexité de la tâche qu'est le développement de Speech2Act. Chaque module a été soumis à une série de tests pour déterminer ses forces, faiblesses et limites. Une rapide analyse stipulant que pour un manque de données flagrant et un manque de ressources frustrant, Speech2Act a pu effectuer des petites tâches rudimentaires de manipulation du bureau sur un ordinateur et délivrer une mini-expérience de ce que peut être un véritable assistant virtuel intelligent.
+Au terme de ce chapitre, nous avons pu apprécier les fruits d'un long travail de conception. L'implémentation de certaines fonctionnalités a permis de mieux apprécier la complexité de la tâche qu'est le développement de Speact. Chaque module a été soumis à une série de tests pour déterminer ses forces, faiblesses et limites. Une rapide analyse stipulant que pour un manque de données flagrant et un manque de ressources frustrant, Speact a pu effectuer des petites tâches rudimentaires de manipulation du bureau sur un ordinateur et délivrer une mini-expérience de ce que peut être un véritable assistant virtuel intelligent.

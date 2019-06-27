@@ -7,12 +7,12 @@ Dans ce chapitre, nous allons présenter en détail les étapes de conception de
 \section{Architecture du système}
 %Try to be as precise as possible while letting room for more details to the next sections
 \paragraph{}
-Comme montré dans la figure ~\ref{spaArch} et comme cité dans le chapitre précédent (voir \ref{spaSchemSection}) le système Speech2Act se présente comme l'interconnexion de cinq parties dont une interface \footnote{Par interface nous entendons le sens abstrait du terme et non obligatoirement le sens interface graphique.} et quatre modules internes communiquant entre eux. Chaque module forme ainsi un maillon d'une chaîne qui représente une partie du cycle de vie du système. L'architecture de Speech2Act est un pipeline (chaîne de traitement) de processus qui s'exécutent de manière indépendante mais qui font circuler un flux de données entre eux dans un format préalablement établi (voir ~\ref{fig:spaDiagram}). Nous pouvons séparer ces parties en deux catégories : la partie utilisateur et la partie interne du système que nous présentons ci-dessous.
+Comme montré dans la figure ~\ref{spaArch} et comme cité dans le chapitre précédent (voir \ref{spaSchemSection}) le système Speact se présente comme l'interconnexion de cinq parties dont une interface \footnote{Par interface nous entendons le sens abstrait du terme et non obligatoirement le sens interface graphique.} et quatre modules internes communiquant entre eux. Chaque module forme ainsi un maillon d'une chaîne qui représente une partie du cycle de vie du système. L'architecture de Speact est un pipeline (chaîne de traitement) de processus qui s'exécutent de manière indépendante mais qui font circuler un flux de données entre eux dans un format préalablement établi (voir ~\ref{fig:spaDiagram}). Nous pouvons séparer ces parties en deux catégories : la partie utilisateur et la partie interne du système que nous présentons ci-dessous.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{images/SPA_architecture.png}
-	\caption{Architecture générale du système Speech2Act}
+	\caption{Architecture générale du système Speact}
 	\label{spaArch}
 \end{figure}
 
@@ -33,7 +33,7 @@ Comme montré dans la figure ~\ref{spaArch} et comme cité dans le chapitre pré
 \section{Module de reconnaissance automatique de la parole}
 \paragraph{}
 \label{asr_probs}
-Premier module du système Speech2Act, le module de reconnaissance automatique de la parole (Automatic Speech Recognition, ASR) joue un rôle clé dans le dialogue entre l'utilisateur et la machine. En effet, il doit être assez robuste et précis dans la transcription de la requête en entrée afin de minimiser les erreurs et les ambiguïtés qui peuvent survenir dans le reste du pipeline. Dans cette optique, nous avons décidé de ne pas développer entièrement un sous-système en partant de zéro; faute de temps et par soucis de précision nous avons opté pour l'exploitation d'un outil open-source nommé DeepSpeech \citep{deepspeech_paper}. Naturellement, du fait que ce soit un projet open-source nous, avons pu avoir accès à différentes informations concernant le modèle d'apprentissage, d'inférence et la nature des données utilisées pour l'apprentissage et les tests.
+Premier module du système Speact, le module de reconnaissance automatique de la parole (Automatic Speech Recognition, ASR) joue un rôle clé dans le dialogue entre l'utilisateur et la machine. En effet, il doit être assez robuste et précis dans la transcription de la requête en entrée afin de minimiser les erreurs et les ambiguïtés qui peuvent survenir dans le reste du pipeline. Dans cette optique, nous avons décidé de ne pas développer entièrement un sous-système en partant de zéro; faute de temps et par soucis de précision nous avons opté pour l'exploitation d'un outil open-source nommé DeepSpeech \citep{deepspeech_paper}. Naturellement, du fait que ce soit un projet open-source nous, avons pu avoir accès à différentes informations concernant le modèle d'apprentissage, d'inférence et la nature des données utilisées pour l'apprentissage et les tests.
 	\subsection{Architecture du module ASR}
 	\paragraph{}
 	Le module ASR possède une architecture en pipeline dont chaque composant exécute un traitement sur la donnée reçue par son prédécesseur.
