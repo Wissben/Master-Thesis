@@ -49,6 +49,7 @@
 \usepackage{listings}
 \usepackage{lstautogobble}
 \usepackage{color}
+\usepackage{arabluatex}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -83,9 +84,6 @@
 	% also try caption instead of title  
 	commentstyle=\color{gray}\upshape
 }
-
-
-\usepackage{bera}% optional: just to have a nice mono-spaced font
 
 
 \colorlet{punct}{red!60!black}
@@ -188,7 +186,6 @@
 }
 
 \makeatletter
-\renewcommand{\@chapapp}{}% Not necessary...
 \newenvironment{chapquote}[2][2em]
 {\setlength{\@tempdima}{#1}%
 	\def\chapquote@author{#2}%
@@ -197,8 +194,10 @@
 {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
 \makeatother
 
+\usepackage{bera}
 \begin{document}
 
+<<<<<<< HEAD
 %\tableofcontents
 %\bibliographystyle{plain}
 \bibliographystyle{apalike}
@@ -217,7 +216,55 @@
 
 %%\input{chapters/chap4.tex}
 %\input{other/conclusion.tex}
-\listoffigures
+=======
+\pagenumbering{gobble}
+\renewcommand{\contentsname}{Sommaire}
+\tableofcontents
+\clearpage
 
+>>>>>>> bae42ac859772af9fc8c06442e36f43b436ebf5b
+\listoffigures
+\clearpage
+
+\listoftables
+\clearpage
+
+
+%%% NO-plagiat declaration %%%
+\newpage    
+\input{other/no-plagiat.tex}
+
+\input{other/thanks.tex}
+
+\input{other/dedic_wiss.tex}
+\input{other/dedic_yasser.tex}
+
+\newpage
+\input{other/abstract.tex}
+
+%%% Chapters %%%
+
+\pagenumbering{arabic} 
+\input{other/intro.tex}
+
+\newpage
+\input{chapters/chap1.tex}
+
+\newpage
+\input{chapters/chap2.tex}
+
+\newpage
+\input{chapters/chap3.tex}
+
+\newpage
+\input{chapters/chap4.tex}
+
+\newpage
+\input{other/conclusion.tex}
+
+\newpage
+\pagenumbering{gobble} 
+\bibliographystyle{apalike} 
 \bibliography{ref}
+
 \end{document}}

@@ -1,6 +1,8 @@
 Intro :
 	P-3 :	- Que voulez vous dire par transition ? 
+		- ajouter SPA to domain
 	P-3 :	- Je n'ai pas compris la remarque : on devrait voir ..., le but de ce paragraphe est de présenter
 		  rapidement la situation des SPAs.
+		 add refs to machine learning for popular SPAs²
 	P-3 :	- Pour le 'comment ?' j'ai changé la seconde motivation selon vos remarques lors de la séance de travail.
-
+		 remove the part about other algerians, add something like : Nous ésperons ..etc
