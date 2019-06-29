@@ -7,9 +7,9 @@ Dans ce chapitre, nous allons présenter en détail les étapes de conception de
 \section{Architecture du système}
 %Try to be as precise as possible while letting room for more details to the next sections
 \paragraph{}
-Comme montré dans la figure ~\ref{spaArch} et comme cité dans le chapitre précédent (voir \ref{spaSchemSection}) le système Speact se présente comme l'interconnexion de cinq parties dont une interface \footnote{Par interface nous entendons le sens abstrait du terme et non obligatoirement le sens interface graphique.} et quatre modules internes communiquant entre eux. Chaque module forme ainsi un maillon d'une chaîne qui représente une partie du cycle de vie du système. L'architecture de Speact est un pipeline (chaîne de traitement) de processus qui s'exécutent de manière indépendante mais qui font circuler un flux de données entre eux dans un format préalablement établi (voir ~\ref{fig:spaDiagram}). Nous pouvons séparer ces parties en deux catégories : la partie utilisateur et la partie interne du système que nous présentons ci-dessous.
+Comme montré dans la figure ~\ref{spaArch} et comme cité dans le chapitre précédent (voir \ref{spaSchemSection}) le système Speact se présente comme l'interconnexion de cinq parties dont une interface \footnote{Par interface nous entendons le sens abstrait du terme et non obligatoirement le sens interface graphique.} et quatre modules internes communiquant entre eux. Chaque module forme ainsi un maillon d'une chaîne qui représente une partie du cycle de vie du système. L'architecture de Speact est un pipeline (chaîne de traitement) de processus qui s'exécutent de manière indépendante mais qui font circuler un flux de données entre eux dans un format préalablement établi (voir ~\ref{fig:spaDiagram}). Nous pouvons séparer ces parties en deux catégories : la partie utilisateur et la partie interne du système que nous présentons dans la figure \ref{spaArch}.
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\linewidth]{images/SPA_architecture.png}
 	\caption{Architecture générale du système Speact}
@@ -36,23 +36,24 @@ Comme montré dans la figure ~\ref{spaArch} et comme cité dans le chapitre pré
 Premier module du système Speact, le module de reconnaissance automatique de la parole (Automatic Speech Recognition, ASR) joue un rôle clé dans le dialogue entre l'utilisateur et la machine. En effet, il doit être assez robuste et précis dans la transcription de la requête en entrée afin de minimiser les erreurs et les ambiguïtés qui peuvent survenir dans le reste du pipeline. Dans cette optique, nous avons décidé de ne pas développer entièrement un sous-système en partant de zéro; faute de temps et par soucis de précision nous avons opté pour l'exploitation d'un outil open-source nommé DeepSpeech \citep{deepspeech_paper}. Naturellement, du fait que ce soit un projet open-source nous, avons pu avoir accès à différentes informations concernant le modèle d'apprentissage, d'inférence et la nature des données utilisées pour l'apprentissage et les tests.
 	\subsection{Architecture du module ASR}
 	\paragraph{}
-	Le module ASR possède une architecture en pipeline dont chaque composant exécute un traitement sur la donnée reçue par son prédécesseur.
-	\begin{figure}[H] 
+	Comme illustré par la figure \ref{fig:asr}, le module ASR possède une architecture en pipeline dont chaque composant exécute un traitement sur la donnée reçue par son prédécesseur.
+	\begin{figure}[h] 
 		\centering
-		\includegraphics[width=0.88\linewidth]{images/Conception/ASR/schema.png}
+		\includegraphics[width=0.75\linewidth]{images/Conception/ASR/schema.png}
 		\caption{Architecture du module de reconnaissance de la parole (ASR)}
+		\label{fig:asr}
 	\end{figure}
 
 	\subsection{Modèle acoustique}
 		\subsubsection*{Type du modèle}
 		\paragraph{}
-		Le modèle d'apprentissage, qui est principalement le modèle acoustique à l'exception d'une partie consacré au modèle linguistique, possède une architecture en réseau de neurones avec apprentissage de bout-en-bout composé de trois parties : 
+		Le modèle d'apprentissage, qui est principalement le modèle acoustique à l'exception d'une partie consacrée au modèle linguistique, possède une architecture en réseau de neurones avec apprentissage de bout-en-bout composé de trois parties : 
 		\begin{itemize}
 			\item Deux couches de convolution spatiale : pour capturer les patrons dans la séquence du spectrogramme du signal audio.
 			\item Sept couches de récurrence, réseaux de neurones récurrents, pour analyser la séquence de patrons ou caractéristiques engendrée par les couches de convolutions. 
 			\item Une couche de prédiction utilisant un réseau de neurones complètement connecté pour prédire le caractère correspondant à la fenêtre d'observation du spectrogramme du signal audio. La fonction d'erreur prend en compte la similarité du caractère produit avec le véritable caractère ainsi que la vraisemblance de la séquence produite par rapport à un modèle de langue basé sur les N-grammes.
 		\end{itemize}
-		\begin{figure}[H] 
+		\begin{figure}[h] 
 			\centering
 			\includegraphics[width=0.88\linewidth]{images/Conception/ASR/deeps_speech_arch.png}
 			\caption{Architecture du modèle DeepSpeech \citep{deepspeech_paper}}
@@ -74,12 +75,7 @@ Premier module du système Speact, le module de reconnaissance automatique de la
 		\subsubsection*{Données d'apprentissage}
 		\paragraph{}
 		À l'origine, DeepSpeech utilise un modèle de langue dont la source n'est pas dévoilée par les chercheurs dans \citep{deepspeech_paper}. Mais, son volume est approximativement de 220 millions de phrases avec 495 000 mots différents. Cependant, puisque ce corpus nous reste inconnu et qu'il a probablement été construit pour reconnaître des séquence de mots en anglais assez générales, nous avons décidé de construire notre propre modèle de langue en récoltant des données depuis des dépôts sur le site \href{https://github.com/}{Github}, plus précisément les fichiers README.md des dépôts qui font office de manuels d'utilisation d'un projet hébergé sur le site. Ce type de fichiers renferme généralement des instructions de manipulation de fichiers, de lancement de commandes, etc; ce qui offre un bon corpus pour le modèle de langue. En effet, notre système se concentre plus sur l'aspect de manipulation d'un ordinateur, donc la probabilité de trouver certaines séquences de mots qui appartiennent au domaine technique	 est en théorie plus élevée. La procédure suivie est la suivante : 
-		\begin{figure}[H] 
-			\label{fig:lm_gathering}
-			\centering
-			\includegraphics[width=0.88\linewidth]{images/Conception/ASR/lm_gathering.png}
-			\caption{Processus de génération du corpus pour le modèle de langue}
-		\end{figure}
+		
 		\begin{itemize}
 			\item L'acquisition des données dans leur format brut \textbf{.md} (markdown) se fait de deux manières :
 			\begin{itemize}
@@ -97,21 +93,26 @@ Premier module du système Speact, le module de reconnaissance automatique de la
 			...\end{lstlisting}
 		\end{itemize}
 	
-
+	\begin{figure}[H] 
+		\label{fig:lm_gathering}
+		\centering
+		\includegraphics[width=0.88\linewidth]{images/Conception/ASR/lm_gathering.png}
+		\caption{Processus de génération du corpus pour le modèle de langue}
+	\end{figure}
 \section{Module de compréhension automatique du langage naturel}
 \paragraph{}
 Second module du système, le module de compréhension automatique du langage naturel (Natural Langage Understanding, NLU) dont le rôle est de faire office de couche d'abstraction entre la requête de l'utilisateur, formulée en un langage naturel, et le fonctionnement interne du système qui communique à travers un langage plus formel. On parle ici de la construction d'une représentation sémantique de la requête. Pour ce faire nous avons opté pour l'approche par apprentissage automatique, compte tenu des bons résultats obtenus par certaines architectures \citep{intent_slots,intent_classification} et cela malgré le petit volume des données d'apprentissage. Cette option nous a paru plus abordable que la construction d'un analyseur basé règles, souvent assez rigide et dont l'exhaustivité n'est pas évidente à obtenir.
-\newpage
 	\subsection{Architecture du module}
 	\paragraph{}
 	\label{encoding}
 	Comme précédemment cité (voir la section \ref{system_layer}), le module NLU possède une architecture en pipeline qui reçoit en entrée le texte brut de la requête. Sa codification varie selon les approches que nous avons explorées et qui seront plus explicitées dans le chapitre suivant "Réalisation et résultats". Pour mieux capturer l'aspect sémantique des mots dans le texte, nous avons décidé d'utiliser le modèle Word2Vec pré-entraîné par Google (entraîné sur 100 milliard de mots) pour produire un vecteur de taille fixe pour chaque mot. Pour encoder l'information syntaxique de la requête, nous avons concaténé au vecteur de prolongement de chaque mot de la requête (Word Embedding Vector) le vecteur codifiant son étiquette morphosyntaxique. Après avoir codifié la séquence de mots, elle est envoyée aux modèles de classification d'intentions et d'extraction d'entités \footnote{Par entités, nous entendons les arguments de l'intention.}, qui sont en fait un seul modèle joint dont l'architecture est détaillée dans la section \ref{joint_model}. Ces deux informations sont ensuite décodées et passées au constructeur de trame sémantique qui structurera ces dernières en une seule entité sémantique. Un exemple d'une requête et sa trame sémantique associée est donné ci-dessous :
-	\begin{figure}[H] 
+	\begin{figure}[h] 
 		\label{nlu_arch}
 		\centering
 		\includegraphics[width=0.88\linewidth]{images/Conception/NLU/nlu_module_arch.png}
 		\caption{Architecture du module de compréhension automatique du langage naturel (NLU)}
 	\end{figure}
+\newpage
 	\begin{lstlisting}[language=json]
 	{	
 		"query"	: "could you please open the file test.py",
@@ -133,7 +134,7 @@ Second module du système, le module de compréhension automatique du langage na
 		\item \textbf{Partie arguments} : aussi appelés "entités du domaine". Ces arguments sont extraits du texte de la requête. L'entrée $entities$ contient une liste d'arguments, où chaque élément de la liste renseigne sur le nom, la valeur et l'emplacement d'une entité.
 	\end{itemize}
 %	\subsection{Analyse sémantique basée sur les grammaires de dépendances}
-	\subsection{Modèle(s) utilisé(s)}
+	\subsection{Modèle utilisé}
 		\paragraph{}\label{joint_model}
 		Comme vu dans le chapitre précédent (voir la section \ref{nlu_chap2}), l'architecture adoptée est une architecture mono-entrée/multi-sorties dont l'entrée est une séquence de mots codifiés et les sorties sont une séquence d'étiquettes ainsi qu'une classe associée au texte. Nous pouvons distinguer les deux parties qui sont l'encodage et le décodage de la séquence. 
 		\par L'encodage sert à la fois à l'attribution de la classe (l'intention) et à l'initialisation de la séquence de décodage (pour l'attribution d'une étiquette à chaque mot).

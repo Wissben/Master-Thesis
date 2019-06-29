@@ -433,7 +433,9 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 	\paragraph{}
 	Quant-aux deux tableaux \ref{tab:lstm_1_postag} et \ref{tab:bilstm_1_postag}, ils montrent que l'ajout de l'étiquette morphosyntaxique a amélioré les résultats pour cas de l'utilisation d'une cellule LSTM simple tout en réduisant le nombre d'unités requises, moins de calculs et plus d'efficacité. Cela se confirme encore plus pour le cas de l'utilisation de l'architecture BiLSTM, en réduisant de presque la moitié la puissance de calcul nécessaire et en augmentant un tout petit peu la qualité des prédictions.
 	
-	
+		
+	\paragraph{}
+	D'après les résultats des tableaux \ref{tab:lstm_2} et \ref{tab:bilstm_2}, le choix de l'architecture BiLSTM à amélioré la qualité des classifications, même si ce n'est que d'un petit taux. Ces tableaux semblent aussi montrer que notre intuition sur la faible quantité de données que nous possédions soit fondée. Les scores de F-Mesure tendent en moyenne à augmenter avec l'injection de nouvelles données d'apprentissage.
 	
 	
 %	----------------------------------------------------------------------- %
@@ -490,9 +492,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 		\label{tab:bilstm_2}
 	\end{table}
 	
-	
-	\paragraph{}
-	D'après les résultats des tableaux \ref{tab:lstm_2} et \ref{tab:bilstm_2}, le choix de l'architecture BiLSTM à amélioré la qualité des classifications, même si ce n'est que d'un petit taux. Ces tableaux semblent aussi montrer que notre intuition sur la faible quantité de données que nous possédions soit fondée. Les scores de F-Mesure tendent en moyenne à augmenter avec l'injection de nouvelles données d'apprentissage.
+
 	
 	\begin{table}[H]
 		\centering
@@ -572,7 +572,8 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 		\caption{Résultats des tests pour un encodage sans étiquetage morphosyntaxique avec des cellules LSTM avec découpage Apprentissage : 75\%, Validation : 10\%, Test : 25\%.}
 		\label{tab:lstm_3}
 	\end{table}
-	
+\paragraph{}
+Les tableaux \ref{tab:lstm_3} et \ref{tab:bilstm_3} démontrent que la taille des données d'apprentissage poussent vers de meilleurs résultats. Cela reste conforme à notre intuition théorique et encourage encore plus le développement d'un corpus plus volumineux pour l'obtention probable de meilleurs résultats.
 	\begin{table}[H]
 		\centering
 		\resizebox{\textwidth}{!}{%
@@ -597,8 +598,6 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 		\caption{Résultats des tests pour un encodage sans étiquetage morphosyntaxique avec des cellules BiLSTM avec découpage Apprentissage : 75\%, Validation : 10\%, Test : 25\%.}
 		\label{tab:bilstm_3}
 	\end{table}
-	\paragraph{}
-	Les tableaux \ref{tab:lstm_3} et \ref{tab:bilstm_3} démontrent que la taille des données d'apprentissage poussent vers de meilleurs résultats. Cela reste conforme à notre intuition théorique et encourage encore plus le développement d'un corpus plus volumineux pour l'obtention probable de meilleurs résultats.
 	
 	\paragraph{}
 	Pour mieux récapituler et visualiser les différences de qualité de prédictions des différents modèles, la figure \ref{compare} ci dessous est proposée.
@@ -606,7 +605,7 @@ Pour ce module, une approche assez classique a été utilisée et l'ensemble de 
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=.9\linewidth]{images/implementation/graphs.png} 
-		\caption{Graphe comparatif selon les proportions des découpages des données et selon les paramètres.}
+		\caption{Graphe comparatif de F-Mesure moyenne des modèles selon les proportions des découpages des données et selon les paramètres.}
 		\label{compare}
 	\end{figure}
 	\paragraph{}
@@ -841,7 +840,7 @@ L'application se compose de quatre parties disposées sur une seule page web dyn
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=.4\linewidth]{images/implementation/app_screens/tree.png}
+		\includegraphics[width=.35\linewidth]{images/implementation/app_screens/tree.png}
 		\caption{Fenêtre d'affichage de l'arborescence virtuelle}
 	\end{figure} 
 	
