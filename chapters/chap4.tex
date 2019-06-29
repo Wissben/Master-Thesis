@@ -620,7 +620,7 @@ Les tableaux \ref{tab:lstm_3} et \ref{tab:bilstm_3} démontrent que la taille de
 	\end{itemize}
 \section{Ontologie et manipulation du graphe d'état}
 \paragraph{}Les ontologies déjà présentées dans la section \ref{onto1} ont été créées en utilisant Protégé. Elles ont été ensuite exportées en format Turtle\footnote{Turtle est une syntaxe pour l'écriture des triplets d'un graphe de connaissance avec RDF} afin de les exploiter dans la suite de ce travail en utilisant la bibliothèque RDFLib de Python.\\[6pt]
-Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour faciliter leur utilisation avec les réseaux de neurones. Une phase de transformation des URIs\footnote{Les URIs identifient de manière unique les ressources dans le web sémantique et sont également utilisés pour identifier les concepts et les relations dans les ontologies} en identifiants entiers s'avère nécessaire. L'ontologie comprend 61 n\oe{}uds et 13 relations. Contrairement au nombre de relations, le nombre de concepts augmente au cours du dialogue; de nouveaux n\oe{}uds sont introduits après chaque échange. Ceci nécessite de garder un ensemble d'identifiants non utilisés pour les associer pendant le dialogue. Le tableau suivant résume l'association des identifiants aux n\oe{}uds et relations des graphes.
+Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour faciliter leur utilisation avec les réseaux de neurones. Une phase de transformation des URIs\footnote{Les URIs identifient de manière unique les ressources dans le web sémantique et sont également utilisés pour identifier les concepts et les relations dans les ontologies} en identifiants entiers s'avère nécessaire. L'ontologie comprend 61 n\oe{}uds et 13 relations. Contrairement au nombre de relations, le nombre de concepts augmente au cours du dialogue; de nouveaux n\oe{}uds sont introduits après chaque échange. Ceci nécessite de garder un ensemble d'identifiants non utilisés pour les associer pendant le dialogue. Le tableau \ref{table_ids} résume l'association des identifiants aux n\oe{}uds et relations des graphes.
 \begin{table}[H]
 	\begin{center}
 		
@@ -653,15 +653,16 @@ Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour facil
 \end{itemize}
 \par Pendant l'apprentissage, le générateur choisit une taille pour le graphe inférieure à une taille maximale et crée un graphe en suivant les étapes sus-citées. Ce dernier est passé à l'encodeur-décodeur comme entrée et sortie désirée.
 \subsubsection{Résultats et discussion}
-\paragraph{}Pour estimer la capacité de l'encodeur du graphe, nous avons varié la taille maximale du graphe ainsi que le vecteur d'état du GRU. Les résultats sont présentés dans le figure suivante.
-\begin{figure}[H] 
+\paragraph{}Pour estimer la capacité de l'encodeur du graphe, nous avons varié la taille maximale du graphe ainsi que le vecteur d'état du GRU. Les résultats sont présentés dans le figure \ref{heatmap}.
+\par Nous remarquons évidemment que la précision diminue avec l'augmentation de la taille maximale du graphe. Cependant, l'augmentation de la taille du vecteur encodant le graphe n'améliore pas beaucoup les résultats. Ceci peut être dû à la nature combinatoire du problème. En effet, la taille du graphe augmente exponentiellement en fonction du nombre de triplets. $nb$ et $t$ représentent respectivement le nombre de triplets possibles et la fonction correspondant à la taille du graphe le nombre de graphes possible. $t$ est définie par la fonction de récurrence suivante:
+\[t(1) = nb\]
+\[t(n+1) = t(n) \times nb\]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Realisation/DM/heatmap.png}
 	\caption{Variation de la précision en fonction de la taille maximale du graphe et la taille du vecteur d'état}\label{heatmap}
 \end{figure}
-\par Nous remarquons évidemment que la précision diminue avec l'augmentation de la taille maximale du graphe. Cependant, l'augmentation de la taille du vecteur encodant le graphe n'améliore pas beaucoup les résultats. Ceci peut être dû à la nature combinatoire du problème. En effet, la taille du graphe augmente exponentiellement en fonction du nombre de triplets. $nb$ et $t$ représentent respectivement le nombre de triplets possibles et la fonction correspondant à la taille du graphe le nombre de graphes possible. $t$ est définie par la fonction de récurrence suivante:
-\[t(1) = nb\]
-\[t(n+1) = t(n) \times nb\]
+
 \par La première équation montre que le nombre de graphes possibles est égale au nombre de triplets possibles lorsque le graphe se compose d'un seul triplet. Tandis que la deuxième vient du fait que les graphes de taille $n+1$ peuvent être obtenus en combinant chaque graphe de taille $n$ avec tous les triplets possibles. Le résultat des deux équations est:
 \[t(n) = nb^n\]
 \par Pour pallier à ce problème, le graphe d'état peut être divisé en plusieurs sous-graphes, de façon à ce que chaque sous-graphe soit assez petit pour être encodé par l'un des encodeurs déjà entraînés. Ainsi, la concaténation de ces vecteurs peut être utilisée comme entrée pour le module suivant.
@@ -678,9 +679,9 @@ Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour facil
 \end{itemize}
 \par La première partie de l'équation, $nb_{diff} \times 4$, détermine une approximation du nombre d'actions nécessaire afin d'arriver au but; nous avons estimé qu'il faut un maximum de 4 échanges pour ajouter ou supprimer un fichier. La deuxième partie permet de prendre en compte les erreurs du simulateur. Sachant que le nombre moyen d'actions erronées en $n$ échanges est égal à $n \times (pb_i + pb_e)$, nous avons donc ajouté deux fois ce nombre. Ceci permet en premier lieu de ne pas compter les actions erronées dans la limite des échanges possibles, ainsi que d'ajouter des actions afin que l'agent puisse se retrouver dans la conversation après une erreur du simulateur.
 \subsubsection{Apprentissage avec DQN déconnecté}
-\paragraph{}Dans cette partie, nous utilisons un des encodeurs déjà entraînés dans la partie précédente. Nous avons donc choisi d'utiliser l'encodeur de taille 300 qui a été entraîné avec des graphes de taille maximale de 20. Nous avons varié le nombre de vecteurs utilisés ainsi que les probabilités d'erreurs du simulateur. Les résultats sont présentés dans le tableau \ref{table_results_dis}.
+\paragraph{}Dans cette partie, nous utilisons un des encodeurs déjà entraînés dans la partie précédente. Nous avons donc choisi d'utiliser l'encodeur de taille 300 qui a été entraîné avec des graphes de taille maximale de 20. Nous avons varié le nombre de vecteurs utilisés ainsi que les probabilités d'erreurs du simulateur.
 \definecolor{LightCyan}{rgb}{0.7,1,1}
-\begin{table}[H]
+\begin{table}
 	\begin{center}
 		
 		\begin{tabular}{|c|c|c|c|}
@@ -717,7 +718,7 @@ Les n\oe{}uds et les relations du graphe ont des identifiants entiers pour facil
 		\caption{Taux de réussite en fonction des probabilités d'erreurs et du nombre de vecteurs d'état. Avec les probabilités pb\textsubscript{i} et pb\textsubscript{e}, les probabilités d'erreurs sur l'intention et les emplacements respectivement.}\label{table_results_dis}
 	\end{center}
 \end{table}
-Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
+\par Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 \begin{itemize}
 	\item Évidemment, avec moins de probabilités d'erreurs, le réseau arrive à mieux reconnaître les motifs dans le vecteur d'état et leurs relations avec les récompenses du simulateur. Cependant, l'augmentation de la taille du vecteur n'améliore que légèrement les résultats; en calculant la moyenne des taux de réussite pour chaque nombre de vecteurs, les résultats sont comme suit: $53.5\%$ de taux de réussite pour quatre vecteurs, $53.75\%$ pour cinq vecteurs et $57.5\%$ pour six vecteurs.
 	\item Le meilleur résultat a été obtenu en utilisant quatre vecteurs et sans erreurs avec un taux de réussite de $72\%$. En pratique, ce modèle ne s'adapte pas aux erreurs des modules précédents. Par conséquent, il se perd lorsqu'une erreur se produit et il n'arrive pas à se resituer dans la conversation.
@@ -726,8 +727,8 @@ Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 \end{itemize}
 
 \subsubsection{Apprentissage avec DQN connecté}
-\paragraph{} Connecter le DQN avec l'encodeur devrait permettre de réduire la taille du vecteur d'état nécessaire. Comme pour la partie précédente, nous avons varié la taille du vecteur d'état ainsi que les probabilités des erreurs pour pouvoir par la suite comparer les deux approches proposées. 
-\begin{table}[H]
+\paragraph{} Connecter le DQN avec l'encodeur devrait permettre de réduire la taille du vecteur d'état nécessaire. Comme pour la partie précédente, nous avons varié la taille du vecteur d'état ainsi que les probabilités des erreurs pour pouvoir par la suite comparer les deux approches proposées. Les résultats sont présentés dans le tableau \ref{table_results_con}.
+\begin{table}
 	\begin{center}
 		
 		\begin{tabular}{|c|c|c|c|}
@@ -792,13 +793,14 @@ Le tableau \ref{table_results_dis} nous permet de conclure ce qui suit:
 Les temps des échanges avec le simulateur des deux approches sont proches puisqu'ils se comportent de la même manière dans ce cas. Les deux méthodes n'encodent que les nouveaux triplets arrivant dans le vecteur d'état précédent. 
 \subsubsection{Courbe d'apprentissage}
 \paragraph{}Enfin, nous comparons à présent les courbes d'apprentissage des deux méthodes. Celles-ci montrent le taux de réussite par rapport au nombre d'épisodes\footnote{Un épisode est un ensemble d'échanges agent-simulateur qui aboutit à un succès ou un échec}. La figure \ref{courbes} contient quatre courbes: deux courbes pour chaque méthode, avec et sans erreurs.
-\begin{figure}[H] 
+\par Nous remarquons que la deuxième méthode arrive beaucoup plus rapidement à comprendre la fonction de récompense. Il s'avère donc que déconnecter le DQN de l'encodeur rend effectivement la tâche de trouver la relation entre les motifs des vecteurs d'états et les récompenses plus difficile.\\[6pt]
+L'apprentissage peut être amélioré dans les deux cas, et surtout en ce qui concerne le premier, en utilisant un meilleur encodage des n\oe{}uds et des arcs du graphe. En effet, les n\oe{}uds sont actuellement encodés avec des identifiants entiers seulement, perdant ainsi les riches connaissances sémantiques qu'on peut extraire des relations du graphe. Un meilleur encodage serait d'utiliser des méthodes d'apprentissage semi-supervisé qui permettraient de donner aux n\oe{}uds proches un encodage similaire. Cette méthode permet d'éviter quelques problèmes que nous avons cités dans \ref{success_rate}, entre autres le problème d'encoder deux états lointains dans des vecteurs proches.
+\begin{figure}
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Realisation/DM/courbes.png}
 	\caption{Les courbes d'apprentissage des deux méthodes proposées avec et sans erreurs du simulateur d'utilisateur}\label{courbes}
 \end{figure}
-\paragraph{}Nous remarquons que la deuxième méthode arrive beaucoup plus rapidement à comprendre la fonction de récompense. Il s'avère donc que déconnecter le DQN de l'encodeur rend effectivement la tâche de trouver la relation entre les motifs des vecteurs d'états et les récompenses plus difficile.\\[6pt]
-L'apprentissage peut être amélioré dans les deux cas, et surtout en ce qui concerne le premier, en utilisant un meilleur encodage des n\oe{}uds et des arcs du graphe. En effet, les n\oe{}uds sont actuellement encodés avec des identifiants entiers seulement, perdant ainsi les riches connaissances sémantiques qu'on peut extraire des relations du graphe. Un meilleur encodage serait d'utiliser des méthodes d'apprentissage semi-supervisé qui permettraient de donner aux n\oe{}uds proches un encodage similaire. Cette méthode permet d'éviter quelques problèmes que nous avons cités dans \ref{success_rate}, entre autres le problème d'encoder deux états lointains dans des vecteurs proches.
+
 
 \section{Application Speact}
 \paragraph{}L'application Speact relie les modules que nous avons implémentés dans un assistant qui aide à manipuler les fichiers de l'ordinateur avec la voix. Le schéma \ref{schema_app} montre les différentes parties que comporte l'application et les communications entre elles.

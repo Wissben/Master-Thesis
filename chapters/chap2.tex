@@ -292,7 +292,7 @@ Disposant des deux modèles précédemment cités, le module NLU peut construire
 \end{figure} 
 \section{Gestion du dialogue}
 \paragraph{}
-La compréhension du langage naturel permet de transformer un texte en une représentation sémantique. Afin qu'un système puisse réaliser un dialogue aussi anthropomorphe que possible, il doit décider, à partir des représentations sémantiques reçues au cours du dialogue, quelle action prendre à chaque étape de la conversation. Cette action est transmise au générateur du langage naturel (voir \ref{NLG}) pour afficher un résultat à l'utilisateur. Généralement, deux principaux modules sont présents dans les systèmes de gestion de dialogue:
+La compréhension du langage naturel permet de transformer un texte en une représentation sémantique. Afin qu'un système puisse réaliser un dialogue aussi anthropomorphe que possible, il doit décider, à partir des représentations sémantiques reçues au cours du dialogue, quelle action prendre à chaque étape de la conversation. Cette action est transmise au générateur du langage naturel (voir \ref{NLG}) pour afficher un résultat à l'utilisateur. Généralement, deux principaux modules sont présents dans les systèmes de gestion de dialogue comme le montre la figure \ref{DMGeneral}:
 \begin{itemize}
 	\item Un module qui met à jour l'état du gestionnaire de dialogue: le traqueur d'état.
 	\item Un module qui détermine la politique d'action du gestionnaire de dialogue.
@@ -301,7 +301,7 @@ La compréhension du langage naturel permet de transformer un texte en une repr�
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.7\linewidth]{images/DM/DMGeneral.png} 
-	\caption{Schéma général d'un gestionnaire de dialogue} 
+	\caption{Schéma général d'un gestionnaire de dialogue}\label{DMGeneral}
 \end{figure}
 \par Ainsi, le gestionnaire de dialogue passe d'un état à un autre après chaque interaction avec l'utilisateur. Le problème à résoudre est donc de trouver la meilleure action à prendre en étant dans un état donné.
 %\subsection{Processus de décision Markovien (MDP)}
@@ -313,12 +313,12 @@ La compréhension du langage naturel permet de transformer un texte en une repr�
 	\item $P$: distribution de probabilités de transitions entre états sachant l'action prise. $P(s'/s,a)$ est la probabilité de passer à l'état $s'$ sachant qu'on était à l'état $s$ après avoir réalisé l'action $a$.
 	\item $R$: est la récompense reçue immédiatement après avoir changé l'état avec une action donnée. $R(s'/s,a)$ est la récompense reçue après être passé à l'état $s'$ sachant que le système était à l'état $s$ après avoir réalisé l'action $a$.
 \end{itemize}
-Un MDP, à tout instant $t$, est dans un état $s$. Dans notre cas c'est l'état du gestionnaire de dialogue. Il peut prendre une action $a$ afin de passer à un nouvel état $s'$. De ce fait, il reçoit une récompense qui ,dans notre cas, est une mesure sur les performances du système de dialogue. Le but est de maximiser les récompenses reçues.
+Un MDP, à tout instant $t$, est dans un état $s$. Dans notre cas c'est l'état du gestionnaire de dialogue. Il peut prendre une action $a$ afin de passer à un nouvel état $s'$. De ce fait, il reçoit une récompense qui ,dans notre cas, est une mesure sur les performances du système de dialogue. Le but est de maximiser les récompenses reçues. La figure \ref{MDPfig} illustre un exemple de MDP à trois états avec les probabilités de transitions entre eux ainsi que la récompense associée à chaque transition.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.95\linewidth]{images/DM/MDP.png} 
-	\caption{Schéma représentant les transitions entre états dans un MDP} 
+	\includegraphics[width=.8\linewidth]{images/DM/MDP.png} 
+	\caption{Schéma représentant les transitions entre états dans un MDP}\label{MDPfig}
 \end{figure}
 
 
@@ -333,26 +333,26 @@ L'état d'un système de dialogue est une représentation sémantique qui contie
 \end{figure}
 
 
-À l'arrivée d'une nouvelle information, un module dédié met à jour l'état du gestionnaire de dialogue. Comme l'action du système de dialogue est décidée à partir de son état, cette tâche est donc essentielle au bon fonctionnement du système. Plusieurs méthodes ont été proposées pour gérer le suivi de l'état du gestionnaire de dialogue \citep{Williams2007}.
+\par À l'arrivée d'une nouvelle information, un module dédié met à jour l'état du gestionnaire de dialogue. Comme l'action du système de dialogue est décidée à partir de son état, cette tâche est donc essentielle au bon fonctionnement du système. Plusieurs méthodes ont été proposées pour gérer le suivi de l'état du gestionnaire de dialogue \citep{Williams2007}.
 \subsubsection{Suivi de l'état du gestionnaire de dialogue avec une base de règles}\label{suivi}
 \paragraph{}
-La méthode traditionnelle utilisée consiste à écrire manuellement les règles à suivre lors de l'arrivé d'une nouvelle information pour mettre à jour l'état \citep{Goddeau1996}. Cependant, les bases de règles sont très susceptibles à faire des erreurs \citep{Chen2017} car elles sont peu robustes face aux incertitudes.
+La méthode traditionnelle utilisée consiste à écrire manuellement les règles à suivre lors de l'arrivé d'une nouvelle information pour mettre à jour l'état \citep{Goddeau1996}. Cependant, les bases de règles sont très susceptibles à faire des erreurs \citep{Chen2017} car elles sont peu robustes face aux incertitudes. La figure \ref{RBUpdate} est un exemple de mise à jour d'une trame sémantique à partir d'une commande utilisateur avec les bases de règles.
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.7\linewidth]{images/DM/RuleBasedUpdate.png} 
-	\caption{Schéma représentant la mise-à-jour de l'état du gestionnaire de dialogue par un système basé règles} 
+	\caption{Schéma représentant la mise-à-jour de l'état du gestionnaire de dialogue par un système basé règles}\label{RBUpdate}
 \end{figure}
 
 \subsubsection{Suivi de l'état du gestionnaire de dialogue avec des méthodes statistiques}
 
-Le suivi dans ce cas se fait en gardant une distribution de probabilités sur l'état du système, ce qui nécessite une nouvelle modélisation non déterministe du problème. Les processus de décision markoviens partiellement observables (Partially Observable Markov Decision Process POMDP) \citep{Young2010} sont une variante des MDP capable de répondre à ce besoin que nous introduirons par la suite. Dans ce cas, le système garde une distribution de probabilités sur les valeurs possibles des différents emplacements de la trame sémantique.
+Le suivi dans ce cas se fait en gardant une distribution de probabilités sur l'état du système, ce qui nécessite une nouvelle modélisation non déterministe du problème. Les processus de décision markoviens partiellement observables (Partially Observable Markov Decision Process POMDP) \citep{Young2010} sont une variante des MDP capable de répondre à ce besoin que nous introduirons par la suite. Dans ce cas, le système garde une distribution de probabilités sur les valeurs possibles des différents emplacements de la trame sémantique comme le montre la figure \ref{SBUpdate}.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.7\linewidth]{images/DM/StatBasedUpdate.png} 
-	\caption{Schéma représentant la mise-à-jour de l'état du gestionnaire de dialogue par un système basé statistiques} 
+	\caption{Schéma représentant la mise-à-jour de l'état du gestionnaire de dialogue par un système basé statistiques}\label{SBUpdate}
 \end{figure}
 
 \paragraph{Processus de décision markovien partiellement observable (POMDP)}
@@ -362,11 +362,11 @@ Comme dans les processus de décision markoviens, un POMDP \citep{Astrom1965} pa
 	\item $M$: l'ensemble des observations.
 	\item $O$: la distribution de probabilités sur les observations $o$ en connaissant l'état $s$ et l'action $a$ prise pour y arriver. $O(o|s,a)$ est la probabilité d'observer $o$ sachant que le système se trouve à l'état $s$ et qu'il a pris l'action $a$ pour y arriver.
 \end{itemize}
-
+La figure \ref{POMDP} est une partie du diagramme d'influence d'un POMDP montrant les influences d'une transition entre deux états.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\linewidth]{images/DM/POMDP.png} 
-	\caption{Diagramme d'influence dans un POMDP} 
+	\caption{Diagramme d'influence dans un POMDP}\label{POMDP}
 \end{figure}
 
 \subsubsection{Suivi de l'état du gestionnaire de dialogue avec réseaux de neurones profonds}
@@ -381,24 +381,24 @@ La première partie est dédiée au module qui suit l'état du système de dialo
 Les premières approches utilisaient des systèmes de règles destinés à un domaine bien spécifique. Elles étaient déployées dans plusieurs domaines d'application pour leur simplicité. Cependant, le travail manuel nécessaire reste difficile à faire et, généralement, n'aboutit pas à des résultats flexibles qui peuvent suivre le flux du dialogue convenablement \citep{Lee2010}.
 \subsubsection{Gestion de dialogue par apprentissage}
 \paragraph{}
-La résolution d'un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l'apprentissage par renforcement dans le but d'estimer la récompense obtenue par une action et un état donnés. Cette préférence par rapport aux approches supervisées revient à la difficulté de produire des corpus de dialogues \citep{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Néanmoins, il existe des approches de bout en bout qui exploitent des architectures avec réseaux de neurones profonds et traitent le problème comme Seq2Seq\footnote{Les modèles Seq2Seq sont des architectures de réseaux de neurones profonds qui prennent en entrée une séquence et produisent en sortie une autre séquence en utilisant les réseaux de neurones récurents (RNN).} afin de produire directement une sortie à partir des informations reçues de l'utilisateur \citep{Wen2017,Serban2016}.
+La résolution d'un MDP revient à trouver une estimation de la fonction de récompense afin de pouvoir choisir la meilleure action. La majorité des approches récentes utilise l'apprentissage par renforcement dans le but d'estimer la récompense obtenue par une action et un état donnés. Cette préférence par rapport aux approches supervisées revient à la difficulté de produire des corpus de dialogues \citep{Henderson2008}, encore moins des corpus annotés avec les récompenses à chaque transition. Néanmoins, il existe des approches de bout en bout qui exploitent des architectures avec réseaux de neurones profonds et traitent le problème comme Seq2Seq\footnote{Les modèles Seq2Seq sont des architectures de réseaux de neurones profonds qui prennent en entrée une séquence et produisent en sortie une autre séquence en utilisant les réseaux de neurones récurents (RNN).} (voir figure \ref{Seq2seq}) afin de produire directement une sortie à partir des informations reçues de l'utilisateur \citep{Wen2017,Serban2016}.
 
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=.7\linewidth]{images/DM/DMSeq2Seq.png} 
-	\caption{Schéma de gestion de dialogue de bout en bout avec architecture Seq2Seq} 
+	\caption{Schéma de gestion de dialogue de bout en bout avec architecture Seq2Seq}\label{Seq2seq}
 \end{figure}
 \subsubsection{Apprentissage par renforcement} \label{reinf_learning}
 \paragraph{}
-L'apprentissage par renforcement est une approche qui a pour but d'estimer une politique d'actions à prendre dans un environnement donné. Cette politique doit maximiser une mesure d'évaluation qui est sous forme de récompenses obtenues après chaque action \citep{Weisz2018}. L'environnement est souvent modélisé comme un MDP, ou éventuellement POMDP. L'agent d'apprentissage passe donc d'un état à un autre en prenant des actions dans cet environnement. L'apprentissage se fait dans ce cas en apprenant par l'expérience de l'agent, à savoir les récompenses obtenues par les actions prises dans des états donnés. Il peut ainsi estimer la fonction de récompense pour pouvoir faire le choix d'actions optimales. 
+L'apprentissage par renforcement est une approche qui a pour but d'estimer une politique d'actions à prendre dans un environnement donné. Cette politique doit maximiser une mesure d'évaluation qui est sous forme de récompenses obtenues après chaque action \citep{Weisz2018}. L'environnement est souvent modélisé comme un MDP, ou éventuellement POMDP. L'agent d'apprentissage passe donc d'un état à un autre en prenant des actions dans cet environnement. L'apprentissage se fait dans ce cas en apprenant par l'expérience de l'agent, à savoir les récompenses obtenues par les actions prises dans des états donnés. Il peut ainsi estimer la fonction de récompense pour pouvoir faire le choix d'actions optimales. La figure \ref{RLS} montre les relations entre l'agent et son environnement dans un apprentissage par renforcement.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\linewidth]{images/DM/RLSchema.png} 
-	\caption{Schéma d'interaction agent-environnement dans l'apprentissage par renforcement} 
+	\caption{Schéma d'interaction agent-environnement dans l'apprentissage par renforcement}\label{RLS}
 \end{figure}
-Il existe plusieurs méthodes que l'agent peut utiliser pour estimer la fonction de récompense \citep{Dimitri2012}, notamment Deep Q Learning (DQN) \citep{Mnih2015} qui utilise les réseaux de neurones profonds pour trouver une approximation à cette fonction. Dans cette approche, à chaque fois que l'agent prend une action, il compare la récompense reçue avec celle estimée par le réseau de neurones, et applique ensuite l'algorithme de rétro-propagation pour corriger les erreurs du réseau. 
+\par Il existe plusieurs méthodes que l'agent peut utiliser pour estimer la fonction de récompense \citep{Dimitri2012}, notamment Deep Q Learning (DQN) \citep{Mnih2015} qui utilise les réseaux de neurones profonds pour trouver une approximation à cette fonction. Dans cette approche, à chaque fois que l'agent prend une action, il compare la récompense reçue avec celle estimée par le réseau de neurones, et applique ensuite l'algorithme de rétro-propagation pour corriger les erreurs du réseau. 
 
 \paragraph{}\label{usersim}
 Le système de dialogue est modélisé par un MDP. Seulement, ce dernier inclut l'utilisateur comme partie de l'environnement. Par conséquent, pour appliquer l'apprentissage par renforcement, il est nécessaire qu'un utilisateur communique avec le système pour qu'il apprenne. D'où la nécessité d'utiliser un \textbf{simulateur d'utilisateur} qui est un programme capable de se comporter comme un humain interagissant avec un système de dialogue. Le simulateur doit pouvoir estimer la satisfaction de l'utilisateur après une interaction. En d'autres termes, il doit comporter une fonction de récompense. Il existe plusieurs méthodes pour créer un simulateur d'utilisateur:
@@ -435,7 +435,7 @@ Certaines informations peuvent être transmises dans une même phrase. Cette par
 	\item Il va faire 18\textdegree{} à Alger à 9h.
 	\item Il va faire 18\textdegree{} à Alger à 10h.
 \end{itemize}
-Ceci peut être agrégé en un texte plus compacte: "La température moyenne à Alger sera de 17.25\textdegree entre 7h et 10h."
+Ceci peut être agrégé en un texte plus compact: "La température moyenne à Alger sera de 17.25\textdegree entre 7h et 10h."
 
 \subsection{Lexicalisation}
 \paragraph{}Le système choisit les mots et les expressions à utiliser pour communiquer le contenu des phrases sélectionnées. La difficulté de cette tâche revient à l'existence de plusieurs manières d'exprimer la même idée. Cependant, certains mots ou expressions sont plus appropriés en certaines situations que d'autres. En effet, "inscrire un but" est une façon inadéquate d'exprimer "un but contre son camp" \citep{Gatt2018}.
@@ -493,11 +493,11 @@ D'autres approches statistiques n'utilisent pas des grammaires mais se basent su
 
 \section{Systèmes basés encodeur-décodeur}
 \paragraph{}
-Une architecture souvent utilisée dans le traitement du langage naturel est l'encodeur-décodeur. En particulier, son utilisation dans les tâches seq2seq permet de mettre en correspondance une séquence de taille variable en entrée avec une autre séquence en sortie. Les modèles seq2seq peuvent être adaptés pour convertir une représentation abstraite de l'information en langage naturel \citep {Ferreira2017}.\newline
+Une architecture souvent utilisée dans le traitement du langage naturel est l'encodeur-décodeur. En particulier, son utilisation dans les tâches seq2seq permet de mettre en correspondance une séquence de taille variable en entrée avec une autre séquence en sortie. Les modèles seq2seq peuvent être adaptés pour convertir une représentation abstraite de l'information en langage naturel \citep {Ferreira2017} comme le montre la figure \ref{EncoderNLG}.\newline
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.95\linewidth]{images/NLG/Encoder.png} 
-	\caption{Schéma d'une architecture encodeur-décodeur pour NLG} 
+	\caption{Schéma d'une architecture encodeur-décodeur pour NLG}\label{EncoderNLG}
 \end{figure}
 \paragraph{}
 Beaucoup d'approches de génération de langage naturel en gestion de dialogue utilisent des encodeurs-décodeurs. \cite{Wen2015} utilisent par exemple des LSTMs sémantiquement conditionnés; ils ajoutent aux LSTMs classiques une couche contenant des informations sur l'action prise par le gestionnaire de dialogue pour assurer que la génération représente le sens désiré. D'autres travaux utilisent des réseaux de neurones récurrents pour encoder l'état du gestionnaire de dialogue et l'entrée reçue, suivie par un décodeur pour générer le texte de la réponse \citep{Sordoni2015,Serban2016,Goyal2016}.

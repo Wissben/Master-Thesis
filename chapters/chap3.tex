@@ -188,38 +188,38 @@ Comme nous l'avons déjà vu, l'architecture typique des gestionnaires de dialog
 Avant de détailler les deux modules du gestionnaire, il est nécessaire d'introduire une représentation de l'état du dialogue. Classiquement, les trames sémantiques ont été utilisées dans ce but (voir \ref{trame}). Le suivi d'état se fait, dans ce cas, en gardant trace des emplacements remplis durant le dialogue.
 Nous avons opté pour une représentation plus riche par l'utilisation des graphes de connaissances, qui sont une forme de représentation où les connaissances sont décrites sous forme d'un graphe orienté étiqueté. Des travaux ont déjà utilisé ce type de connaissances \citep{Stoyanchev2018} et des ontologies \citep{Wessel2019} pour représenter l'état du système de dialogue. À partir de ce dernier, une base de règles décide quelle action prendre directement du graphe. L'avantage d'utiliser des graphes de connaissances par rapport à l'utilisation des trames sémantiques apparaît dans leur flexibilité et leur dynamisme. En effet, pour une tâche comme la navigation dans les fichiers, l'état de l'arborescence des fichiers est sujet à des changements fréquents: ajout, suppression, modification, etc. Il est difficile de faire une représentation de l'information dans ce cas avec de simples emplacements à remplir.
 \subsubsection{Suivi de l'état du dialogue}
-Le rôle du premier module du gestionnaire de dialogue est de mettre à jour l'état du système au cours du dialogue. Il reçoit l'action de l'utilisateur ou du gestionnaire et il produit un nouvel état. Dans notre cas, le module NLU produit toujours une trame sémantique contenant l'intention de l'utilisateur ainsi que ses paramètres. C'est alors le travail du traqueur d'état d'injecter le résultat du module NLU dans le graphe de connaissances. Ceci consiste à transformer la trame sémantique en un graphe qui est ensuite ajouté au graphe d'états. Plus de détails seront donnés dans la section \ref{onto} où nous construirons une ontologie pour définir un vocabulaire de dialogue et comment elle peut être utilisée pour passer du résultat du module NLU en un graphe de connaissances.
+Le rôle du premier module du gestionnaire de dialogue est de mettre à jour l'état du système au cours du dialogue. Il reçoit l'action de l'utilisateur ou du gestionnaire et il produit un nouvel état. Dans notre cas, le module NLU produit toujours une trame sémantique contenant l'intention de l'utilisateur ainsi que ses paramètres. C'est alors le travail du traqueur d'état d'injecter le résultat du module NLU dans le graphe de connaissances. Ceci consiste à transformer la trame sémantique en un graphe (voir figure \ref{transformer}) qui est ensuite ajouté au graphe d'états. Plus de détails seront donnés dans la section \ref{onto} où nous construirons une ontologie pour définir un vocabulaire de dialogue et comment elle peut être utilisée pour passer du résultat du module NLU en un graphe de connaissances.
 \begin{figure}[H] 
 	
 	\centering
 	\includegraphics[width=0.8\linewidth]{images/Conception/DM/Transformer.png}
-	\caption{Schéma de transformation de trame sémantique en graphe}
-\end{figure}\label{transformer}
+	\caption{Schéma de transformation de trame sémantique en graphe}\label{transformer}
+\end{figure}
 \subsubsection{La politique d'actions}
 La politique d'actions peut être écrite manuellement, apprise à partir d'un corpus ou à l'aide de l'apprentissage par renforcement. Dans ce dernier cas, un agent doit interagir avec un utilisateur qui évalue ses performances afin qu'il puisse apprendre. Étant donné que l'apprentissage par renforcement nécessite un nombre important d'interactions, il est primordial d'utiliser un simulateur d'utilisateur. Ce dernier peut être à base de règles, ou un modèle statistique extrait à partir d'un corpus de dialogue.
 \par Dans les trois cas de figure, il est difficile de réaliser un modèle varié et qui peut accomplir plusieurs tâches. D'un côté, un corpus contenant des dialogues sur toutes les tâches possibles est difficile à acquérir, si ces derniers sont nombreux et spécifiques à une application précise. De l'autre côté, écrire les règles d'un système de dialogue ou d'un simulateur d'utilisateur s'avère compliqué et nécessite un travail manuel énorme pour gérer toutes les tâches possibles.
-\par Pour pallier à cela, nous proposons d'utiliser une architecture multi-agents hiérarchique dans laquelle, les agents feuilles sont des agents qui peuvent répondre à une tâche ou une sous tâche bien précise, tandis que les agents parents sélectionnent l'agent fils capable de répondre à l'intention de l'utilisateur.
+\par Pour pallier à cela, nous proposons d'utiliser une architecture multi-agents hiérarchique dans laquelle, les agents feuilles sont des agents qui peuvent répondre à une tâche ou une sous tâche bien précise, tandis que les agents parents sélectionnent l'agent fils capable de répondre à l'intention de l'utilisateur comme c'est illustré dans la figure \ref{multiagent}.
 \begin{figure}[H] 
 	
 	\centering
 	\includegraphics[width=0.8\linewidth]{images/Conception/DM/multiagent.png}
-	\caption{Schéma de l'architecture multi-agents pour la gestion du dialogue}
-\end{figure}\label{multiagent}
-L'avantage de l'architecture multi-agents hiérarchique est de permettre la division du problème en plusieurs sous-problèmes indépendants. En effet, un simulateur d'utilisateur ou un corpus qui est destiné pour une seule tâche est considérablement plus abordable à créer. De plus, cette architecture permet un développement incrémental dans le sens où elle facilite l'addition d'une nouvelle tâche pour l'assistant; il suffit d'ajouter des agents capables de traiter cette nouvelle tâche à l'architecture. Cependant, un travail supplémentaire s'avère nécessaire qui est celui des agents parents. Ce travail est relativement simple; il suffit de faire un apprentissage supervisé des agents parents avec les simulateurs d'utilisateurs des agents fils. À tour de rôle et avec des probabilités de transition entre les simulateurs d'utilisateurs, ces derniers communiquent avec l'agent parent. Comme on connaît pour chaque simulateur l'agent fils qui lui correspond, il est donc possible de faire un apprentissage supervisé où les entrées sont les actions des simulateurs et l'état du système, tandis que la sortie est l'agent fils qui peut répondre à l'action.
+	\caption{Schéma de l'architecture multi-agents pour la gestion du dialogue}\label{multiagent}
+\end{figure}
+\par L'avantage de l'architecture multi-agents hiérarchique est de permettre la division du problème en plusieurs sous-problèmes indépendants. En effet, un simulateur d'utilisateur ou un corpus qui est destiné pour une seule tâche est considérablement plus abordable à créer. De plus, cette architecture permet un développement incrémental dans le sens où elle facilite l'addition d'une nouvelle tâche pour l'assistant; il suffit d'ajouter des agents capables de traiter cette nouvelle tâche à l'architecture. Cependant, un travail supplémentaire s'avère nécessaire qui est celui des agents parents. Ce travail est relativement simple; il suffit de faire un apprentissage supervisé des agents parents avec les simulateurs d'utilisateurs des agents fils. À tour de rôle et avec des probabilités de transition entre les simulateurs d'utilisateurs, ces derniers communiquent avec l'agent parent. Comme on connaît pour chaque simulateur l'agent fils qui lui correspond, il est donc possible de faire un apprentissage supervisé où les entrées sont les actions des simulateurs et l'état du système, tandis que la sortie est l'agent fils qui peut répondre à l'action. La figure \ref{train_parent} montre l'association des agents feuilles aux simulateurs pendant l'apprentissage.
 \begin{figure}[H] 
 	
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/Conception/DM/train_parent.png}
-	\caption{Schéma représentant l'apprentissage des agents parents avec les simulateurs des agents feuilles}
-\end{figure}\label{train_parent}
+	\caption{Schéma représentant l'apprentissage des agents parents avec les simulateurs des agents feuilles}\label{train_parent}
+\end{figure}
 \paragraph{}
-Pour résumer l'architecture globale du gestionnaire de dialogue, lorsqu'une nouvelle action utilisateur arrive au système, le traqueur d'état la reçoit et met à jour l'état du système en transformant l'action en un graphe de connaissances pour l'ajouter au graphe d'état. Ce nouveau graphe d'état ainsi que la dernière action reçue sont transmis à une architecture multi-agents hiérarchique qui va décider quelle action le système de dialogue doit prendre.
+Pour résumer l'architecture globale du gestionnaire de dialogue (voir figure \ref{globalDM}), lorsqu'une nouvelle action utilisateur arrive au système, le traqueur d'état la reçoit et met à jour l'état du système en transformant l'action en un graphe de connaissances pour l'ajouter au graphe d'état. Ce nouveau graphe d'état ainsi que la dernière action reçue sont transmis à une architecture multi-agents hiérarchique qui va décider quelle action le système de dialogue doit prendre.
 \begin{figure}[H] 
 	
 	\centering
 	\includegraphics[width=0.88\linewidth]{images/Conception/DM/globalDM.png}
-	\caption{Schéma global du gestionnaire de dialogue}
-\end{figure}\label{globalDM}
+	\caption{Schéma global du gestionnaire de dialogue}\label{globalDM}
+\end{figure}
 \subsection{Les ontologies du système}\label{onto}
 \paragraph{}Une ontologie peut être vue comme une représentation des concepts et des relations d'un domaine donné. Elle définit un vocabulaire consensuel pour ce domaine afin de permettre aux programmes intelligents de comprendre  et de communiquer sur des données reliées à ce domaine.
 \par Nous définissons une ontologie de dialogue ainsi que des ontologies pour chaque tâche réalisable par notre assistant. Ceci permettra à notre gestionnaire de comprendre le dialogue et les tâches qu'il peut réaliser.
@@ -229,9 +229,9 @@ Nous définissons en premier une ontologie de dialogue qui contient des concepts
 	
 	\centering
 	\includegraphics[width=1.1\linewidth]{images/Conception/DM/main_onto.png}
-	\caption{Graphe de l'ontologie de dialogue}
-\end{figure}\label{mail_onto}
-Principalement, l'ontologie se compose de six classes mères:
+	\caption{Graphe de l'ontologie de dialogue}\label{main_onto}
+\end{figure}
+\par Principalement, l'ontologie, illustrée dans la figure \ref{main_onto}, se compose de six classes mères:
 \begin{itemize}
 	\item $Agent$ et $User$: ce sont les classes qui représentent l'utilisateur et l'agent qui participent au dialogue.
 	\item $Dialogue$: l'agent et l'utilisateur participent à un dialogue qui contient les actions des deux participants.
@@ -240,35 +240,38 @@ Principalement, l'ontologie se compose de six classes mères:
 	\item $Desire$: C'est la classe mère des actions de l'agent que l'utilisateur peut demander. Par exemple, il peut demander l'ouverture d'un fichier donné.
 \end{itemize}
 Le reste des classes sont des classes filles qui détaillent plus les concepts du dialogue agent-utilisateur.
-\par À l'arrivée d'une nouvelle action, le traqueur d'état va créer le graphe correspondant. Un exemple abstrait de cela est représenté dans la figure \ref{abstract_onto}. Une nouvelle action utilisateur est créée ainsi que ses paramètres et les relations entre eux.
-\begin{figure}[H] 
+\begin{figure}
 	\centering
 	\includegraphics[width=0.88\linewidth]{images/Conception/DM/abstract_onto.png}
 	\caption{Schéma de transformation d'une action en graphe}\label{abstract_onto}
 	
 \end{figure}
+\par À l'arrivée d'une nouvelle action, le traqueur d'état va créer le graphe correspondant. Un exemple abstrait de cela est représenté dans la figure \ref{abstract_onto}. Une nouvelle action utilisateur est créée ainsi que ses paramètres et les relations entre eux.
+
 \subsubsection*{Ontologie pour l'exploration de fichiers}\label{onto2}
-Un exemple d'ontologie pour la compréhension d'une tâche réalisable par l'assistant est celle de l'exploration de fichiers.
-\begin{figure}[H] 
-	
-	\centering
-	\includegraphics[width=1.1\linewidth]{images/Conception/DM/onto_browser.png}
-	\caption{Graphe de l'ontologie de l'exploration de fichiers}
-\end{figure}\label{onto_browser}
+Un exemple d'ontologie pour la compréhension d'une tâche réalisable par l'assistant est celle de l'exploration de fichiers qui est illustrée dans la figure \ref{onto_browser}.
+\par
 L'ontologie contient essentiellement:
 \begin{itemize}
 	\item Des actions sur les fichiers: Créer un fichier, supprimer un fichier, changer de répertoire, etc. Ces actions sont des sous-classes de la classe  $Agent\_act$ vue précédemment ainsi que les classes $Act\_parameter$ et $Desire$. Ceci veut dire, d'un côté, que ces actions peuvent être des paramètres d'autres actions, comme "demander à l'utilisateur s'il veut que l'assistant réalise une action donnée" et d'un autre côté, que l'utilisateur peut demander à l'assistant d'effectuer une de ces actions. 
 	\item Les concepts qui sont liés à l'exploration de fichiers sont des sous-classes de $Act\_parameter$ étant donné qu'ils peuvent  être des paramètres d'actions. Par exemple, l'action d'ouvrir un fichier a comme paramètre un fichier.
 	\item Des relations entre concepts sont aussi définies. Par exemple, un répertoire peut contenir des fichiers, ou une action de changement de répertoire doit avoir comme paramètre un répertoire cible.
 \end{itemize}
-La figure \ref{nonabstract_onto} représente l'arrivée d'une nouvelle action: "créer un fichier nommé 'travail'". L'action de l'utilisateur est donc représentée par un nouveau n\oe{}ud de type $U\_act\_desire$ qui désigne une action utilisateur qui demande une action de l'assistant. Cette dernière a comme paramètre un n\oe{}ud de type $Create\_file$ qui est l'action de l'agent que l'utilisateur veut réaliser. Cette action à son tour a des paramètres comme, dans ce cas, le fichier qu'on veut créer.
+\begin{figure}[H]
+	
+	\centering
+	\includegraphics[width=1.1\linewidth]{images/Conception/DM/onto_browser.png}
+	\caption{Graphe de l'ontologie de l'exploration de fichiers}\label{onto_browser}
+\end{figure}
+
+\par La figure \ref{nonabstract_onto} représente l'arrivée d'une nouvelle action: "créer un fichier nommé 'travail'". L'action de l'utilisateur est donc représentée par un nouveau n\oe{}ud de type $U\_act\_desire$ qui désigne une action utilisateur qui demande une action de l'assistant. Cette dernière a comme paramètre un n\oe{}ud de type $Create\_file$ qui est l'action de l'agent que l'utilisateur veut réaliser. Cette action à son tour a des paramètres comme, dans ce cas, le fichier qu'on veut créer.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.88\linewidth]{images/Conception/DM/nonabstract_onto.png}
 	\caption{Schéma de transformation d'une action de demande de création de fichier en graphe}\label{nonabstract_onto}
 	
 \end{figure}
-Similairement, les graphes des autres actions sont créées en se basant sur des règles de transformation.
+\par Similairement, les graphes des autres actions sont créées en se basant sur des règles de transformation.
 \subsection{Les simulateurs d'utilisateurs}
 Plusieurs méthodes peuvent être utilisées pour la création de simulateurs d'utilisateurs (voir \ref{usersim}). Les simulateurs basés sur des méthodes d'apprentissage sont les plus robustes. Cependant, ils nécessitent un nombre important de données. L'alternative, c'est d'utiliser des simulateurs basés règles. Nous nous sommes inspirés des simulateurs basés agenda \citep{Schatzmann2007} qui sont des variantes des simulateurs basés règles pour créer nos propres simulateurs. Leur fonctionnement est simple. Ils commencent par générer un but. Pour y arriver, un agenda, qui contient les informations que doit convoyer le simulateur ainsi que les informations qu'il doit recevoir, est créé. Les actions sont sélectionnées en suivant des probabilités conditionnelles sur l'état de l'agenda. Enfin, les récompenses sont en fonction des informations reçues de l'agent.
 \subsubsection*{Simulateur pour l'exploration de fichiers}
@@ -331,7 +334,7 @@ L'exploration de fichiers ne dépend pas de simples informations à transmettre 
 	\caption{Diagramme de décision de l'action à prendre}\label{action_diag}
 	
 \end{figure}
-En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir des changements effectués sur l'état de l'utilisateur. Il existe deux types d'actions affectant l'état:
+\par En ce qui concerne la fonction de récompense, celle-ci est évaluée à partir des changements effectués sur l'état de l'utilisateur. Il existe deux types d'actions affectant l'état:
 \begin{itemize}
 	\item Les actions qui affectent l'arborescence de fichiers. Soit elles permettent d'arriver à un sous-but ou bien elles changent la similarité entre l'arborescence courante et l'arborescence du but final.
 	\item Le reste des actions sont des échanges agent-utilisateur pour transmettre et recevoir des informations. Par exemple, l'agent peut demander le nom du répertoire parent d'un fichier.
@@ -390,32 +393,32 @@ La flexibilité des graphes les rend difficiles à introduire dans un réseau de
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.9\linewidth]{images/Conception/DM/encoder.png}
-	\caption{Schéma représentant un encodeur de graphe}
+	\caption{Schéma représentant un encodeur de graphe}\label{encoder}
 	
-\end{figure}\label{encoder}
-Ces méthodes nécessitent tout le graphe pour l'encoder. Cependant, dans notre cas, après chaque action, le graphe augmente de taille ce qui nécessite de refaire l'encodage à partir du début. Nous proposons de traiter le graphe comme une séquence de triplets: "n\oe{}ud; arc; n\oe{}ud" ou "sujet; predicat; objet" comme dans la représentation du modèle de données RDF (Resource Description Framework\footnote{\hyperlink{https://www.w3.org/TR/PR-rdf-syntax/}{https://www.w3.org/TR/PR-rdf-syntax/}}). L'encodage se fait avec une architecture encodeur-décodeur basée sur des réseaux de neurones récurrents (RNN). Ainsi, à l'arrivée de nouveaux triplets, il suffit d'utiliser l'état précédent pour pouvoir encoder les nouveaux triplets.
-\begin{figure}[H] 
+\end{figure}
+\par Ces méthodes nécessitent tout le graphe pour l'encoder comme l'illustre la figure \ref{encoder}. Cependant, dans notre cas, après chaque action, le graphe augmente de taille ce qui nécessite de refaire l'encodage à partir du début. Nous proposons de traiter le graphe comme une séquence de triplets: "n\oe{}ud; arc; n\oe{}ud" ou "sujet; predicat; objet" comme dans la représentation du modèle de données RDF (Resource Description Framework\footnote{\hyperlink{https://www.w3.org/TR/PR-rdf-syntax/}{https://www.w3.org/TR/PR-rdf-syntax/}}). L'encodage se fait avec une architecture encodeur-décodeur basée sur des réseaux de neurones récurrents (RNN). Ainsi, à l'arrivée de nouveaux triplets, il suffit d'utiliser l'état précédent pour pouvoir encoder les nouveaux triplets.
+\begin{figure}
 	\centering
 	\includegraphics[width=0.8\linewidth]{images/Conception/DM/encoder_seq.png}
 	\caption{Schéma représentant un encodeur séquentiel de graphe}\label{encoder_seq}
 	
 \end{figure}
-Comme le montre la figure \ref{encoder_seq}, lorsqu'un sous-graphe arrive, celui-ci est décomposé en triplets. Ensuite, chaque triplet est encodé séquentiellement dans le vecteur d'état précédent qui encode déjà l'ancien état du graphe. Le résultat sera un vecteur d'état encodant la totalité du nouveau graphe.
+\par Comme le montre la figure \ref{encoder_seq}, lorsqu'un sous-graphe arrive, celui-ci est décomposé en triplets. Ensuite, chaque triplet est encodé séquentiellement dans le vecteur d'état précédent qui encode déjà l'ancien état du graphe. Le résultat sera un vecteur d'état encodant la totalité du nouveau graphe.
 \par Pour faire l'apprentissage de cette architecture, il est possible de générer des graphes aléatoirement qu'on fait passer triplet par triplet par l'encodeur. Celui-ci est un RNN qui prend en entrée l'état précédent du réseau et un triplet du graphe et qui produit en sortie un nouvel état. L'état final du RNN, après avoir fait passer tous les triplets du graphe, est utilisé dans le décodeur qui est un autre RNN. Ce dernier essaye de reconstruire le graphe triplet par triplet à partir de l'état reçu comme sortie de l'encodeur. Ainsi, si on peut reconstruire le graphe, on peut dire que le dernier état encode tout le graphe dans un vecteur de taille fixe. La figure \ref{encoder_seq_train} illustre un exemple des entrées/sorties de l'apprentissage en utilisant  cette architecture.
-\begin{figure}[H] 
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\linewidth]{images/Conception/DM/encoder_seq_train.png}
 	\caption{Schéma de l'apprentissage d'un encodeur séquentiel de graphe}\label{encoder_seq_train}
 	
 \end{figure}
 \subsubsection*{Les agents feuilles}
-Comme nous l'avons cité précédemment, les agents feuilles sont les agents responsables de répondre aux intentions de l'utilisateur. Pour faire l'apprentissage par renforcement d'un agent feuille, nous utilisons le simulateur d'utilisateur comme environnement de cet agent. Ce dernier interagit avec le simulateur dans le but d'estimer la correspondance des récompenses en fonction des états. Nous utilisons pour cela un réseau de neurones profond qui prend en entrée le graphe encodé de l'agent et produit pour chaque action la récompense correspondante. Comme le nombre d'actions est variable, il est impossible d'utiliser un réseau de neurones qui produit une récompense pour chaque action vu que les réseaux de neurones ont un nombre de sorties fixe. Par conséquent, il est nécessaire d'utiliser une architecture qui prend en entrée, en plus de l'état encodé, l'action candidate pour produire en sortie sa récompense.
-\begin{figure}[H]
+Comme nous l'avons cité précédemment, les agents feuilles sont les agents responsables de répondre aux intentions de l'utilisateur. Pour faire l'apprentissage par renforcement d'un agent feuille, nous utilisons le simulateur d'utilisateur comme environnement de cet agent. Ce dernier interagit avec le simulateur dans le but d'estimer la correspondance des récompenses en fonction des états. Nous utilisons pour cela un réseau de neurones profond qui prend en entrée le graphe encodé de l'agent et produit pour chaque action la récompense correspondante. Comme le nombre d'actions est variable, il est impossible d'utiliser un réseau de neurones qui produit une récompense pour chaque action vu que les réseaux de neurones ont un nombre de sorties fixe. Par conséquent, il est nécessaire d'utiliser une architecture qui prend en entrée, en plus de l'état encodé, l'action candidate pour produire en sortie sa récompense comme il est montré dans la figure \ref{time_dist}.
+\begin{figure}
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/Conception/DM/time_dist.png}
-	\caption{Schéma du réseau DQN}
-\end{figure}\label{time_dist}
-L'algorithme utilisé pour l'apprentissage par renforcement est double DQN en rejouant l'expérience que nous détaillerons dans cette partie. En plus de l'utilisation des réseaux de neurones pour estimer la fonction de récompense $Q$, deux améliorations lui ont été ajoutées:
+	\caption{Schéma du réseau DQN}\label{time_dist}
+\end{figure}
+\par L'algorithme utilisé pour l'apprentissage par renforcement est double DQN en rejouant l'expérience que nous détaillerons dans cette partie. En plus de l'utilisation des réseaux de neurones pour estimer la fonction de récompense $Q$, deux améliorations lui ont été ajoutées:
 \begin{itemize}
 	\item Rejouer l'expérience: l'agent interagit avec le simulateur plusieurs fois en gardant dans une mémoire ses interactions. Après chaque k épisodes\footnote{Un épisode est un ensemble d'interactions agent-simulateur jusqu'à l'aboutissement à un succès ou un échec}, l'agent reprend la mémoire pour entraîner le réseau de neurones.
 	\item Double DQN: la fonction $Q$ est donnée par la formule $Q(s,a) = r + \alpha \times max_j(Q(s',a_j))$ \citep{Mnih2015} avec:
@@ -434,21 +437,22 @@ L'algorithme utilisé pour l'apprentissage par renforcement est double DQN en re
 	 \[E = (y_i - Q_i(s,a))^2\]
 	 Ensuite, l'algorithme de retro-propagation est appliqué pour mettre à jour les poids du réseau de neurones.
 \end{itemize}
-Une autre architecture possible serait de relier l'encodeur de graphe directement avec le réseau DQN pendant l'apprentissage. Ainsi, l'erreur de l'apprentissage pour l'encodeur est calculée à partir de la fonction de récompense de l'apprentissage par renforcement. L'avantage de relier l'encodeur avec le réseau DQN est de permettre à l'encodeur de contrôler quelle partie du graphe encodé est à oublier. En effet, la taille fixe du vecteur dont on encode le graphe a une limite de nombre de triplets supportable. L'utilisation des cellules de réseaux de neurones récurrents comme les LSTMs ou GRUs qui ont des portes d'oubli rend cette architecture possible. En effet, ce type de RNNs ont la possibilité de garder en mémoire (leur état) des informations qu'ils ont reçues au début de la séquence de données en sacrifiant d'autres plus récentes. En d'autres termes, ils peuvent choisir quelles sont les informations à garder dont le DQN aura besoin pour estimer la fonction de récompense.
-\begin{figure}[H] 
+\par Une autre architecture possible serait de relier l'encodeur de graphe directement avec le réseau DQN pendant l'apprentissage (voir figure \ref{encoder_dqn}). Ainsi, l'erreur de l'apprentissage pour l'encodeur est calculée à partir de la fonction de récompense de l'apprentissage par renforcement. L'avantage de relier l'encodeur avec le réseau DQN est de permettre à l'encodeur de contrôler quelle partie du graphe encodé est à oublier. En effet, la taille fixe du vecteur dont on encode le graphe a une limite de nombre de triplets supportable. L'utilisation des cellules de réseaux de neurones récurrents comme les LSTMs ou GRUs qui ont des portes d'oubli rend cette architecture possible. En effet, ce type de RNNs ont la possibilité de garder en mémoire (leur état) des informations qu'ils ont reçues au début de la séquence de données en sacrifiant d'autres plus récentes. En d'autres termes, ils peuvent choisir quelles sont les informations à garder dont le DQN aura besoin pour estimer la fonction de récompense.
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.88\linewidth]{images/Conception/DM/encoder_dqn.png}
-	\caption{Schéma du réseau DQN relié avec l'encodeur directement}
-\end{figure}\label{encoder_dqn}
+	\caption{Schéma du réseau DQN relié avec l'encodeur directement}\label{encoder_dqn}
+\end{figure}
 \subsubsection*{L'agent coordinateur}
 L'agent coordinateur utilise la même architecture que celle des agents feuilles. La différence se trouve au niveau de la sortie. Dans le cas des agents coordinateurs, ils essayent de prédire quel agent fils peut répondre à la dernière action reçue.
 \section{Module de génération du langage naturel}
 Le modèle utilisé pour la génération du texte est relativement simple. Il s'agit de préparer des modèles de phrases contenant des emplacements à remplir. Chaque action de l'agent correspond à un ensemble de modèles et à chaque paramètre de l'action correspond un ensemble d'expressions. La génération du texte se fait en choisissant d'abord pour chaque paramètre de l'action une expression aléatoirement. Ensuite, un modèle de phrase est choisi aléatoirement. Enfin, les emplacements vides sont remplis avec les expressions des paramètres. Le module de génération de textes traite aussi les éventuelles erreurs qui peuvent se produire comme la suppression d'un fichier inexistant ou la création d'un fichier qui existe déjà. Dans ce cas, l'agent doit informer l'utilisateur que l'action demandée ne peut pas être exécutée pour qu'il résolve le problème. Le traitement des erreurs est similaire au traitement des actions. Le générateur de textes utilise le nom de l'erreur comme l'intention de l'agent et ses paramètres comme les paramètres de l'action.
-\begin{figure}[H] 
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/Conception/NLG.png}
 	\caption{Schéma de fonctionnement du générateur de textes}\label{nlg_schema}
 \end{figure}
+\par
 Dans la figure \ref{nlg_schema}, un exemple de génération de textes en utilisant les modèles de phrases est présenté où l'agent demande à l'utilisateur de lui donner le répertoire parent d'un fichier nommé "travail". Le générateur de textes utilise l'intention de l'agent "$Request$" pour extraire les modèles de phrases qui lui correspondent. En parallèle, il utilise les paramètres de l'action pour extraire leurs expressions. Par exemple, le nom du fichier peut être transformé en "\textit{travail}" ou "\textit{the file travail}". Ces expressions sont enfin combinées avec le modèle de la phrase choisie pour générer une phrase complète. Par exemple, "\textit{Please, tell me what is the \textbf{parent directory}} of \textbf{travail}" ou "\textit{Please, tell me what is the \textbf{directory} of \textbf{the file travail}}".
 \section{Conclusion}
 \paragraph{}
