@@ -7,13 +7,8 @@ Dans ce chapitre, nous détaillerons un peu plus l'aspect technique d'une archit
 \section{Schéma global d'un SPA}
 \label{spaSchemSection}
 \paragraph{}
-Durant nos lectures des différents travaux sur le domaine, nous avons pu dresser un schéma assez général qui englobe les principaux modules d'un SPA : 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\linewidth]{images/SPA_diagram_2.png}
-	\caption{Schéma abstractif d'un SPA \citep{spa_arch}}
-	\label{fig:spaDiagram}
-\end{figure}
+Durant nos lectures des différents travaux sur le domaine, nous avons pu dresser un schéma assez général qui englobe les principaux modules d'un SPA comme illustré par la figure \ref{fig:spaDiagram}
+
 \paragraph{}
 Le processus peut être résumé en des étapes cruciales (qui seront détaillées dans les sections suivantes) : 
 \begin{itemize}
@@ -25,6 +20,14 @@ Le processus peut être résumé en des étapes cruciales (qui seront détaillé
 \end{itemize}
 \paragraph{}
 Il est à noter que chacun des modules seront indépendants pour ce qu'il est de leur fonctionnement interne. Ainsi, aucun n'assumera un fonctionnement arbitraire des autres modules. Seul le format des informations qui circulent entre eux devra être établi au préalable pour un fonctionnement durable et robuste au changement.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/SPA_diagram_2.png}
+	\caption{Schéma abstractif d'un SPA \citep{spa_arch}}
+	\label{fig:spaDiagram}
+\end{figure}
+
 \paragraph{}
 Pour ce qui est de la suite du chapitre, nous allons présenter les différents modules ainsi que les techniques et architectures qui sont considérées comme étant l'état de l'art du domaine. 
 
@@ -46,11 +49,11 @@ D'après \citep{mitchelllearning}, l'apprentissage automatique est un paradigme 
 \par
 Il existe plusieurs sous-catégories d'apprentissage automatique. Elles diffèrent principalement par la manière dont le système apprend, du type de données sur lesquelles il apprend. ainsi que du but de son apprentissage (classification, régression, etc.). Nous pouvons citer les catégories suivantes :
 \begin{itemize}
-	\item  \textbf{Apprentissage supervisé} : Les algorithmes de cette catégorie ont besoin d'une assistance externe. Les données doivent être séparées en deux parties (ensemble d'apprentissage et de test). Un \textit{label} (ou classe) est associé à chaque instance pour permettre à l'algorithme de calculer un certain taux d'erreur qu'il essayera de minimiser au fur et à mesure qu'une nouvelle instance lui est présentée \citep{supervised_learning}. Idéalement, le système pourra apprendre une certaine fonction $\hat{f} : X \rightarrow Y$ qui liera les entrées $X$ aux sorties $Y$ en minimisant l'erreur $E_Y$ 
+	\item  \textbf{Apprentissage supervisé} : Les algorithmes de cette catégorie ont besoin d'une assistance externe. Les données doivent être séparées en deux parties (ensemble d'apprentissage et de test). Un \textit{label} (ou classe) est associé à chaque instance pour permettre à l'algorithme de calculer un certain taux d'erreur qu'il essayera de minimiser au fur et à mesure qu'une nouvelle instance lui est présentée \citep{supervised_learning}. Idéalement, le système pourra apprendre une certaine fonction $\hat{f} : X \rightarrow Y$ qui liera les entrées $X$ aux sorties $Y$ en minimisant l'erreur $E_Y$.
 	
 	\item \textbf{Apprentissage non supervisé} : Dans ce cas, les algorithmes ne disposent pas d'un étiquetage des données. Ils essayeront donc d'apprendre des \textit{pattern} ou motifs fréquents pour grouper les données similaires. De tels algorithmes ne se préoccupent pas de la classe, mais de la similarité entre un groupe de données et un autre \citep{unsupervised_learning}.
 	
-	\item \textbf{Apprentissage par renforcement} : Cette dernière catégorie regroupe des algorithmes qui apprennent par un système de \textit{trial and error} (Essais et erreur). C'est à dire qu'en interagissant avec l'environnement, l'agent apprenant (l'algorithme) apprendra à accomplir une tâche précise en exécutant des actions qui modifierons son état et celui de son environnement (voir la section \ref{reinf_learning})
+	\item \textbf{Apprentissage par renforcement} : Cette dernière catégorie regroupe des algorithmes qui apprennent par un système de \textit{trial and error} (Essais et erreur). C'est à dire qu'en interagissant avec l'environnement, l'agent apprenant (l'algorithme) apprendra à accomplir une tâche précise en exécutant des actions qui modifierons son état et celui de son environnement (voir la section \ref{reinf_learning}).
 \end{itemize}
 \par
 Dans les sections suivantes, nous nous intéresserons à quelques types d'algorithme d'apprentissage automatique. 
@@ -69,16 +72,17 @@ Il existe une variété d'architectures de réseaux de neurones. Nous traiterons
 \paragraph{}
 La forme la plus basique que peut avoir un réseau de neurones est celle d'un réseau multicouches comme montré dans la figure \ref{mlp}. Elle se compose de trois parties :
 \begin{itemize}
-	\item \textbf{Une couche d'entrée :} Elle reçoit l'information en entrée codifié en un vecteur numérique $\chi$
+	\item \textbf{Une couche d'entrée :} Elle reçoit l'information en entrée codifié en un vecteur numérique $\chi$.
 	
-	\item  \textbf{Une ou plusieurs couches cachées :} le c\oe{}ur du réseau, c'est une succession de couches de neurones où chaque couche $C_i$ reçoit un signal sous forme d'une ou plusieurs valeurs numériques depuis une couche antérieure $C_{i-1}$ ou bien la couche d'entrée $\chi$, puis envoit en sortie un autre signal de même nature qui est une combinaison non-linéaire du signal en entrée vers une couche cachée suivante $C_{i+1}$ ou bien la couche de sortie
+	\item  \textbf{Une ou plusieurs couches cachées :} le c\oe{}ur du réseau, c'est une succession de couches de neurones où chaque couche $C_i$ reçoit un signal sous forme d'une ou plusieurs valeurs numériques depuis une couche antérieure $C_{i-1}$ ou bien la couche d'entrée $\chi$, puis envoit en sortie un autre signal de même nature qui est une combinaison non-linéaire du signal en entrée vers une couche cachée suivante $C_{i+1}$ ou bien la couche de sortie.
+	
 	\item \textbf{Une couche de sortie :}
 	elle permet de calculer une valeur $\hat{y}$ qui peut être vue comme la prédiction du modèle $\Phi$ par rapport à son entrée $\chi$ : 
 	\begin{equation}
 	\hat{y} = f_\Phi(\chi)
 	\end{equation}
 \end{itemize}
-Le réseau calcule une erreur $e(y,\hat{y})$ en fonction de sa valeur en sortie et de la valeur exacte puis corrigera cette erreur au fur et à mesure du parcours des données d'apprentissage \citep{mlp}
+Le réseau calcule une erreur $e(y,\hat{y})$ en fonction de sa valeur en sortie et de la valeur exacte puis corrigera cette erreur au fur et à mesure du parcours des données d'apprentissage \citep{mlp}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/notions/mlp.png}
@@ -90,7 +94,7 @@ Le réseau calcule une erreur $e(y,\hat{y})$ en fonction de sa valeur en sortie 
 \paragraph{}
 Les réseaux de neurones à une seule couche sont dits \textit{shallow}. Historiquement, ils présentaient l'avantage d'être assez rapides durant la phase d'apprentissage. Cependant les limites computationnelles d'antan se sont vite vues brisées avec le développement de processeurs plus puissants. De plus, avec l'explosion des données sur internet, toutes les conditions nécessaires étaient réunies pour la mise en place d'architectures plus complexes. Les réseaux de neurones profonds sont une adaptation des réseaux multi-couches classiques avec généralement plus de 2 couches cachées. 
 \par 
-Même si le principe reste le même, l'apprentissage profond est puissant car les architectures les plus complexes permettent d'extraire automatiquement les caractéristiques qui sont importantes mais non visibles; c'est le cas des réseaux de neurones convolutifs et récurrents \citep{dnn} 
+Même si le principe reste le même, l'apprentissage profond est puissant car les architectures les plus complexes permettent d'extraire automatiquement les caractéristiques qui sont importantes mais non visibles; c'est le cas des réseaux de neurones convolutifs et récurrents \citep{dnn}.
 
 \subsubsection{Réseaux de neurones récurrents}\label{seq2seqpart2}
 \paragraph{}
@@ -107,7 +111,7 @@ h^{(t)} = \tanh(W^{hx} \times x^{(t)} + W^{hh} \times h^{(t-1)} + b_h)
 
 où $W^{hx}$ est la matrice de poids entre la couche d'entrée et la couche cachée. $W^{hh}$ est la matrice de poids de récurrence (c.à.d, c'est la matrice qui, quand multipliée par le vecteur d'état caché $t-1$, donnera le vecteur d'état $t$). $W^{hy}$ est la matrice de poids entre la couche cachée et le couche de sortie. Les deux vecteurs $b_h$ et $b_y$ sont les vecteurs de biais et $\times$ est l'opération du produit matriciel \citep{rnn_lstms}
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	%			\includegraphics[width=0.5\linewidth]{images/notions/rnns.png}
 	%			\caption{Un réseau de neurones récurrent durant les différentes étapes $t$ \citep{rnns_online}}
@@ -121,7 +125,7 @@ Un des principaux problèmes que rencontrent les RNNs est celui du \textit{"Vani
 \subsubsection*{Réseaux de neurones récurrents à mémoire à court et long terme (LSTM)}
 \paragraph{}
 Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de réseaux de neurones récurrents est dotée d'un système de \textit{portes} qui filtrent l'information qui y passe ainsi que d'un état interne de la cellule mémoire d'un réseau LSTM. Les composants d'une cellule LSTM  sont détaillés dans la figure \ref{lstm_architecture} qui suit : 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/notions/lstm_arch.png}
 	\caption{Architecture interne d'une cellule mémoire dans un réseau LSTM \citep{rnns_online}}
@@ -148,7 +152,6 @@ Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de rése
 		\item $\tanh$ est la fonction Tangente Hyperbolique. 		
 	\end{itemize}
 	\item \textbf{Porte d'oubli (Forget gate): } De manière similaire, cette porte permet de spécifier au fur et à mesure de l'apprentissage les informations à oublier, qui sont donc peu importantes \citep{lstm_original_paper,rnn_lstms}.
-	\newpage
 	\begin{equation}
 	\begin{gathered}
 	f_t = \sigma(W_f \times [h_{t-1},x_t] + b_f)
