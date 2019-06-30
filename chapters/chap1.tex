@@ -29,11 +29,11 @@ Informellement, un SPA est un type d'agent logiciel qui peut effectuer certaines
 	\say{A context is any information
 		that can be used to characterize the situation of an entity. An entity is a person, place,
 		or object that is considered relevant to the interaction between a user and an
-		application, including the user and applications themselves}
+		application, including the user and applications themselves.}
 \end{quote}
 qui peut être traduit par :
 \begin{quote}\label{context-def-fr}
-	\say{Un contexte est une information qui peut être utilisée pour caractériser l'état d'une entité. Une entité peut être une personne, une place ou un objet, considéré comme pertinent à  l'interraction entre l'utilisateur et l'application, ainsi qu'à ces deux derniers eux mêmes}
+	\say{Un contexte est une information qui peut être utilisée pour caractériser l'état d'une entité. Une entité peut être une personne, une place ou un objet, considéré comme pertinent à  l'interraction entre l'utilisateur et l'application, ainsi qu'à ces deux derniers eux mêmes.}
 \end{quote}
 Il en découle que pour parvenir à développer un système qui réponde aux besoins individuels et spécifiques de chaque personne, modéliser et prendre en compte le contexte semble être une solution prometteuse.
 
@@ -71,7 +71,7 @@ Afin d'assurer une aisance d'utilisation, les SPAs sont fréquemment amenés à 
 \paragraph{}
 Plusieurs auteurs tendent à attribuer une grande importance à l'anthropomorphisme des SPAs \citep{virtualbutler}, qui est :
 \begin{quote}
-	\say{Un mécanisme qui pousse les êtres humains à induire qu'une entité non-humanoïde possède des caractéristiques et comportements propres à l'homme}\citep{alexabff}
+	\say{Un mécanisme qui pousse les êtres humains à induire qu'une entité non-humanoïde possède des caractéristiques et comportements propres à l'homme.}\citep{alexabff}
 \end{quote}
 
 \par Ce comportement humanoïde pousserait donc l'utilisateur à se sentir plus à l'aise avec l'assistant, le conduisant ainsi à adopter une façon de communiquer plus humaine et moins structurée qu'avec les autres machines. Ceci est une caractéristique majeure d'un SPA se disant personnalisé.
@@ -102,7 +102,7 @@ En ce qui concerne l'aspect évolutif du SPA, il lui permet de préférer une ap
 
 \section{Exemples de SPAs}
 \paragraph{}
-Pour illustrer la puissance des SPAs les plus récents, nous présentons dans cette section les quatre produits qui dominent le marché courant :
+Pour illustrer la puissance des SPAs les plus récents, nous présentons dans cette section les quatre produits qui dominent le marché courant.
 
 \subsection{Google Assistant}\label{googleass}
 \paragraph{}
@@ -111,7 +111,7 @@ Pour illustrer la puissance des SPAs les plus récents, nous présentons dans ce
 %	\includegraphics[width=.2\linewidth]{images/google_assitant/logo.png}
 %	\caption{Logo de Google assistant} 
 %\end{figure}
-Lancé en 2016 sous forme d'un chatbot intégré dans l'application Google Allo,  Google Assistant s'est vu intégré directement sur les système d'exploitation Android, que ce soit sur smartphones ou tablettes, et plus récemment sur Google Home\footnote{Appareil servant à contrôler les composants d'une smart-house ainsi que l'utilisation des différents services de Google}. Google Assistant est un assistant à tout faire, Il a été développé par les ingénieurs de Google dans le but de faciliter la recherche sur internet, la planification des tâches, l'ajustement des réglages de l'appareil, etc. Son point fort est sa capacité à engager une conversation bi-directionnelle avec l'utilisateur, assurant ainsi une interaction personnalisée variant d'un utilisateur à un autre. Cette capacité lui permet par exemple de proposer certains résultats de recherche selon les précédentes interactions avec l'utilisateur ou de lui proposer une activité si ce dernier lui mentionne qu'il s'ennuie (voir figure \ref{fig:boredpic}).
+Lancé en 2016 sous forme d'un chatbot intégré dans l'application Google Allo,  Google Assistant s'est vu intégré directement sur les système d'exploitation Android, que ce soit sur smartphones ou tablettes, et plus récemment sur Google Home\footnote{Appareil servant à contrôler les composants d'une smart-house ainsi que l'utilisation des différents services de Google}. Google Assistant est un assistant à tout faire, Il a été développé par les ingénieurs de Google dans le but de faciliter la recherche sur internet, la planification des tâches, l'ajustement des réglages de l'appareil, etc. Son point fort est sa capacité à engager une conversation bi-directionnelle avec l'utilisateur, assurant ainsi une interaction personnalisée variant d'un utilisateur à un autre. Cette capacité lui permet par exemple de proposer certains résultats de recherche selon les précédentes interactions avec l'utilisateur ou de lui proposer une activité si ce dernier lui mentionne qu'il s'ennuie (voir les figures \ref{fig:boredpic} et \ref{fig:ga_query}).
 
 
 
@@ -128,7 +128,8 @@ Lancé en 2016 sous forme d'un chatbot intégré dans l'application Google Allo,
 	\begin{minipage}[b]{.45\textwidth}
 		\centering
 		\includegraphics[width=.85\linewidth]{images/google_assitant/weather.png} 
-		\caption{Requête simple formulée à Google Assitant} 
+		\caption{Requête simple formulée à Google Assitant}
+		\label{fig:ga_query}
 	\end{minipage}
 \end{figure}
 
@@ -136,11 +137,12 @@ Lancé en 2016 sous forme d'un chatbot intégré dans l'application Google Allo,
 \subsubsection*{Google Duplex}\label{duplex}
 
 \par Une des nouveautés impressionnante de Google Assistant est la fonctionnalité Google Duplex. Toujours en phase de développement, ce module est capable de passer des appels a de vraies personnes et d'avoir une conversation avec elles afin de réaliser une tâche demandée par l'utilisateur comme par exemple réserver une chambre d'hôtel, une table au restaurant, etc. 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=.5\linewidth]{images/google_assitant/duplex.png} 
-	\caption{Google duplex réservant une place dans un salon de coiffure} 
-\end{figure}
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=.5\linewidth]{images/google_assitant/duplex.png}
+%	\caption{Google duplex réservant une place dans un salon de coiffure} 
+%	\label{fig:google_duplex}
+%\end{figure}
 
 
 \subsection{Apple Siri}\label{siri}
@@ -222,9 +224,12 @@ Cortana est la tentative de la part de Microsoft d'intégrer un assistant dans s
 \section{Conclusion}
 \paragraph{}
 À travers les sections précédentes, nous avons présenté un certain nombre d'aspects d'un assistant virtuel intelligent. Nous avons donc pu apprécier la potentielle puissance d'un tel système s'il venait à être perfectionné d'avantage.
+
+Exploration de la reconnaissance de la parole pour le développement d'aspects d'un assistant de manipulation de l'ordinateur
+
 \par En effet, en examinant les domaines d'applications, il est facile de déduire que le recours à un SPA peut grandement faciliter certaines tâches, que ce soit celles qui sont les plus triviales pouvant retarder d'autres tâches plus importantes, ou bien celles qui doivent faire appel à la précision et à la grande capacité de calcul des machines, assurant ainsi des résultats précis et rapidement délivrés.
 \par
 À la fin de ce chapitre nous pouvons donc mettre en valeur la place primordiale que pourraient avoir les SPAs s'ils arrivaient à maturité, c.à.d briser la barrière qui sépare les humains de la machine, parvenant ainsi à faire partie de la vie quotidienne des utilisateurs. 
-\par Dans le prochain chapitre nous allons principalement aborder les aspects techniques des différents composants du SPA que nous allons réaliser.
+\par Dans le prochain chapitre, nous allons principalement aborder les aspects techniques des différents composants du SPA que nous allons réaliser.
 
  

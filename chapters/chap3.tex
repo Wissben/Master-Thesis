@@ -47,7 +47,7 @@ Premier module du système Speact, le module de reconnaissance automatique de la
 	\subsection{Modèle acoustique}
 		\subsubsection*{Type du modèle}
 		\paragraph{}
-		Le modèle d'apprentissage, qui est principalement le modèle acoustique à l'exception d'une partie consacrée au modèle linguistique, possède une architecture en réseau de neurones avec apprentissage de bout-en-bout composé de trois parties : 
+		Le modèle d'apprentissage, qui est principalement le modèle acoustique à l'exception d'une partie consacrée au modèle linguistique, possède une architecture en réseau de neurones avec apprentissage de bout-en-bout composé de trois parties (voir la figure \ref{fig:deepSpeechArch}) : 
 		\begin{itemize}
 			\item Deux couches de convolution spatiale : pour capturer les patrons dans la séquence du spectrogramme du signal audio.
 			\item Sept couches de récurrence, réseaux de neurones récurrents, pour analyser la séquence de patrons ou caractéristiques engendrée par les couches de convolutions. 
@@ -74,7 +74,7 @@ Premier module du système Speact, le module de reconnaissance automatique de la
 		
 		\subsubsection*{Données d'apprentissage}
 		\paragraph{}
-		À l'origine, DeepSpeech utilise un modèle de langue dont la source n'est pas dévoilée par les chercheurs dans \citep{deepspeech_paper}. Mais, son volume est approximativement de 220 millions de phrases avec 495 000 mots différents. Cependant, puisque ce corpus nous reste inconnu et qu'il a probablement été construit pour reconnaître des séquence de mots en anglais assez générales, nous avons décidé de construire notre propre modèle de langue en récoltant des données depuis des dépôts sur le site \href{https://github.com/}{Github}, plus précisément les fichiers README.md des dépôts qui font office de manuels d'utilisation d'un projet hébergé sur le site. Ce type de fichiers renferme généralement des instructions de manipulation de fichiers, de lancement de commandes, etc; ce qui offre un bon corpus pour le modèle de langue. En effet, notre système se concentre plus sur l'aspect de manipulation d'un ordinateur, donc la probabilité de trouver certaines séquences de mots qui appartiennent au domaine technique	 est en théorie plus élevée. La procédure suivie est la suivante : 
+		À l'origine, DeepSpeech utilise un modèle de langue dont la source n'est pas dévoilée par les chercheurs dans \citep{deepspeech_paper}. Mais, son volume est approximativement de 220 millions de phrases avec 495 000 mots différents. Cependant, puisque ce corpus nous reste inconnu et qu'il a probablement été construit pour reconnaître des séquence de mots en anglais assez générales, nous avons décidé de construire notre propre modèle de langue en récoltant des données depuis des dépôts sur le site \href{https://github.com/}{Github}, plus précisément les fichiers README.md des dépôts qui font office de manuels d'utilisation d'un projet hébergé sur le site. Ce type de fichiers renferme généralement des instructions de manipulation de fichiers, de lancement de commandes, etc; ce qui offre un bon corpus pour le modèle de langue. En effet, notre système se concentre plus sur l'aspect de manipulation d'un ordinateur, donc la probabilité de trouver certaines séquences de mots qui appartiennent au domaine technique est en théorie plus élevée. La procédure suivie, qui est illustrée dans la figure \ref{fig:lm_gathering}, est la suivante : 
 		
 		\begin{itemize}
 			\item L'acquisition des données dans leur format brut \textbf{.md} (markdown) se fait de deux manières :
@@ -94,10 +94,10 @@ Premier module du système Speact, le module de reconnaissance automatique de la
 		\end{itemize}
 	
 	\begin{figure}[H] 
-		\label{fig:lm_gathering}
 		\centering
 		\includegraphics[width=0.88\linewidth]{images/Conception/ASR/lm_gathering.png}
 		\caption{Processus de génération du corpus pour le modèle de langue}
+		\label{fig:lm_gathering}
 	\end{figure}
 \section{Module de compréhension automatique du langage naturel}
 \paragraph{}
@@ -105,14 +105,7 @@ Second module du système, le module de compréhension automatique du langage na
 	\subsection{Architecture du module}
 	\paragraph{}
 	\label{encoding}
-	Comme précédemment cité (voir la section \ref{system_layer}), le module NLU possède une architecture en pipeline qui reçoit en entrée le texte brut de la requête. Sa codification varie selon les approches que nous avons explorées et qui seront plus explicitées dans le chapitre suivant "Réalisation et résultats". Pour mieux capturer l'aspect sémantique des mots dans le texte, nous avons décidé d'utiliser le modèle Word2Vec pré-entraîné par Google (entraîné sur 100 milliard de mots) pour produire un vecteur de taille fixe pour chaque mot. Pour encoder l'information syntaxique de la requête, nous avons concaténé au vecteur de prolongement de chaque mot de la requête (Word Embedding Vector) le vecteur codifiant son étiquette morphosyntaxique. Après avoir codifié la séquence de mots, elle est envoyée aux modèles de classification d'intentions et d'extraction d'entités \footnote{Par entités, nous entendons les arguments de l'intention.}, qui sont en fait un seul modèle joint dont l'architecture est détaillée dans la section \ref{joint_model}. Ces deux informations sont ensuite décodées et passées au constructeur de trame sémantique qui structurera ces dernières en une seule entité sémantique. Un exemple d'une requête et sa trame sémantique associée est donné ci-dessous :
-	\begin{figure}[h] 
-		\label{nlu_arch}
-		\centering
-		\includegraphics[width=0.88\linewidth]{images/Conception/NLU/nlu_module_arch.png}
-		\caption{Architecture du module de compréhension automatique du langage naturel (NLU)}
-	\end{figure}
-\newpage
+	Comme illustré dans la figure \ref{nlu_arch}, le module NLU possède une architecture en pipeline qui reçoit en entrée le texte brut de la requête. Sa codification varie selon les approches que nous avons explorées et qui seront plus explicitées dans le chapitre suivant "Réalisation et résultats". Pour mieux capturer l'aspect sémantique des mots dans le texte, nous avons décidé d'utiliser le modèle Word2Vec pré-entraîné par Google (entraîné sur 100 milliard de mots) pour produire un vecteur de taille fixe pour chaque mot. Pour encoder l'information syntaxique de la requête, nous avons concaténé au vecteur de prolongement de chaque mot de la requête (Word Embedding Vector) le vecteur codifiant son étiquette morphosyntaxique. Après avoir codifié la séquence de mots, elle est envoyée aux modèles de classification d'intentions et d'extraction d'entités \footnote{Par entités, nous entendons les arguments de l'intention.}, qui sont en fait un seul modèle joint dont l'architecture est détaillée dans la section \ref{joint_model}. Ces deux informations sont ensuite décodées et passées au constructeur de trame sémantique qui structurera ces dernières en une seule entité sémantique. Un exemple d'une requête et sa trame sémantique associée est donné ci-dessous :
 	\begin{lstlisting}[language=json]
 	{	
 		"query"	: "could you please open the file test.py",
@@ -133,6 +126,13 @@ Second module du système, le module de compréhension automatique du langage na
 		\item \textbf{Partie intentions} : l'intention extraite, à partir de la requête, se trouve dans l'entrée $"intent"$ de la trame.
 		\item \textbf{Partie arguments} : aussi appelés "entités du domaine". Ces arguments sont extraits du texte de la requête. L'entrée $entities$ contient une liste d'arguments, où chaque élément de la liste renseigne sur le nom, la valeur et l'emplacement d'une entité.
 	\end{itemize}
+	\begin{figure}[h] 
+		\centering
+		\includegraphics[width=0.88\linewidth]{images/Conception/NLU/nlu_module_arch.png}
+		\caption{Architecture du module de compréhension automatique du langage naturel (NLU)}
+		\label{nlu_arch}
+		
+	\end{figure}
 %	\subsection{Analyse sémantique basée sur les grammaires de dépendances}
 	\subsection{Modèle utilisé}
 		\paragraph{}\label{joint_model}
@@ -156,7 +156,7 @@ Second module du système, le module de compréhension automatique du langage na
 			"intent": "open_file_desire"
 		},
 		\end{lstlisting}
-		Pour remplir l'ensemble des placeholders, nous commençons d'abord par scanner le répertoire de la machine avec une profondeur maximum égale à 5, le terme profondeur désigne les niveaux de répertoires et sous-répertoires. Nous avons aussi ajouté une liste\footnote{\url{https://github.com/xmendez/wfuzz/blob/master/wordlist/general/common.txt}} des noms de fichiers et répertoires les plus populaires.
+		Pour remplir l'ensemble des placeholders, nous commençons d'abord par scanner le répertoire de la machine avec une profondeur maximum égale à 5. Le terme profondeur désigne les niveaux de répertoires et sous-répertoires. Nous avons aussi ajouté une liste\footnote{\url{https://github.com/xmendez/wfuzz/blob/master/wordlist/general/common.txt}} des noms de fichiers et répertoires les plus populaires.
 		Les noms des répertoires sont ensuite nettoyés à l'aide d'expressions régulières et transformés en un format universel établi à l'avance \textbf{nom\_du\_fichier} en choisissant "\_" (le tiret du 8) comme séparateur. En bouclant sur ces noms de répertoires nous pourrons donc construire plusieurs exemples comme une entrée dans un dictionnaire dont le format est le suivant : 
 		\begin{lstlisting}[language=json]
 		{
@@ -172,9 +172,9 @@ Second module du système, le module de compréhension automatique du langage na
 		\begin{itemize}
 			\item \textbf{id} : un entier qui sert d'identificateur pour l'instance.
 			\item \textbf{intent} : l'intention (non encore codifiée) attribuée à l'instance.
-			\item \textbf{tags} : les étiquettes de chaque mots de la requête. Une étiquette peut être soit $NUL$ (ce n'est pas un argument) ou bien le nom de l'entité (argument) que représente le mot à la position étiquetée. La liste complète des intentions avec leurs arguments se trouve dans le tableau \ref{tab:all_intents} du chapitre "Réalisation et résultats".
+			\item \textbf{tags} : les étiquettes de chaque mot de la requête. Une étiquette peut être soit $NUL$ (ce n'est pas un argument) ou bien le nom de l'entité (argument) que représente le mot à la position étiquetée. La liste complète des intentions avec leurs arguments se trouve dans le tableau \ref{tab:all_intents} du chapitre "Réalisation et résultats".
 			\item \textbf{postags} : la liste des étiquettes morphosyntaxiques de chaque mots de la requête. L'ensemble des étiquettes utilisées est celui du Penn Treebank \citep{penn_treebank}. Dans l'exemple ci-dessus, NN signifie "Nom au singulier". NNS signifie "Nom au pluriel". VB et VBD signifient respectivement "Verbe à l'infinitif" et "Verbe au passé simple". Enfin, DT signifie "Déterminant".
-			\item \textbf{text} : le texte de la requête nettoyé et dont les mots sont séparés uniquement par un espace.
+			\item \textbf{text} : le texte de la requête nettoyée et dont les mots sont séparés uniquement par un espace.
 		\end{itemize}
 \section{Module de gestion du dialogue}
 Le but de ce module est de décider quelle action prendre à chaque instant du dialogue. De prime abord, nous allons présenter l'architecture globale de ce module notamment la représentation des informations reçues et la politique d'actions. Ensuite, nous allons détailler la conception de chaque partie.
@@ -253,8 +253,8 @@ Un exemple d'ontologie pour la compréhension d'une tâche réalisable par l'ass
 \par
 L'ontologie contient essentiellement:
 \begin{itemize}
-	\item Des actions sur les fichiers: Créer un fichier, supprimer un fichier, changer de répertoire, etc. Ces actions sont des sous-classes de la classe  $Agent\_act$ vue précédemment ainsi que les classes $Act\_parameter$ et $Desire$. Ceci veut dire, d'un côté, que ces actions peuvent être des paramètres d'autres actions, comme "demander à l'utilisateur s'il veut que l'assistant réalise une action donnée" et d'un autre côté, que l'utilisateur peut demander à l'assistant d'effectuer une de ces actions. 
-	\item Les concepts qui sont liés à l'exploration de fichiers sont des sous-classes de $Act\_parameter$ étant donné qu'ils peuvent  être des paramètres d'actions. Par exemple, l'action d'ouvrir un fichier a comme paramètre un fichier.
+	\item Des actions sur les fichiers: Créer un fichier, supprimer un fichier, changer de répertoire, etc. Ces actions sont des sous-classes de la classe $Agent\_act$ vue précédemment ainsi que les classes $Act\_parameter$ et $Desire$. Ceci veut dire, d'un côté, que ces actions peuvent être des paramètres d'autres actions, comme "demander à l'utilisateur s'il veut que l'assistant réalise une action donnée" et d'un autre côté, que l'utilisateur peut demander à l'assistant d'effectuer une de ces actions. 
+	\item Les concepts qui sont liés à l'exploration de fichiers sont des sous-classes de \textit{Act\_parameter} étant donné qu'ils peuvent  être des paramètres d'actions. Par exemple, l'action d'ouvrir un fichier a comme paramètre un fichier.
 	\item Des relations entre concepts sont aussi définies. Par exemple, un répertoire peut contenir des fichiers, ou une action de changement de répertoire doit avoir comme paramètre un répertoire cible.
 \end{itemize}
 \begin{figure}[H]
@@ -264,7 +264,7 @@ L'ontologie contient essentiellement:
 	\caption{Graphe de l'ontologie de l'exploration de fichiers}\label{onto_browser}
 \end{figure}
 
-\par La figure \ref{nonabstract_onto} représente l'arrivée d'une nouvelle action: "créer un fichier nommé 'travail'". L'action de l'utilisateur est donc représentée par un nouveau n\oe{}ud de type $U\_act\_desire$ qui désigne une action utilisateur qui demande une action de l'assistant. Cette dernière a comme paramètre un n\oe{}ud de type $Create\_file$ qui est l'action de l'agent que l'utilisateur veut réaliser. Cette action à son tour a des paramètres comme, dans ce cas, le fichier qu'on veut créer.
+\par La figure \ref{nonabstract_onto} représente l'arrivée d'une nouvelle action: "créer un fichier nommé 'travail'". L'action de l'utilisateur est donc représentée par un nouveau n\oe{}ud de type \textit{U\_act\_desire} qui désigne une action utilisateur qui demande une action de l'assistant. Cette dernière a comme paramètre un n\oe{}ud de type $Create\_file$ qui est l'action de l'agent que l'utilisateur veut réaliser. Cette action à son tour a des paramètres comme, dans ce cas, le fichier qu'on veut créer.
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=0.88\linewidth]{images/Conception/DM/nonabstract_onto.png}
@@ -456,6 +456,6 @@ Le modèle utilisé pour la génération du texte est relativement simple. Il s'
 Dans la figure \ref{nlg_schema}, un exemple de génération de textes en utilisant les modèles de phrases est présenté où l'agent demande à l'utilisateur de lui donner le répertoire parent d'un fichier nommé "travail". Le générateur de textes utilise l'intention de l'agent "$Request$" pour extraire les modèles de phrases qui lui correspondent. En parallèle, il utilise les paramètres de l'action pour extraire leurs expressions. Par exemple, le nom du fichier peut être transformé en "\textit{travail}" ou "\textit{the file travail}". Ces expressions sont enfin combinées avec le modèle de la phrase choisie pour générer une phrase complète. Par exemple, "\textit{Please, tell me what is the \textbf{parent directory}} of \textbf{travail}" ou "\textit{Please, tell me what is the \textbf{directory} of \textbf{the file travail}}".
 \section{Conclusion}
 \paragraph{}
-Dans ce chapitre, et en nous inspirant des travaux existants, nous avons pu modéliser et conceptualiser tout les aspects du système que nous jugeons assez conforme au standard. Viennent s'ajouter les améliorations proposées pour enrichir le système de base retrouvé dans la littérature ainsi que pour faciliter l'extensibilité des fonctionnalités de bases avec un moindre effort d'intégration. Ceci est le résultat d'une conception modulaire et facilement maintenable. 
+Dans ce chapitre, et en nous inspirant des travaux existants, nous avons pu modéliser et conceptualiser tout les aspects du système que nous jugeons assez conforme au standard. De plus, des améliorations ont été proposées pour enrichir le système de base retrouvé dans la littérature ainsi que pour faciliter l'extensibilité des fonctionnalités de bases avec un moindre effort d'intégration. Ceci est le résultat d'une conception modulaire et facilement maintenable. 
 \par Dans le chapitre suivant, nous allons passer à l'implémentation des différents modules, au développement d'une application dédiée et à une partie expérimentation pour tester les approches proposées. Nous discuterons leurs améliorations et les comparerons avec des standards existants.
 

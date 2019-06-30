@@ -7,7 +7,7 @@ Dans ce chapitre, nous détaillerons un peu plus l'aspect technique d'une archit
 \section{Schéma global d'un SPA}
 \label{spaSchemSection}
 \paragraph{}
-Durant nos lectures des différents travaux sur le domaine, nous avons pu dresser un schéma assez général qui englobe les principaux modules d'un SPA comme illustré par la figure \ref{fig:spaDiagram}
+Durant nos lectures des différents travaux sur le domaine, nous avons pu dresser un schéma assez général qui englobe les principaux modules d'un SPA comme illustré par la figure \ref{fig:spaDiagram}.
 
 \paragraph{}
 Le processus peut être résumé en des étapes cruciales (qui seront détaillées dans les sections suivantes) : 
@@ -100,7 +100,7 @@ Même si le principe reste le même, l'apprentissage profond est puissant car le
 \paragraph{}
 Un aspect que les réseaux de neurones (profonds ou pas) ne peuvent capturer est la notion de séquentialité. En effet beaucoup de problèmes qui sont de nature séquentielle ne peuvent être modélisés par les architectures dites classiques, comme l'analyse d'un texte. L'introduction d'une notion de séquence permet donc de capturer des dépendances entre certains états et leurs voisins, on parle ici de contexte \citep{rnn_lstms}.
 \par 
-Les réseaux de neurones récurrents (Recurrent Neural Networks, RNNs) sont des réseaux de neurones \textit{feedforward} dont certaines connections en sortie sont réintroduites comme entrées dans le réseau durant une étape ultérieure du processus d'apprentissage. Ceci introduit la notion de temps dans l'architecture. Ainsi à un instant $t$, un neurone récurrent recevra en entrée la donnée $x^{(t)}$ ainsi que la valeur de l'état caché $h^{(t-1)}$ résultante de l'étape précédente du réseau, la valeur en sortie $\hat{y}^{(t)}$ est calculée en fonction de l'état caché $h^{(t)}$. Les équations suivantes montrent les calculs effectués \citep{rnn_lstms} :
+Les réseaux de neurones récurrents (Recurrent Neural Networks, RNNs) sont des réseaux de neurones \textit{feedforward} dont certaines connections en sortie sont réintroduites comme entrées dans le réseau durant une étape ultérieure du processus d'apprentissage (voir figure \ref{fig:simple_rnn}). Ceci introduit la notion de temps dans l'architecture. Ainsi à un instant $t$, un neurone récurrent recevra en entrée la donnée $x^{(t)}$ ainsi que la valeur de l'état caché $h^{(t-1)}$ résultante de l'étape précédente du réseau, la valeur en sortie $\hat{y}^{(t)}$ est calculée en fonction de l'état caché $h^{(t)}$. Les équations suivantes montrent les calculs effectués \citep{rnn_lstms} :
 \begin{equation}
 h^{(t)} = \tanh(W^{hx} \times x^{(t)} + W^{hh} \times h^{(t-1)} + b_h)
 \end{equation}
@@ -109,7 +109,7 @@ h^{(t)} = \tanh(W^{hx} \times x^{(t)} + W^{hh} \times h^{(t-1)} + b_h)
 \hat{y}^{(t)} = softmax(W^{hy} \times h^{(t)} + b_y)
 \end{equation}
 
-où $W^{hx}$ est la matrice de poids entre la couche d'entrée et la couche cachée. $W^{hh}$ est la matrice de poids de récurrence (c.à.d, c'est la matrice qui, quand multipliée par le vecteur d'état caché $t-1$, donnera le vecteur d'état $t$). $W^{hy}$ est la matrice de poids entre la couche cachée et le couche de sortie. Les deux vecteurs $b_h$ et $b_y$ sont les vecteurs de biais et $\times$ est l'opération du produit matriciel \citep{rnn_lstms}
+où $W^{hx}$ est la matrice de poids entre la couche d'entrée et la couche cachée. $W^{hh}$ est la matrice de poids de récurrence (c.à.d, c'est la matrice qui, quand multipliée par le vecteur d'état caché $t-1$, donnera le vecteur d'état $t$). $W^{hy}$ est la matrice de poids entre la couche cachée et le couche de sortie. Les deux vecteurs $b_h$ et $b_y$ sont les vecteurs de biais et $\times$ est l'opération du produit matriciel \citep{rnn_lstms}.
 
 \begin{figure}[h]
 	\centering
@@ -118,13 +118,14 @@ où $W^{hx}$ est la matrice de poids entre la couche d'entrée et la couche cach
 	
 	\includegraphics[width=0.5\linewidth]{images/notions/rnns_unrolled_online.png}
 	\caption{Architecture interne d'un réseau de neurones récurrent à un instant $t$ \citep{rnns_online}}
+	\label{fig:simple_rnn}
 \end{figure}
 \par 
 Un des principaux problèmes que rencontrent les RNNs est celui du \textit{"Vanishing gradient"} traduit par le \textit{"Problème de disparition du gradient"} \citep{vanishing_gradient}. Les relations à long terme entre les séquences ne sont donc pas capturées. Ainsi, pour remédier à ce problème, des architectures de réseaux de neurones dotées d'un module de mémoire ont étés introduites.
 
 \subsubsection*{Réseaux de neurones récurrents à mémoire à court et long terme (LSTM)}
 \paragraph{}
-Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de réseaux de neurones récurrents est dotée d'un système de \textit{portes} qui filtrent l'information qui y passe ainsi que d'un état interne de la cellule mémoire d'un réseau LSTM. Les composants d'une cellule LSTM  sont détaillés dans la figure \ref{lstm_architecture} qui suit : 
+Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de réseaux de neurones récurrents est dotée d'un système de \textit{portes} qui filtrent l'information qui y passe ainsi que d'un état interne de la cellule mémoire d'un réseau LSTM. Les composants d'une cellule LSTM  sont détaillés dans la figure \ref{lstm_architecture}. 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/notions/lstm_arch.png}
@@ -194,20 +195,20 @@ Introduite en 1997 dans \citep{lstm_original_paper}, cette architecture de rése
 
 \subsection{Modèles de Markov cachés (Hidden Markov Models HMM)}
 \paragraph{}
-Informellement, un modèle de Markov caché (HMM) est un outil de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est supposé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de son état à l'instant $t-1$. Il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \citep{hmm_intro,markov_process}.
+Informellement, un modèle de Markov caché (HMM) est un outil de représentation pour modéliser la distribution de probabilité d'une séquence d'observations. Il est dit \textit{caché} pour deux raisons. Premièrement, il est supposé qu'une observation $O$ à un instant $t$ (dénotée $O_t$)  est le résultat d'un certain processus (souvent stochastique) dont l'état $S_t$ est caché à l'observateur. Deuxièmement, l'état $S_t$ du processus caché ne dépend uniquement que de son état à l'instant $t-1$. Il est alors dit que ce processus est Markovien ou qu'il satisfait la propriété de Markov \citep{hmm_intro,markov_process}. La figure \ref{fig:hmm_process} illustre graphiquement un HMM.
 \par De façon plus formelle, un HMM est un 5-tuple $<S,V,\Pi,A,B>$ \citep{hmm_formal} où :
 \begin{itemize}
 	\item $S = \lbrace s_1,...,s_N \rbrace$ est l'ensemble fini des $N$ états du processus sous-jacent.
 	\item $V = \lbrace v_1,...,v_M \rbrace$ est l'ensemble des $M$ symboles qui constitue un certain vocabulaire.
-	\item $\Pi = \lbrace \pi_i \rbrace$ est une distribution initiale des probabilité d'états tel que $\pi_i$ est la probabilité de se trouver à l'état $i$ à l'instant $t=0$, avec $\sum_{i=1}^{N} \pi_i = 1$ 
+	\item $\Pi = \lbrace \pi_i \rbrace$ est une distribution initiale des probabilité d'états tel que $\pi_i$ est la probabilité de se trouver à l'état $i$ à l'instant $t=0$, avec $\sum_{i=1}^{N} \pi_i = 1$.
 	\item $A=\lbrace a_{ij} \rbrace$ est une matrice $N \times N$ dont chaque entrée $a_{ij}$ est la probabilité de transition d'un état $i$ à un état $j$ avec $\sum_{j=1}^{N} a_{ij} = 1$ pour tout $i = 1,...,N$.
 	\item $B=\lbrace b_i(v_k)\rbrace$ est l'ensemble des distributions de probabilités d'émission (ou d'observation), donc $b_i(v_k)$ est la probabilité de générer un symbole $v_k$ du vocabulaire étant donné un certain état $i$ avec $\sum_{k=1}^{M} b_{i}(v_k) = 1$ pour tout $i= 1,...,N$. 
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.65\linewidth]{images/notions/hmm.png}
+		\includegraphics[width=0.60\linewidth]{images/notions/hmm.png}
 		\caption{Exemple d'une distribution de probabilités de transitions ainsi qu'une distribution de probabilités d'observations pour un HMM à 3 états et 2 observations}
-		\label{hmm_process}
+		\label{fig:hmm_process}
 	\end{figure}
 \end{itemize}
 \paragraph{}
@@ -220,13 +221,14 @@ Pour y parvenir d'une manière efficace, un décodeur qui implémente l'algorith
 \section{Reconnaissance automatique de la parole (ASR)}
 \paragraph{}
 Le premier module qui compose le système est celui de la reconnaissance automatique de la parole (ASR). Le but d'un tel système (ou sous-système dans notre cas) est de convertir un signal audio correspondant à la locution d'un utilisateur en un texte qui peut être interprété par la machine \citep{asr_definition}. Différentes approches ont été développées au cours des années. Une architecture s'est ensuite dégagée où les systèmes passent par deux phases : la phase d'apprentissage et la phase de reconnaissance. La première consiste à collecter les données qui constituent le corpus d'apprentissage, un ensemble de fichiers audios avec leurs transcriptions en texte et en phonèmes. Le signal est ensuite traité pour en extraire des vecteurs de caractéristiques (ou attributs). La suite de l'apprentissage consiste à initialiser le HMM, lui passer les vecteurs précédemment extraits puis l'enregistrer pour la phase suivante qui est la reconnaissance. Dans la deuxième phase, le signal audio passe par le même procédé d'extraction des attributs, en utilisant un algorithme de décodage approprié \citep{viterbi_hmm}, puis la séquence d'observations passe par le HMM et la meilleure séquence de mots est sélectionnée \citep{speech_reco_Yu2015}.
-\par Une architecture assez générale s'est dégagée. Quatre modules sont impliqués dans le processus de la reconnaissance de la parole; nous les citerons dans les sections qui suivent en énumérant les modèles utilisés dans chacun.
+\par 
+Comme le montre la figure \ref{fig:ASRSchema}, une architecture assez générale s'est dégagée. Quatre modules sont impliqués dans le processus de la reconnaissance de la parole; nous les citerons dans les sections qui suivent en énumérant les modèles utilisés dans chacun.
 
 \begin{figure}[H]
 	\centering
-	\label{ASRSchema}
 	\includegraphics[width=0.70\linewidth]{images/ASR/schema.png}
 	\caption{Architecture d'un système de reconnaissance de la parole \citep{speech_reco_Yu2015}}
+	\label{fig:ASRSchema}
 \end{figure}
 
 \subsection{Acquisition du signal et extraction d'attributs}
@@ -265,16 +267,17 @@ Une intention (ou intent en anglais) est une représentation sémantique d'un bu
 Un autre cas est celui du sur-découpage d'intentions déjà assez semblable, $Ouvrir\_fichier$ et $Ouvrir\_Repertoire$ peuvent être regroupés en une seule intention $Ouvrir\_Entite$. Bien-sur ces choix sont purement conceptuels et dépendent fortement du problème traité par le système. Choisir une représentation à la place d'une autre est lié à la nature de la tâche que le module doit accomplir \citep{intent_classification,intent_slots}.
 \subsection{Classification d'intentions}
 \paragraph{}
-La classification d'intentions à partir d'un texte est une tâche réalisable avec des techniques récentes d'apprentissage automatique, plus précisément en utilisant des modèles basés sur les réseaux de neurones récurrents à "mémoire à court et long terme" (LSTM) (voir la section \ref{lstm_architecture}). Dans \citep{intent_classification} et \citep{intent_slots} deux architectures qui ont fait leurs preuves sont présentées. Dans le premier travail, les auteurs ont utilisé une architecture Bi-LSTM (LSTM Bidirectionnel) pour capturer les contextes droit et gauche d'un mot donné \citep{blstm}. Le dernier état caché retourné par la cellule LSTM est ensuite utilisé pour la classification. Une couche d'attention est ajoutée \citep{attention_mechanism} pour permettre au modèle de se focaliser sur certaines parties du texte en entrée. La deuxième architecture est un peu plus simple. En effet, elle utilise des cellules LSTM basiques avec une couche de classification sur le dernier état. L'avantage par rapport à la première architecture est le temps d'apprentissage assez réduit au détriment d'une erreur de classification plus accrue mais toujours dans les normes.
+La classification d'intentions à partir d'un texte est une tâche réalisable avec des techniques récentes d'apprentissage automatique, plus précisément en utilisant des modèles basés sur les réseaux de neurones récurrents à "mémoire à court et long terme" (LSTM) (voir la section \ref{lstm_architecture}). Dans \citep{intent_classification} et \citep{intent_slots} deux architectures qui ont fait leurs preuves sont présentées. Dans le premier travail, les auteurs ont utilisé une architecture Bi-LSTM (LSTM Bidirectionnel) pour capturer les contextes droit et gauche d'un mot donné \citep{blstm}. Le dernier état caché retourné par la cellule LSTM est ensuite utilisé pour la classification. Une couche d'attention est ajoutée \citep{attention_mechanism} pour permettre au modèle de se focaliser sur certaines parties du texte en entrée. La deuxième architecture , qui est illustrée dans la figure \ref{LSTM_intent}, est un peu plus simple. En effet, elle utilise des cellules LSTM basiques avec une couche de classification sur le dernier état. L'avantage par rapport à la première architecture est le temps d'apprentissage assez réduit au détriment d'une erreur de classification plus accrue mais toujours dans les normes.
 \begin{figure}[H]
 	\centering
-	\label{LSTM_intent}
 	\includegraphics[width=0.65\linewidth]{images/NLU/intent_classification.png}
-	\caption{Architecture de base d'un classificateur d'intentions (intents) \citep{intent_classification}}
+	\caption{Architecture de base d'un classificateur d'intentions (intents) 
+	\citep{intent_classification}}
+	\label{LSTM_intent}
 \end{figure}
 \subsection{Extraction d'entités}
 \paragraph{}
-Déterminer l'intention d'un utilisateur ne s'arrête pas au stade de l'identification de l'\textit{intent}. En effet, pour mieux représenter l'information récoltée depuis la requête, il faut en extraire des entités (nommées ou spécifiques du domaine) qui seront des arguments de l'intent identifié. Cette tâche consiste donc, pour une intention $I$ donné, à extraire les arguments $Args$ qui lui sont appropriés depuis le texte de la requête. Plusieurs approches sont possibles. Dans \citep{intent_slots} les auteurs ont attaqué le problème comme étant la traduction d'une séquence de mots en entrée en une séquence d'entités en sortie; le schéma suivant explicite le processus :
+Déterminer l'intention d'un utilisateur ne s'arrête pas au stade de l'identification de l'\textit{intent}. En effet, pour mieux représenter l'information récoltée depuis la requête, il faut en extraire des entités (nommées ou spécifiques du domaine) qui seront des arguments de l'intent identifié. Cette tâche consiste donc, pour une intention $I$ donné, à extraire les arguments $Args$ qui lui sont appropriés depuis le texte de la requête. Plusieurs approches sont possibles. Dans \citep{intent_slots} les auteurs ont attaqué le problème comme étant la traduction d'une séquence de mots en entrée en une séquence d'entités en sortie; le figure \ref{fig:lstmslots} explicite le processus.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.85\linewidth]{images/NLU/seq2seq.png}
@@ -428,7 +431,7 @@ Cette partie consiste à sélectionner les informations de l'entrée dont le sys
 Après la détermination du contenu, le système doit ordonner les informations à transmettre. Ceci dépend grandement du domaine d'application qui peut exiger des contraintes d'ordre temporel ou de préférence par importance des idées. Les informations à transmettre en elles-mêmes sont souvent reliées par sens, ce qui implique une certaine structuration de texte à respecter.
 \subsection{Agrégation de phrases}
 \paragraph{}
-Certaines informations peuvent être transmises dans une même phrase. Cette partie introduit des notions de la linguistique afin que le texte généré soit plus lisible et éviter les répétitions. Un exemple de cela peut être la description de la météo à Alger au cours de la matinée:
+Certaines informations peuvent être transmises dans une même phrase. Cette partie introduit des notions de la linguistique afin que le texte généré soit plus lisible et évite les répétitions. Un exemple de cela peut être la description de la météo à Alger au cours de la matinée:
 \begin{itemize}
 	\item Il va faire 16\textdegree{} à Alger à 7h.
 	\item Il va faire 17\textdegree{} à Alger à 8h.
