@@ -2,7 +2,7 @@
 
 \section{Introduction}
 \paragraph{}
-Dans ce chapitre, nous détaillerons un peu plus l'aspect technique d'une architecture typique d'un SPA (Speech Personal Assistant). Nous commencerons d'abord par définir des notions de base. Nous ne  traiterons que celles qui ont été les plus utilisées dans les travaux que nous avons examiné. La suite du chapitre sera organisée en sections qui décrirons chacune le fonctionnement d'une partie du SPA, en citant les travaux et références qui relatent de cette dernière. Nous terminerons sur une conclusion qui introduira le chapitre suivant.
+Dans ce chapitre, nous détaillerons un peu plus l'aspect technique d'une architecture typique d'un SPA (Smart Personal Assistant). Nous commencerons d'abord par définir des notions de base. Nous ne  traiterons que celles qui ont été les plus utilisées dans les travaux que nous avons examiné. La suite du chapitre sera organisée en sections qui décrirons chacune le fonctionnement d'une partie du SPA, en citant les travaux et références qui relatent de cette dernière. Nous terminerons sur une conclusion qui introduira le chapitre suivant.
 
 \section{Schéma global d'un SPA}
 \label{spaSchemSection}
@@ -19,7 +19,7 @@ Le processus peut être résumé en des étapes cruciales (qui seront détaillé
 	\item Puisqu'il est préférable de cacher à l'utilisateur tout comportement interne au système, il serait préférable de transformer la trame sémantique (voir la figure ~\ref{fig:semanticFrame}) en texte naturel pour l'afficher en sortie.
 \end{itemize}
 \paragraph{}
-Il est à noter que chacun des modules seront indépendants pour ce qu'il est de leur fonctionnement interne. Ainsi, aucun n'assumera un fonctionnement arbitraire des autres modules. Seul le format des informations qui circulent entre eux devra être établi au préalable pour un fonctionnement durable et robuste au changement.
+Il est à noter que chacun des modules seront indépendants les uns des autres dans leurs fonctionnements respectifs. Seul le format des informations qui circulent entre eux devra être établi au préalable pour un fonctionnement durable et robuste au changement.
 
 \begin{figure}[h]
 	\centering
